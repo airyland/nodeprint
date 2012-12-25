@@ -12,7 +12,6 @@
                 <li>
                     <label for="user-email">{$lang.email}</label>
                     <input type="email" id="user-email" name="user-email" value="{$me.user_email}" readonly required/>
-                    {if $me.user_email_confirm == 1}已通过验证 {else if $me.user_email_confirm != 1 &&  $me.user_email_confirm_sent ==1 }验证邮件已发送 <a href="/api/user/0/email_confirm?u={$me.user_id}">重新发送</a>{else}邮箱未验证 <a href="/api/user/0/email_confirm?u={$me.user_id}">立即验证</a>{/if}
                 </li>
                 <li>
                     <label for="user-site">{$lang.website}</label>
@@ -31,12 +30,12 @@
                     <textarea name="user-intro" id="user-intro" >{$me.other.intro}</textarea>
                 </li>
                 <li>
-                    <label for="twitter">twitter</label>
-                    <input type="text" name="twitter" id="twitter" value="{$me.other.twitter}"/>
+                    <label for="douban">豆瓣</label>
+                    <input type="text" name="douban" id="twitter" value="{if isset($me.other.douban) && $me.other.douban}{$me.other.douban}{/if}"/>
                 </li>
                 <li>
-                    <label for="github">github</label>
-                    <input type="text" name="github" value="{$me.other.github}"/>
+                    <label for="weibo">微博</label>
+                    <input type="text" name="weibo" value="{if isset($me.other.weibo) && $me.other.weibo}{$me.other.weibo}{/if}"/>
                 </li>
                 <li>
                     <label for="">&nbsp;</label><input type="submit" value="{$lang.update}" class="vivid-button">

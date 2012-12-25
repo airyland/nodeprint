@@ -76,12 +76,14 @@ class User extends CI_Model {
      * @access public
      * @return void
      */
-    function user_update_profile($user_id, $user_email, $github, $twitter, $site, $location, $sign, $intro) {
+    function user_update_profile($user_id, $user_email, $github, $twitter,$douban,$weibo, $site, $location, $sign, $intro) {
         $data = array(
             'user_email' => $user_email,
             'user_profile_info' => json_encode(array(
                 'github' => $github,
                 'twitter' => $twitter,
+                'weibo'=>$weibo,
+                'douban'=>$douban,
                 'site' => $site,
                 'location' => $location,
                 'sign' => $sign,

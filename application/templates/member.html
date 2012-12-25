@@ -9,10 +9,10 @@
             <small>{#siteName#} 第  {$u.user_id}  号会员，加入于 {$u.user_register_time}</small>
         </p>
         <ul>
-            {if $u.other.twitter}<li>twitter:<a href="http://twitter.com/#!/{$u.other.twitter}">{$u.other.twitter}</a></li>{/if}
+            {if isset($u.other.douban) && $u.other.douban}<li>豆瓣:<a href="{$u.other.douban}/">{$u.other.douban}</a></li>{/if}
             {if $u.other.site}<li>blog:<a href="{{$u.other.site}}" rel="external">{{$u.other.site}}</a></li>{/if}
             {if $u.other.location}<li>location:<a href="">{$u.other.location}</a></li>{/if}
-            {if $u.other.github}<li>github:<a href="https://github.com/{$u.other.github}" rel="external">{$u.other.github}</a></li>{/if}
+            {if isset($u.other.weibo)&& $u.other.weibo}<li>微博:<a href="{$u.other.weibo}" rel="external">{$u.other.weibo}</a></li>{/if}
             {if $u.site.follower}<li>followers:<a href="">{$u.site.follower}</a></li>{/if}
         </ul>
         {if $u.other.intro}<p>个人介绍：{$u.other.intro}</p>{/if}
@@ -62,20 +62,5 @@
     </div>
 </div>
 <div class="sidebar">
-    <section class="github-list">
-        <h3 class="title">GitHub Public Repos</h3>
-        <ul>
-            {if is_array($github)}
-            {foreach from=$github['repositories'] item=g}
-            <li>
-                <p><a href="{$g.url}">{$g.name}</a><span class="github-lang">{if isset($g.language)}{$g.language}{/if}</span></p>
-                <p>{$g.description}</p>
-            </li>
-            {/foreach}
-            {else}
-            <li class="no-repo">no repositories yet</li>
-            {/if}
-        </ul>
-    </section>
 </div>
 {include file="footer.html"}
