@@ -82,8 +82,8 @@ class T extends CI_Controller {
              * @package topic
              */
             case 'recent':
-                $post= $htis->post->query_post("page={$page}&no={$limit}");
-                $count_post=$htis->post->query_post("count=true");
+                $post= $this->post->query_post("page={$page}&no={$limit}");
+                $count_post=$this->post->query_post("count=true");
                 $title = '最新主题';
                 $this->dpagination->target('/t/recent');
                 $template = 'topic_recent.html';
