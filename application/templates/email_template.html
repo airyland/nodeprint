@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<title>账号激活邮件</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div style="font:Verdana normal 14px;color:#000;">
+			<div>
+				&nbsp;
+			</div>
+			<div>
+				<div style="color: rgb(0, 0, 0); font-size: 12px; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(239, 239, 239); padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px; background-position: initial initial; background-repeat: initial initial;">
+					<table style="font-family: arial, sans-serif; width: 100%; border-collapse: collapse; border-left-width: 1px; border-left-style: solid; border-left-color: rgb(205, 205, 205); border-right-width: 1px; border-right-style: solid; border-right-color: rgb(205, 205, 205); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(205, 205, 205);">
+						<tbody>
+							<tr>
+								<td height="41" style="padding:0;background-color:#333;vertical-align:middle;border-left:1px solid #333;border-right:1px solid #333;">
+									<img src="$base_url$img/email_logo.png" width="82" height="41" style="margin-left:25px;vertical-align:middle;"> <span style="top:2px;margin-left:2px;color:#fff;font-size:14px;font-weight:bold;">邮箱确认邮件</span>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:26px 25px 17px;line-height:1.5">
+									$user_name$您好，欢迎您注册NodePrint。
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:0 25px 20px;">
+									<div style="padding-top: 7px; padding-right: 10px; padding-bottom: 7px; padding-left: 10px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(227, 219, 254); border-right-color: rgb(227, 219, 254); border-bottom-color: rgb(227, 219, 254); border-left-color: rgb(227, 219, 254); border-image: initial; font-size: 11px; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(244, 243, 249); color: rgb(85, 48, 187); background-position: initial initial; background-repeat: initial initial;">
+										请点击下面网址，进行邮箱确认。<br>
+										<a href="$base_url$api/user/0/email_auth_confirm?auth=$code$" target="_blank" style="color:#ae9ee0;font-size:11px;text-decoration:none;font-family:tahoma;">$base_url$api/user/0/email_auth_confirm?auth=$code$</a>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:0 25px 23px;">
+									<div style="padding-top: 11px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(239, 239, 239);">
+										祝您今天过的很开心<br>
+										NodePrint.com
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="width: 570px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; font-family: arial, sans-serif;">
+					<p style="padding-top: 12px; padding-right: 0px; padding-bottom: 0px; padding-left: 25px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-size: 11px; color: rgb(102, 102, 102); line-height: 1.5;">
+						此邮件是发送专用。如有疑问或不便，请发邮件给<a href="mailto:i@nodeprint.com" style="text-decoration:none;color:#5530bb;">i@nodeprint.com</a>。<br>
+						<span style="color:#bbb;font-family:tahoma;">Copyright © NodePrint.com. All Rights Reserved.</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

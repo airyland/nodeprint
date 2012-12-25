@@ -1,0 +1,22 @@
+/* TEAM */
+Front-end Developer&PHP developer:airyland
+Contact:i@mao.li
+Twitter:@alostcat
+website:mao.li
+douban:@airyland
+From: Whuhan University, Hubei
+
+/* THANKS */
+UI developer:livid
+Twitter:@livid
+website:http://v2ex.com
+
+/* SITE */
+Last update:2012/12/21
+Language:English/Chinese
+Doctype:HTML5
+Tools:sublimetext2, FileZilla, Netbeans, Git, Bitbucket, Github, Chrome, IETester, Zencoding and Google
+Compatibility:Chrome, Firefox, IE9+
+
+/* Liscence*/
+NodePrint is Licensed under MIT.

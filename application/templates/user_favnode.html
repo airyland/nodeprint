@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div class="content">
+    <section class="box">
+        <h2><span class="title">收藏的节点</span></h2>	
+        <ul class="node">
+            {if is_array($node)}
+            {foreach from=$node item=n}
+            <li>
+                <a href="/node/{$n.node_slug}">{$n.node_name}</a>
+                <span class="post-count">{$n.node_post_no}</span>
+                <span><a class="unfav-node" href="/api/node/{$n.node_slug}?do=unfav" title="取消收藏">x</a></span>
+            </li>
+            {/foreach}
+            {else}
+            <li>暂时没有收藏节点</li>
+            {/if}
+        </ul>
+    </section>
+
+    <section class="box">
+        <h2><span class="title">收藏节点最新文章</span></h2>
+        {include file="topic_list.html"}
+    </section>
+    {if $show_page_bar}
+    <nav class="box">
+        <div class="pagination-wrap">{$page_bar}</div>
+    </nav>
+    {/if}
+</div>
+
+<div class="sidebar">
+    {include file="profile_box.html"}
+</div>
+{include file="footer.html"}

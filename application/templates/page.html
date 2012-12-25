@@ -1,0 +1,145 @@
+{include file="header.html"}
+<link rel="stylesheet" href="./css/markdown.css" />
+<div class="content box">
+    <nav class="breadcrumb">
+        <a href="" title="{$site.name}">{$site.name}</a>
+        <a href="" title="创建新主题">API</a>      
+    </nav>
+
+    <div class="markdown-body">
+          <h1 class="title">API说明</h1>
+          <div class="content"><h2 id="">说明</h2>
+
+<ul>
+<li>请求路径：API 基本路径为 <code>/api/post/id/action</code></li>
+<li>返回格式：统一为JSON</li>
+<li><p>返回数据格式</p>
+
+<pre><code>{
+error: 0,//错误代码
+post: [{}, {}]//数据体
+}
+</code></pre></li>
+</ul>
+
+<h2 id="">错误说明</h2>
+
+<p>错误码</p>
+
+<ul>
+<li>0 无错误</li>
+<li>1 </li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+<li>
+<ul>+</ul></li>
+</ul>
+
+<h2 id="topic">Topic</h2>
+
+<h3 id="">帖子列表</h3>
+
+<p>URL:<code>/post/0/list</code></p>
+
+<p>参数：</p>
+
+<ul>
+<li>no 帖子数 可省略 默认为<code>10</code></li>
+<li>user_id 用户id 可省略 默认为全站最新更新帖子</li>
+<li>user<em>type "user</em>id"或者"user<em>name",指定前面user</em>id的参数类型 默认为user_id</li>
+<li>node_type </li>
+<li>node<em>id 同上面user</em>id和user_type</li>
+<li>order_by 默认为　DESC</li>
+<li>order 默认为 post_id </li>
+<li>page 默认为1</li>
+<li>count 为true时只返回总帖子数</li>
+<li>common 保留参数 可省略
++</li>
+</ul>
+
+<h2 id="member">Member</h2>
+
+<h3 id="">用户信息</h3>
+
+<p>URL:<code>/user/username</code>
+返回信息：</p>
+
+<pre><code>{
+    "error": 0,
+    "member": {
+        "user_id": "1",
+        "user_email": "i@mao.li",
+        "user_name": "airyland",
+        "user_register_time": "2012-03-30 05:02:41",
+        "other": {
+            "github": "airyland",
+            "twitter": "alostcat",
+            "site": "http:\/\/mao.li",
+            "location": "wuhan",
+            "sign": "nothing",
+            "intro": "hello world again"
+        },
+        "site": {
+            "follower": 1,
+            "following": 2,
+            "favtopic": 7,
+            "favnode": 1
+        },
+        "avatar": "1"
+    }
+}
+</code></pre>
+
+<h2 id="">节点</h2>
+
+<h3 id="">单节点信息</h3>
+
+<p>URL:'/node/node_slug'
+返回数据：</p>
+
+<pre><code>{
+    "error": 0,
+    "info": {
+        "node_id": "3",
+        "node_type": "2",
+        "node_name": "\u529f\u80fd\u6d4b\u8bd5",
+        "node_slug": "test",
+        "node_parent": "1",
+        "node_related": "",
+        "node_intro": "\u7a0b\u5e8f\u7684\u6d4b\u8bd5\u8282\u70b9",
+        "node_post_no": "4",
+        "node_ad": "",
+        "node_css": "",
+        "node_post_count": 5
+    }
+}
+</code></pre>
+
+<h3 id="">节点帖子</h3>
+
+<p>参照 post/0/list内容</p>
+
+<h3 id="">节点列表</h3>
+
+<p><code>nodes/list?type=host</code>最热节点
+<code>nodes/list?type=new</code> 最新添加节点</p>
+
+<h3 id="">添加节点(管理员权限)</h3>
+
+<p>'nodes/add'</p>
+
+<h3 id="">更新节点(管理员权限)</h3>
+
+<h3 id="">删除节点(管理员权限)</h3></div>
+        </div>
+
+
+   
+</div>
+
+<div class="sidebar">
+    nothing here
+</div>
+
+{include file="footer.html"}

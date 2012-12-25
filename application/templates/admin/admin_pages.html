@@ -1,0 +1,29 @@
+{include file="header.html"}
+{include file="admin/admin_nav.html"}
+<div class="content admin-content">
+  
+
+    <section class="box">
+        <h2><span class="title">添加页面</span></h2>
+        <form id="page-form" class="form" action="/api/page/add" method="post">
+            <ul>
+                <li>
+                    <label for="title">标题</label>
+                    <input type="text" id="title" name="page[page_title]" value="" required />
+                </li>
+                <li>
+                    <label for="slug">Slug(短地址)</label>
+                    <input type="text" id="slug" name="page[page_slug]" value="" required />
+                </li>
+                <li>
+                    <label for="content">内容</label>
+                    <textarea id="content" name="page[page_md_content]"></textarea>
+                </li>
+                <li><label>&nbsp;</label>
+                    <input type="submit" class="vivid-button" id="add-page-btn" value="{$lang.add}">
+                </li>
+            </ul>
+        </form>
+    </section>
+</div>
+{include file="footer.html"}

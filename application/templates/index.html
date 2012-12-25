@@ -1,0 +1,58 @@
+{include file="header.html"}
+        <div class="content" id="content">
+            <div class="box">
+                <nav class="site-tab">
+                <ul>
+                    <li class="current"><a href="#" title="全部帖子">全部</a></li>
+                    <!-- <li><a href="?tab=ana">问答</a></li> -->
+                    {if $is_login}
+                    <!-- <li><a href="?tab=ana">收藏</a></li>
+                    <li><a href="?tab=follow-member">关注用户</a></li>
+                    <li><a href="?tab=follow-node">关注节点</a></li> -->
+                    {/if}
+                </ul>
+                <!-- <a id="add-topic" href="/t/add-topic">+创建帖子</a> -->
+                </nav>
+                {include file="topic_list.html"}
+                <span class="box-footer"><a href="/t/recent" class="more" title="更多主题">»更多新主题</a></span>
+            </div>
+            {include file="node_list.html"}
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            {if $is_login}
+            {*include file="add_post_link.html"*}
+            {/if}
+            {include file="profile_box.html"}
+
+            <section class="node-list">
+                <h3>{$lang.hotnodes}</h3>
+                <span><a href="">{if $ad}{$ad}{/if}</a></span>
+                <ul>
+                    {foreach from=$hot_nodes item=n}<li><a href="/node/{$n.node_slug}" title="{$n.node_name}">{$n.node_name}</a></li>
+                    {/foreach}  
+                </ul>
+            </section>
+
+            <section class="node-list">
+                <h3>{$lang.newnodes}</h3>
+                <span><a href=""></a></span>
+                <ul>
+                    {foreach from=$lates_nodes item=n}<li><a href="/node/{$n.node_slug}" title="{$n.node_name}">{$n.node_name}</a></li>
+                    {/foreach} 
+                </ul>
+            </section>
+            {if $show_status}
+            <section class="site-status">
+                <h3>{$lang.status}</h3>
+                <dl>
+                    <dt>{$lang.allmembers}</dt><dd><strong>{$status.user_no}</strong></dd>
+                    <dt>{$lang.alltopics}</dt><dd><strong>{$status.post_no}</strong></dd>
+                    <dt>{$lang.allcomments}</dt><dd><strong>{$status.comment_no}</strong></dd>
+                </dl>
+                <span class="box-footer rss"><a href="/feed">{$lang.rss}</a></span>
+            </section>
+            {/if}
+        </div>
+
+{include file="footer.html"}

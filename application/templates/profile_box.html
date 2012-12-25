@@ -1,0 +1,24 @@
+   {nocache}
+    {if $is_login}
+    <div class="profile-box" id="profile-box"> 
+        <ul>
+            <li>	
+                <img src="/avatar/{$me.user_id}/48" width="48" height="48" alt="{$me.user_name}" />
+                <span class="user-name"><a href="/member/{$me.user_name}" title="{$me.user_name}">{$me.user_name}</a></span>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="/member/{$me.user_name}/favnode" title="我收藏的节点"><span class="count-no">{$me.site.favnode}</span>{$lang.favnodes}</a></li>
+                    <li><a href="/member/{$me.user_name}/favtopic" title="我收藏的帖子"><span class="count-no">{$me.site.favtopic}</span>{$lang.favtopics}</a></li>
+                    <li><a href="/member/{$me.user_name}/following" title="我关注的用户"><span class="count-no">{$me.site.following}</span>{$lang.followings}</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="message-notice" href="/messages" title="查看未读消息"><em id="unread-count"><img src="img/loading.gif" alt="loading message"></em>{$lang.unread_message}</a>
+            </li>
+        </ul>
+    </div>
+    {else}
+    {include file="login_box.html"}
+    {/if}
+    {/nocache}

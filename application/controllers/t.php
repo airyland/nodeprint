@@ -1,0 +1,137 @@
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
+
+/**
+ * NodePrint
+ *
+ * 基于HTML5及CSS3的轻论坛程序
+ * 
+ * NodePrint is an open source BBS System built on PHP and MySQL.
+ *
+ * @package	NodePrint
+ * @author		airyland <i@mao.li>
+ * @copyright	Copyright (c) 2012, mao.li.
+ * @license		GNU General Public License 2.0
+ * @link		https://github.com/airyland/nodeprint
+ * @version	0.0.5
+ */
+
+/**
+ * Topic pages
+ * @author airyland <i@mao.li>
+ */
+class T extends CI_Controller {
+
+    function __construct() {
+        parent::__construct();
+        $this->load->model('configs');
+    }
+
+    function index() {
+        redirect('/t/recent');
+    }
+
+    function the_post($id) {
+        $lang = load_lang();
+		$local_upload=$this->configs->get_config_item('local_upload');
+        function time_ago($paras) {
+            return friendlyDate(strtotime($paras['time']));
+        }
+
+        $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
+        $this->load->model('post');
+        $this->load->model('comment');
+        $user = get_user();
+        $this->load->library('s');
+        $this->s->registerPlugin('function', 'time_ago', 'time_ago');
+
+        $this->post->get_post_fav_no($id);
+        $this->post->add_post_hit($id);
+        $topic = $this->post->post_info($id);
+        if (!$topic)
+            show_error('帖子不存在或者被删除', 404);
+        $this->s->assign(array(
+            'title' => $topic['post_title'],
+            't' => $topic,
+            'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, 1, 200),
+            'lang' => $lang,
+            'fav' => $this->post->check_post_fav($user['user_id'], $id),
+            'local_upload'=>$local_upload
+                )
+        );
+
+        $this->s->display('single_topic.html');
+    }
+
+    function the_list($cat, $key = '') {
+        $page = $this->input->get('page');
+        $limit = $this->configs->get_config_item('topic_no');
+        if ($page == 0)
+            $page = 1;
+        if (!is_numeric($page) || !in_array($cat, array(' ', 'recent', 'changes', 'search')))
+            show_error('抱歉，页面不存在', 404);
+        $this->load->library('s');
+        $this->load->model('post');
+        $this->load->library('dpagination');
+
+
+        switch ($cat) {
+            /**
+             * Recent added topics
+             * @package topic
+             */
+            case 'recent':
+                $post= $htis->post->query_post("page={$page}&no={$limit}");
+                $count_post=$htis->post->query_post("count=true");
+                $title = '最新主题';
+                $this->dpagination->target('/t/recent');
+                $template = 'topic_recent.html';
+                break;
+            /**
+             * Recent changed topics
+             * @package topic
+             */
+            case 'changes':
+                $post=$this->post->query_list("orderby=post_last_comment&page={$page}&no={$limit}");
+                $count_post=$this->post->query_list("count=true");
+                $title = '最新更改';
+                $this->dpagination->target('/t/changes');
+                $template = 'topic_recent.html';
+                break;
+            /**
+             * Search results
+             * @package topic
+             */
+            case 'search':
+                $key = urldecode($key);
+                $count_post = $this->post->search_post($key, 0, 0, TRUE);
+                $this->dpagination->target('/t/search/' . $key);
+                $post = $this->post->search_post($key, $page, $limit);
+                $title = $key . '-帖子搜索';
+                $template = 'search_result.html';
+                break;
+        }
+
+        $this->dpagination->adjacents(8);
+        $this->dpagination->items($count_post);
+        $this->dpagination->limit($limit);
+        $this->dpagination->currentPage($page);
+        $page_bar = $this->dpagination->getOutput();
+
+        $this->s->assign(array(
+            'title' => $title . ' ' . $page . '/' . intval($count_post / $limit + 1),
+            'key' => $key,
+            'post' => $post,
+            'page_bar' => $page_bar,
+            'count' => $count_post,
+            'show_pagebar' => $count_post > 0 ? TRUE : FALSE
+                )
+        );
+        $this->s->display($template);
+    }
+
+}
+
+/* End of file t.php */
+/* Location: ./application/controllers/t.php */

@@ -1,0 +1,89 @@
+<a id="home" href="#">返回顶部</a>
+</div>
+<footer class="footer-wrap">
+    <div id="footer">
+        <p>
+        <ul>
+            <li><a href="/page/about">关于</a></li>
+            <li><a href="/page/faq">FAQ</a></li>
+            <li><a href="/page/mission">我们的愿景</a></li>
+            <li><a href="/page/advertise">广告投放</a></li>
+            <li><a href="/page/api">API</a></li>
+            <li><a href="http://www.v2ex.com" rel="external">V2EX</a></li>
+            <li><a href="https://github.com/livid/v2ex" rel="external">Project Babel 2</a></li>
+        </ul>
+        </p>
+        <p class="footer-text">
+            </br>
+            Based on <a href="https://github.com/livid/v2ex" rel="external"><strong>Project Babel 2</strong></a>, Theme originally made by <a class="user-name" href="http://www.olivida.com/" rel="external"><strong>OLIVIDA</strong></a>, And especially  Grateful to <a href="http://www.v2ex.com" rel="external"><strong>V2EX</strong></a>  and V2EXers.
+        </p>
+    </div>
+</footer>
+
+<div id="loading">
+    <img src="./img/loader.gif" width="42" height="42"/>
+</div>
+<script type="text/javascript">
+    var USER={
+        isLogin:{if $is_login}true{else}false{/if},
+        userId:{if $me.user_id}{$me.user_id}{else}0{/if},
+        userName:"{$me.user_name}"
+            }
+        </script>
+        <script type="text/javascript" src="js/LAB.min.js"></script>
+        <script type="text/javascript">
+            $LAB
+    .script("{$site.url}js/plugin/jquery-1.7.2.min.js").wait(function(){
+        $("body").preloadify({ imagedelay:0 });
+    })
+    .script("{$site.url}js/plugin/dialog/dialog.js?skin=blue")
+    .script("{$site.url}js/plugin/store.min.js")
+    .script("{$site.url}js/plugin/jquery.tipsy.js")
+    .script("{$site.url}js/plugin/jquery.validate.js")
+    .script("{$site.url}js/plugin/jquery.hotkeys.js")
+    .script("{$site.url}js/plugin/jquery.filedrop.js")
+    .script("{$site.url}js/plugin/mustache.js").wait()
+    {if $is_admin}.script("{$site.url}js/plugin/jquery.jeditable.mini.js")
+    .script("{$site.url}js/admin.js")
+    {/if}
+    .script("{$site.url}js/main.js")
+    .script("{$site.url}js/cron.js");		
+</script>
+{include file="footer_analytics.html"}
+{literal}  
+<script type="text/template" id="post-list-template">
+    {{#post}}
+    <li class="topic-item t-{{post_id}}">
+        <img src="/avatar/{{user_id}}/48" width="48" height="48" alt="{{user_name}}" />
+        <p><a class="post-title" href="t/{{post_id}}">{{post_title}}</a></p>
+        <p>
+            <a class="post-node" href="node/{{node_slug}}">{{node_name}}</a><a class="post-author" href="/member/{{user_name}}">{{user_name}}</a>
+            <span>{{post_hit}}次点击</span>{if $p.post_comment_no neq 0}<span>{{post_last_comment}} replied by <a class="post-author" href="/member/{{post_last_comment_author}}">{{post_last_comment_author}}</a></span>{/if}
+        </p>
+        <span class="last-reply"><a class="post-cm-count{if $p.user_name eq $me.user_name} my-post{/if}" href="/t/{$p.post_id}">{{post_comment_no}}</a></span>
+    </li>
+    {{/post}}
+</script>
+<script type="text/tempalte" id="signin-template">
+    <form action="/api/user/signin" method="post" class="register-form" id="js-signin-form">
+        <ul>
+            <li>
+                <label for="user-name">Username</label>
+                <input type="text" name="user-name" id="user-name" required="">
+                <small>username or email</small>
+            </li>
+            <li>
+                <label for="user-pwd">Password</label>
+                <input type="password" name="user-pwd" id="user-pwd" required="">
+                <span class="error"></span>                </li>
+            <li>
+                <input type="submit" class="button vivid-button" id="do-signin-btn" value="Sign In"><span id="signin-tip"></span>
+            </li>
+        </ul>
+    </form>
+</script>
+
+<script type="text/template" id="upload-template"></script>
+{/literal}  
+</body>
+</html>

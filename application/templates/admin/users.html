@@ -1,0 +1,28 @@
+{include file="../header.html"}
+{include file="admin/admin_nav.html" small=1}
+<div class="content admin-content" style="width:90%;">
+    <section class="box">
+        <h2><span class="title">用户列表</span></h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>用户邮箱</th>
+                    <th>注册时间</th>
+                    <th>最后登录</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$user item=u}
+                <tr>
+                    <td>{$u.user_name}</td>
+                    <td>{$u.user_email}</td>
+                    <td>{$u.user_register_time}</td>
+                    <td>{$u.user_last_login}</td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </section>
+</div>
+{include file="footer.html"}

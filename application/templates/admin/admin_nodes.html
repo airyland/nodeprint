@@ -1,0 +1,74 @@
+{include file="../header.html"}
+{include file="admin/admin_nav.html"}
+<div class="content admin-content">
+    <section class="box">
+        <h2><span class="title">添加节点</span></h2>
+        <form action="/api/nodes/add" id="node-add-form" method="post" class="form">
+            <ul>
+                <li>
+                    <label>父分类</label>
+                    <input class="radio" type="radio" name="node-parent" value="0" checked/>无父节点
+                    {foreach from=$p_node item=n}
+                    <input class="radio node-parent-{$n.node_id}" type="radio" name="node-parent" value="{$n.node_id}" data-name="{$n.node_name}" />{$n.node_name}
+                    {/foreach}
+                </li>
+                <li>
+                    <label for="node-name">节点名</label>
+                    <input type="text" name="node-name" id="node-name" required />
+                </li>
+                <li>
+                    <label for="node-slug">节点英文名</label>
+                    <input type="text" name="node-slug" id="node-slug" required />
+                </li>
+                <li>
+                    <label for="add-node-btn">&nbsp;</label>
+                    <input type="submit" id="add-node-btn" class="small vivid-button" value="添加"></li>
+            </ul>
+        </form>
+    </section>
+    
+    <section class="box">
+        <h2><span class="title">节点列表</span></h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>节点</th>
+                    <th>slug</th>
+                    <th>首页显示</th>
+                    <th width="60">分类</th>
+                    <th width="100">位面</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if is_array($node)}
+                {foreach from=$node item=n}
+                <tr>
+                    <td>{$n.node_name}</td>
+                    <td>{$n.node_slug}</td>
+                    <td>
+                        <form action="/api/node/0/?do=update_info" method="post">
+                            <input type="hidden" name="node_id" value="{$n.node_id}">
+                            <select name="node_info[node_onindex]" class="onindex">
+                                <option value="0" {if $n.node_onindex eq 0}selected{/if}>否</option>
+                                <option value="1" {if $n.node_onindex eq 1}selected{/if}>是</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td>{if $n.node_type==='1'}<strong>父节点</strong>{else}子节点{/if}</td>
+                    <td class="node-child" data-id="{$n.node_parent}">[获取中...]</td>
+                    <td>
+                        <form action="/api/nodes/delete" method="post">
+                            <input type="hidden" name="node_id" value="{$n.node_id}" />
+                            <input type="submit" class="delete-node" value="删除"/>
+                        </form>
+
+                    </td>
+                </tr>
+                {/foreach}
+            {/if}
+            </tbody>
+        </table>
+    </section>
+</div>
+{include file="footer.html"}

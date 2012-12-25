@@ -1,0 +1,174 @@
+        <!--
+<script type="text/javascript" src="js/plugin/json2.js"></script>
+<script type="text/javascript" src="js/plugin/underscore-min.js"></script>
+<script type="text/javascript" src="js/plugin/backbone-min.js"></script>
+<script type="text/javascript" src="js/app.js?time=<?php echo date('Y-m-d-H-i:s'); ?>"></script>
+        -->
+
+            <div id="member-profile"></div>
+
+    <div id="node-detail"></div>
+
+    <div id="add-post-box"></div>
+
+<script type="text/template" id="topic-list-template">
+    <ul class="topic-list">
+        <li class="topic-item topic-1">
+            <img src="http://img3.douban.com/icon/u4811872-4.jpg" alt="" />
+            <p><a class="post-title" href="">前端们，大家是习惯href="#"还是href="javascript:void();"</a></p>
+            <p>
+                <a class="post-node" href=""><strong>问与答</strong></a>
+                <span class="post-author">jimbray</span>
+                <span>78次点击</span>
+                <span>1 day, 11 hours ago replied by <a href="">spritevan</a></span>
+            </p>
+            <span class="last-reply"><a class="post-cm-count" href="">30</a></span>
+        </li>
+    </ul>
+</script>
+
+
+<script type="text/template" id="register-template">
+    <section class="register-form">
+        <h2>注册</h2>
+        <nav class="breadcrumb">注册</nav>
+        <form action="api/user/register" method="post">
+            <ul>
+                <li>
+                    <label for="user-name">用户名</label>
+                    <input type="text" name="user-name" id="user-name" />
+                    <small>中英文，不能为特殊符号，至少3个字符。</small>
+                </li>
+                <li>
+                    <label for="user-email">电子邮件</label>
+                    <input type="email" name="user-email" id="user-email" />
+                    <small>请使用真实邮件注册。</small>
+                </li>
+
+                <li>
+                    <label for="user-pwd">密码</label>
+                    <input type="password" name="user-pwd" id="user-pwd" />
+                </li>
+
+                <li>
+                    <input type="submit" value="注册" />
+                </li>
+
+            </ul>
+        </form>
+
+    </section>
+</script>
+
+<script type="text/template" id="index-form-template">
+    <form class="ana-form" action="api/post/add" method="post">
+        <small>请在 120 字内描述你的问题，或者，也可以使用 <a href="">详细提问模式</a></small>
+        <textarea name="post-box" id="post-box"></textarea>
+        <input type="submit" id="post-button" value="向世界提问" />
+    </form>
+</script>
+
+<script type="text/template" id="login-template">
+    <section class="register-form">
+        <h2>注册</h2>
+        <nav class="breadcrumb">注册</nav>
+        <form action="api/user/login" method="post">
+            <ul>
+                <li>
+                    <label for="user-name">用户名</label>
+                    <input type="text" name="user-name" id="user-name" required/>
+                </li>
+                <li>
+                    <label for="user-pwd">密码</label>
+                    <input type="password" name="user-pwd" id="user-pwd" required/>
+                </li>
+                <li>
+                    <input type="submit" value="登录" />
+                </li>
+            </ul>
+        </form>
+		</section>
+    </script>
+
+    <script type="text/template" id="profile-template">
+        <ul>
+            <li>	
+                <img src="img/avatar.jpg" width="48" height="48" alt="" />
+                <span class="user-name"><a href="#!/member/airyland">airyland</a></span>
+            </li>
+            <li>
+                <ul>
+                    <li><a href=""><span class="count-no">3</span>节点收藏</a></li>
+                    <li><a href=""><span class="count-no">214</span>主题收藏</a></li>
+                    <li><a href=""><span class="count-no">3</span>特别收藏</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href=""><span>0</span>条未读提醒</a>
+            </li>
+        </ul>
+    </script>
+
+    <script type="text/template" id="has-logined-template">
+        <ul>
+            <li><a href="#!/member/airyland">airyland</a></li>
+            <li>	<a href="">设置</a></li>
+            <li>	<a href="">登出</a></li>
+        </ul>
+    </script>
+
+    <script type="text/template" id="member-profile-template">
+        <section class="member-info">
+            <h2>用户信息</h2>
+            <img src="/img/avatar.png" alt="" />
+            <p>
+                <span class="user-name">{{user_name}}</span>
+                <small>V2EX 第  {{user_id}}  号会员，加入于 {{user_register_time}}</small>
+            </p>
+            <ul>
+                <li>@twitter:<a href="">{{other.twitter}}</a></li>
+                <li>blog:<a href="">{{other.site}}</a></li>
+                <li>location:<a href="">{{other.location}}</a></li>
+                <li>github:<a href="">{{other.github}}</a></li>
+                <li>followers:<a href="">{{site.follower}}</a></li>
+            </ul>
+            <p> Latest from airyland's Blog  ›  {{site.latest_blog}}</p>
+        </section>
+    </script>
+
+    <script type="text/template" id="node-info-template">
+        <nav class="breadcrumb">
+            <a href="<?php echo base_url(); ?>"><?php echo info('site_name'); ?></a>
+            {{node_name}}
+            <p class="node_count">
+                主题总数<em>{{node_post_count}}</em>
+                <a href="api/fav/add">加入收藏</a>
+            </p>
+        </nav>
+        <p class="node-intro">{{node_intro}}</p>
+        <p class="node-create-button"><a href="#!/node/{{node_slug}}/add">创建新主题</a></p>
+        <div>
+
+        </div>
+    </script>
+
+    <script type="text/template" id="add-post-template">
+        <form action="api/post/add" method="post">
+            <ul>
+                <input type="hidden" name="post-node" value=""/>
+                <li><label for="post-title">标题</label>
+                    <input type="text" name="post-title" id="post-title" /></li>
+                <li><label for="post-content">内容</label>
+                    <textarea name="post-content" id="post-content"></textarea></li>
+                <li>
+                    <input type="submit" value="创建" />
+                </li>
+            </ul>
+        </form>
+    </script>
+
+    <script type="text/javascript">
+        $(function(){
+            $("body").preloadify({ imagedelay:100 });
+        });
+    </script>

@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^www.nodeprint.com$
+RewriteRule ^(.*)$ "http\:\/\/nodeprint\.com\/$1" [R=301,L]
+RewriteCond $1 !^(index\.php|humans.txt|data|wiki|np-content|robots.txt|favicon|css|js|img|favicon.ico)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+RewriteRule /avatar/(.*)/(.*) /np-content/thumbnail.php?src=/img/avatar/l/$1.png&h=$2&w=$2&q=100

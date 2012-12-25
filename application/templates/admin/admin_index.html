@@ -1,0 +1,110 @@
+{include file="header.html"}
+{include file="admin/admin_nav.html"}
+<div class="content admin-content">
+    <section class="box">
+        <h2><span class="title">概况</span></h2>
+        <ul class="status">
+            <li><strong>{$s.user_no}</strong>用户数</li>
+            <li><strong>{$s.post_no}</strong>帖子数</li>
+            <li><strong>{$s.comment_no}</strong>回复数</li>
+            <li><strong>{$s.node_no}</strong>节点数</li>
+        </ul>
+        <span class="box-footer admin-box-footer">站点已运行：{$s.on_time}</span>
+    </section>
+
+    <section class="box">
+        <h2><span class="title">网站基本设置</span></h2>
+        <form id="config-form" class="form" action="/api/site/update_config" method="post">
+            <ul>
+                <li>
+                    <label for="name">网站名</label>
+                    <input type="text" id="name" name="config[name]" value="{$config.name}" required />
+                </li>
+                <li>
+                    <label for="lang">默认语言</label>
+                    <select name="config[lang]" id="lang">
+                        <option value="zh" {if $config.lang=='zh'}selected{/if}>中文</option>
+                        <option value="en" {if $config.lang=='en'}selected{/if}>英文</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="local_upload">启用图片上传</label>
+                     <select name="config[local_upload]" id="local_upload">
+                        <option value="0" {if $config.local_upload=='0'}selected{/if}>否</option>
+                        <option value="1" {if $config.local_upload=='1'}selected{/if}>是</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="show_status">是否显示社区运行状态</label>
+                     <select name="config[show_status]" id="show_status">
+                        <option value="0" {if $config.show_status=='0'}selected{/if}>否</option>
+                        <option value="1" {if $config.show_status=='1'}selected{/if}>是</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="auto_backup">数据库自动备份</label>
+                     <select name="config[auto_backup]" id="auto_backup">
+                        <option value="0" {if $config.auto_backup=='0'}selected{/if}>否</option>
+                        <option value="1" {if $config.auto_backup=='1'}selected{/if}>是</option>
+                    </select>
+                    <span>当每天第一个用户登录时，自动备份一次。</span>
+                </li>
+                <li>
+                    <label for="description">站点描述</label>
+                    <textarea id="description" name="config[description]">{$config.description}</textarea>
+                </li>
+                <li>
+                    <label for="keyword">关键词</label>
+                    <textarea id="keyword" name="config[keyword]">{$config.keyword}</textarea>
+                </li>
+                <li><label>&nbsp;</label>
+                    <input type="submit" class="vivid-button" id="update-config-btn" value="{$lang.update}">
+                </li>
+            </ul>
+        </form>
+    </section>
+
+
+    <section class="box">
+        <h2><span class="title">网站显示</span></h2>
+        <form id="config2-form" class="form" action="/api/site/update_config" method="post">
+            <ul>             
+                <li>
+                    <label for="topic-no">帖子列表显示数量</label>
+                    <input type="text" id="topic-no" name="config[topic_no]" value="{$config.topic_no}" required />
+                </li>
+                <li><label>&nbsp;</label>
+                    <input type="submit" class="vivid-button" id="update-config2-btn" value="{$lang.update}">
+                </li>
+            </ul>
+        </form>
+    </section>
+
+
+    <section class="box">
+        <h2><span class="title">添加管理员</span></h2>
+        <form id="add-admin-form" class="form" action="/api/admin/add_admin" method="post">
+            <ul>             
+                <li>
+                    <label for="admin">管理员id：</label>
+                    <input type="text" id="topic-no" name="user_name" required />
+                </li>
+                <li><label>&nbsp;</label>
+                    <input type="submit" class="vivid-button" id="add-admin-btn" value="{$lang.add}"  required>
+                </li>
+                <li>
+                    <label>当前网站管理员：</label>
+                     {foreach from=$admins item=user}
+                        <span class="admin-list">{$user.user_name}</span>
+                     {/foreach}
+                </li>
+            </ul>
+        </form>
+    </section>
+
+
+
+
+
+</div>
+{include file="footer.html"}

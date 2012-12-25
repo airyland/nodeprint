@@ -1,0 +1,23 @@
+{include file="header.html"}
+        <div class="content" id="content">
+            <div class="box oauth-qq">
+                <img src="{{$user.figureurl_1}}" alt="{{$user.nickname}}">
+                
+                    <form action="">
+                        <label for="name">请确定您在本站的用户名</label>
+                        <input type="text" id="name" value="{{$user.nickname}}">
+                        <small>抱歉，该用户名已被其他用户使用，请重新填写一个</small>
+                        <input type="submit" value="确定">
+                    </form>
+                
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+           <div class="box">
+               hello world
+           </div>
+
+        </div>
+
+{include file="footer.html"}

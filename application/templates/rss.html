@@ -1,0 +1,23 @@
+<rss version="2.0" encoding="utf-8">
+    <channel>
+        <title>{$site_name}</title>
+        <link>{$site_url}</link>
+        <description>{$site_description}</description>
+        <language>zh-cn</language>
+        <pubDate>{$pubdate}</pubDate>
+        <lastBuildDate>{$lastbuiddate}</lastBuildDate>
+        <docs>{$site_url}</docs>
+        <generator>Weblog Editor 2.0</generator>
+        <managingEditor>{$site_email}</managingEditor>
+        <webMaster>{$site_email}</webMaster>
+        {foreach from=$post item=p}<item>
+            <title>{$p.post_title}</title>
+            <link>{$p.post_id}</link>
+            <description><![CDATA[{$p.post_content}]]>
+            </description>
+            <pubDate>Tue, 03 Jun 2003 09:39:21 GMT</pubDate>
+            <guid>{$site_url}t/{$p.post_id}</guid>
+        </item>
+        {/foreach}
+    </channel>
+</rss>

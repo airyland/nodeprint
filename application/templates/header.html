@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="{$site.description}">
+        <meta name="keywords" content="{$site.keyword}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+        <meta name="fragment" content="!">
+        <title>{if $title}{$title}-{$site.name}{else}{$site.name}{/if}</title>
+        <base href="http://localhost/"><!--[if lte IE 6]></base><![endif]-->
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <link type="text/plain" rel="author" href="humans.txt" />
+        <link rel="alternate" type="application/rss+xml" title="{#siteName#}" href="/feed/">
+        <link rel="stylesheet" href="/css/reset.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/js/plugin/dialog/skins/blue.css" />
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->      
+    </head>
+    <body id="body">
+        <header id="header">
+            <div class="header-wrap">
+                <h1><a id="logo" href="" title="{$site.name}-首页"></a></h1>
+                <form action="/api/post/0/search" method="get" class="search">
+                    <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}" speech="speech" x-webkit-speech="x-webkit-speech" x-webkit-grammar="builtin:translate" required/>
+                    <input type="submit" value="搜索" id="search-button"/>
+                </form>
+                <nav class="site-nav" id="site-nav" role="navigation">
+                    <ul>{nocache}
+                        <li><a href="{$site.url}">{$lang.index}</a></li>{if $is_login} 
+                        <li><a href="/member/{$me.user_name}">{$me.user_name}</a></li>
+                        <li><a href="/messages">{$lang.message}</a></li>
+                        {if $is_admin}<li><a href="/admin">{$lang.admin}</a></li>{/if}
+                        <li class="icon-item"><span class="icon">&#9871;</span>
+                            <ul>
+                               <li><a href="/settings">{$lang.settings}</a></li>
+                               <li><a href="/api/user/logout">{$lang.signout}</a></li> 
+                            </ul>
+                        </li>
+                  {else}<li><a href="/signup" id="signup-btn" title="">{$lang.signup}</a></li>
+                        <li><a href="/signin" id="signin-btn" title="">{$lang.signin}</a></li>
+                       {/if}
+                    {/nocache}
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="wrap">
+            <div class="template topic-list-template"></div>

@@ -1,0 +1,4 @@
+/admin
+/api
+/application
+/messages

@@ -1,0 +1,43 @@
+{include file="../header.html"}
+
+{include file="admin/admin_nav.html"}
+
+<div class="content admin-content">
+	
+
+
+
+<section class="box">
+    <h2><span class="title">帖子列表</span></h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>作者</th>
+                <th>节点</th>
+                <th>时间</th>
+                <th>操作</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            {foreach from=$post item=p}
+            <tr>
+                <td>{$p.post_title}</td>
+                <td>{$p.user_name}</td>
+                <td>{$p.node_name}</td>
+                <td>{$p.post_time}</td>
+                <td>
+                    
+                </td>
+            </tr>
+{/foreach}
+        </tbody>
+
+    </table>
+</section>
+
+</div>
+
+{include file="footer.html"}

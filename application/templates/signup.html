@@ -1,0 +1,44 @@
+{include file="header.html"}
+<div class="content box">
+    <section>
+        <h2><span class="title">{$lang.signup}</span></h2>
+        <form action="api/user/register" method="post"  class="register-form" id="register-form">
+            <ul>
+                <li>
+                    <label for="user-name">{$lang.username}</label>
+                    <input type="text" name="user-name" id="user-name" required/>
+                    <small>{$lang.usernameTip}</small>
+                    <span class="error"></span> 
+                </li>
+                <li>
+                    <label for="user-email">{$lang.email}</label>
+                    <input type="email" name="user-email" id="user-email" required/>
+                    <small>{$lang.emailTip}</small>
+                </li>
+                <li>
+                    <label for="user-pwd">{$lang.pwd}</label>
+                    <input type="password" name="user-pwd" id="user-pwd" required/>
+                </li>
+                <li>
+                    <label for="">&nbsp;</label>
+                    {$captcha.image}
+                    <small>{$lang.captchaTip}</small>
+                </li>
+                <li><label for="captcha">{$lang.captcha}</label>
+                    <input type="text" name="captcha" id="captcha" required/></li>
+                <li>
+                    <input type="submit" class="button vivid-button" value="{$lang.signup}" />
+                </li>
+            </ul>
+        </form>
+    </section>
+</div>
+{literal}
+<script type="text/javascript">
+  
+</script>
+{/literal}
+<div class="sidebar">
+    {include file="login_box.html"}
+</div>
+{include file="footer.html"}

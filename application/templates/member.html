@@ -1,0 +1,81 @@
+{include file="header.html"}
+<div class="content">
+    <section class="box member-info">
+        <h2><span class="title">用户信息</span></h2>
+        <img src="/avatar/{$u.avatar}/73" alt="{$u.user_name}" width="73" height="73" />
+        <div class="member-info-wrap">
+        <p>
+            <span class="user-name">{$u.user_name}</span>
+            <small>{#siteName#} 第  {$u.user_id}  号会员，加入于 {$u.user_register_time}</small>
+        </p>
+        <ul>
+            {if $u.other.twitter}<li>twitter:<a href="http://twitter.com/#!/{$u.other.twitter}">{$u.other.twitter}</a></li>{/if}
+            {if $u.other.site}<li>blog:<a href="{{$u.other.site}}" rel="external">{{$u.other.site}}</a></li>{/if}
+            {if $u.other.location}<li>location:<a href="">{$u.other.location}</a></li>{/if}
+            {if $u.other.github}<li>github:<a href="https://github.com/{$u.other.github}" rel="external">{$u.other.github}</a></li>{/if}
+            {if $u.site.follower}<li>followers:<a href="">{$u.site.follower}</a></li>{/if}
+        </ul>
+        {if $u.other.intro}<p>个人介绍：{$u.other.intro}</p>{/if}
+        {if $me.user_id neq $u.user_id}<p class="follow-user"><a href="/api/user/{$u.user_name}?do={if $is_follow eq false}fo{else}unfo{/if}" class="vivid-button">{if $is_follow eq false}关注TA{else}取消关注{/if}</a><a href="messages/send?to={$u.user_name}">发送私信</a></p>{/if}
+    </section>
+    <div id="topic-list" class="box">
+        <p class="title">最近创建主题</p>
+        <span class="more"><a href="/member/{$u.user_name}/topic">更多</a></span>
+        <ul class="topic-list  user-topic-list">
+            {if $hispost}
+            {foreach from=$hispost item=p}
+            <li class="topic-item topic-1">
+                <p><a class="post-title" href="t/{$p.post_id}">{$p.post_title}</a></p>
+                <p>
+                    <a  class="post-node" href=""><strong>{$p.node_name}</strong></a>
+                    <span>{$p.post_hit}次点击</span>
+                    <span>{$p.post_time} {if {$p.post_last_comment_author}}replied by <a href="">{$p.post_last_comment_author}</a>{/if}</span>
+                </p>
+                <span class="last-reply"><a class="post-cm-count" href="">{$p.post_comment_no}</a></span>
+            </li>
+            {/foreach}
+            {else}
+            <li>没有创建过帖子</li>
+            {/if}
+        </ul>
+    </div>
+    <div id="topic-list" class="box">
+        <p class="title">最近回复主题</p>
+        <span class="more"><a href="/member/{$u.user_name}/replies">更多</a></span>
+        <ul class="topic-list  user-topic-list">
+            {if $hiscomment}
+            {foreach from=$hiscomment item=p}
+            <li class="topic-item topic-1">
+                <p><a class="post-title" href="/t/{$p.post_id}">{$p.post_title}</a></p>
+                <p>
+                    <a  class="post-node" href=""><strong>{$p.node_name}</strong></a>
+                    <span>{$p.post_hit}次点击</span>
+                      <span>{$p.post_time} {if {$p.post_last_comment_author}}replied by <a href="">{$p.post_last_comment_author}</a>{/if}</span>
+                </p>
+                <span class="last-reply"><a class="post-cm-count" href="">{$p.post_comment_no}</a></span>
+            </li>
+            {/foreach}
+            {else}
+            <li>没有最近回复的帖子</li>
+            {/if}
+        </ul>
+    </div>
+</div>
+<div class="sidebar">
+    <section class="github-list">
+        <h3 class="title">GitHub Public Repos</h3>
+        <ul>
+            {if is_array($github)}
+            {foreach from=$github['repositories'] item=g}
+            <li>
+                <p><a href="{$g.url}">{$g.name}</a><span class="github-lang">{if isset($g.language)}{$g.language}{/if}</span></p>
+                <p>{$g.description}</p>
+            </li>
+            {/foreach}
+            {else}
+            <li class="no-repo">no repositories yet</li>
+            {/if}
+        </ul>
+    </section>
+</div>
+{include file="footer.html"}
