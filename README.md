@@ -9,6 +9,10 @@
 ## 关注
 [NodePrint@Trello](https://trello.com/board/nodeprint/50ac6d337f7ce3cb2d003422)
 
+## NodePrint的皮肤设计
+网站的CSS编写和组织使用的是SASS，因此皮肤设计也采用SASS进行。
+
+
 ## NodePrint的HTML5和CSS3实践
 
 -------------------------------------
@@ -31,6 +35,7 @@
 ## 感谢开源
 + icon font：[The Entypo Pictogram Suite](http://www.entypo.com/)
 + 弹窗组件：[artDialog](www.planeart.cn/demo/artDialog/) 
++ php SASS:[https://github.com/richthegeek/phpsass](phpsass)
 
 ## 更新
 
