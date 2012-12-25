@@ -227,7 +227,11 @@ class Api extends CI_Controller {
                 if ($error == 0) {
                     setcookie('vx_auth', authcode($user_id . "\t" . $user_name, 'ENCODE'), time() + 365 * 24 * 3600, '/');
                     if (!$is_ajax) {
-                        redirect($this->from);
+                       if(strpos($this->from,'signin')){
+                           redirect(base_url());
+                       }else{
+                           redirect($this->from);
+                       }
                     }
                 } else {
                     if (!$is_ajax) {
@@ -441,7 +445,9 @@ class Api extends CI_Controller {
                         $intro = $this->input->post('user-intro');
                         $twitter = $this->input->post('twitter');
                         $github = $this->input->post('github');
-                        $this->user->user_update_profile($user['user_id'], $user_email, $github, $twitter, $site, $location, $sign, $intro);
+                        $douban = $this->input->post('douban');
+                        $weibo = $this->input->post('weibo');
+                        $this->user->user_update_profile($user['user_id'], $user_email, $github, $twitter, $douban,$weibo,$site, $location, $sign, $intro);
                         redirect('settings');
                         break;
 
