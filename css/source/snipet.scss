@@ -1,0 +1,107 @@
+//border radius
+@mixin rounded($radius: 10px) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+ 
+//border radius 2
+@mixin roundedSides($topLeft, $topRight, $bottomRight, $bottomLeft) {
+    -moz-border-radius-topleft: $topLeft;
+    -moz-border-radius-topright: $topRight;
+    -moz-border-radius-bottomright: $bottomRight;
+    -moz-border-radius-bottomleft: $bottomLeft;
+    border-top-left-radius:$topLeft;
+    border-top-right-radius: $topRight;
+    border-bottom-right-radius: $bottomRight;
+    border-bottom-left-radius: $bottomLeft; 
+}
+ 
+ 
+//box shadow
+@mixin shadow( $off-y, $off-x, $blur, $color){
+      -moz-box-shadow: $off-y $off-x $blur $color; /* FF3.5+ */
+  -webkit-box-shadow:  $off-y $off-x $blur $color; /* Saf3.0+, Chrome */
+          box-shadow:  $off-y $off-x $blur $color; /* Opera 10.5, IE9 */
+}
+ 
+
+//transition
+@mixin trasition($property, $duration:0.3s, $function: ease-out){
+     -moz-transition: $property $durations $function;  /* FF3.7+ */
+     -o-transition: $property $durations $function;  /* Opera 10.5 */
+    -webkit-transition: $property $durations $function;  /* Saf3.2+, Chrome */
+    transition: $property $durations $function; 
+}
+ 
+
+//transform
+@mixin transform($scale, $rotate, $trans-x, $trans-y, $skew-x, $skew-y){    
+    -moz-transform: scale($scale) rotate($rotate) translate($trans-x, $trans-y) skew(skew-x, skew-y);
+    -webkit-transform: scale($scale) rotate($rotate) translate($trans-x, $trans-y) skew(skew-x, skew-y);
+    -o-transform: scale($scale) rotate($rotate) translate($trans-x, $trans-y) skew(skew-x, skew-y);
+    -ms-transform: scale($scale) rotate($rotate) translate($trans-x, $trans-y) skew(skew-x, skew-y);
+    transform: scale($scale) rotate($rotate) translate($trans-x, $trans-y) skew(skew-x, skew-y);
+     
+}
+
+
+//font family
+@mixin include_font($family, $path) {   
+    @font-face {
+        font-family: "#{$family}";
+        src: url("#{$path}.eot");
+        src: local('?'), url('#{$path}.woff') format('woff'), url('#{$path}.ttf') format('truetype'), url('#{$path}.svg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
+ 
+
+//gradient
+@mixin linear_gradient($start_color, $end_color) {
+    background: $start_color; /* Old browsers */
+    background: -moz-linear-gradient(top,  $start_color 0%, $end_color 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start_color), color-stop(100%,$end_color)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start_color 0%,$end_color 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $start_color 0%,$end_color 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start_color 0%,$end_color 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $start_color 0%,$end_color 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$start_color}', endColorstr='#{$end_color}',GradientType=0 ); /* IE6-9 */
+}
+
+
+//opacity
+@mixin opacity($value) {
+  opacity: #{"." + $value};
+  filter: alpha(opacity=$value);
+  -ms-filter: "alpha(opacity=$value)";
+  -khtml-opacity: #{"." + $value};
+  -moz-opacity: #{"." + $value};
+}
+ 
+
+//rotate
+@mixin rotate($degrees) {
+   -moz-transform: rotate($degrees);  
+     -o-transform: rotate($degrees);  
+-webkit-transform: rotate($degrees);
+           filter:  progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=-#{sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)});
+       -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=-#{sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)})";
+             zoom: 1;
+}
+
+
+//clear fix
+@mixin clearfix {
+  display: inline-block;
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  * html & { height: 1px }
+}
+

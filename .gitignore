@@ -15,5 +15,5 @@ img/captcha/*.jpg
 /other
 /np-content/cache/*.txt
 /np-content/upload/*.png
-/css/.sass-cache
+/css/source/.sass-cache
 /wiki

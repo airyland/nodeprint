@@ -1,4 +1,4 @@
-@charset "UTF-8";
+@charset "GBK";
 /**
 * style.css
 * @author airyland <i@mao.li>
@@ -1285,7 +1285,7 @@ p.reply-message {
     background-color: #f5f5f5; }
 
   .topic-list span.last-reply:after {
-    content: 'æ¡å›å¤';
+    content: 'Ìõ»Ø¸´';
     color: #ccc; }
 
   a.post-cm-count, a.my-post {
@@ -1553,7 +1553,7 @@ input.vivid-button:hover, .vivid-button:hover {
   .blog h4 {
     padding-left: 10px; }
 
-/* tabå¯¼èˆª */
+/* tabµ¼º½ */
 .ui-tab-trigger {
   border-bottom: 1px solid #CCC;
   padding: 5px 10px 0;
@@ -1571,7 +1571,7 @@ input.vivid-button:hover, .vivid-button:hover {
   margin: 0 10px -1px 0;
   box-shadow: 2px 0 3px rgba(0, 0, 0, 0.2), -1px 0 1px rgba(0, 0, 0, 0.1);
   outline-offset: -3px;
-  /* firefox é˜´å½±å¯¼è‡´ç„¦ç‚¹æ¡†æ‰©å¤§ */
+  /* firefox ÒõÓ°µ¼ÖÂ½¹µã¿òÀ©´ó */
   border-top: 3px solid #F5F5F5;
   _position: relative;
   word-wrap: normal;
@@ -1607,7 +1607,7 @@ input.vivid-button:hover, .vivid-button:hover {
 .node-editable {
   cursor: pointer; }
   .node-editable::before {
-    content: '[ç‚¹å‡»ç¼–è¾‘]';
+    content: '[µã»÷±à¼­]';
     margin-right: 10px;
     background: yellow;
     cursor: pointer; }
