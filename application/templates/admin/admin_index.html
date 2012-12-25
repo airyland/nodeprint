@@ -21,6 +21,10 @@
                     <input type="text" id="name" name="config[name]" value="{$config.name}" required />
                 </li>
                 <li>
+                    <label for="name">网站地址</label>
+                    <input type="text" id="name" name="config[url]" value="{$config.url}" required />
+                </li>
+                <li>
                     <label for="lang">默认语言</label>
                     <select name="config[lang]" id="lang">
                         <option value="zh" {if $config.lang=='zh'}selected{/if}>中文</option>
