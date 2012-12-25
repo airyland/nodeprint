@@ -118,7 +118,7 @@ function auto_links($text) {
   //$pattern='/^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?\.[a-zA-Z]{2,4}/';
   $text = preg_replace_callback($pattern,'_smart_link', $text);
   // fix URLs without protocols
-  $text = preg_replace("/href='www/", "href='http://www", $text);
+  //$text = preg_replace("/href='www/", "href='http://www", $text);
   return $text;
 }
 
@@ -132,7 +132,10 @@ if(strpos($url,'v.youku')||strpos($url,'tudou')||strpos($url,'jpg')||strpos($url
       $e=$url;
     }
     }else{
-        $e='<a href="'.$url.'">'.$url.'</a>'; 
+    if(!strpos($url,'jpg')){
+        $e='<a href="'.$url.'">'.$url.'</a>';
+    }
+
     }
     return $e;
 }
@@ -189,22 +192,11 @@ function auto_user_link($string){
 
 
 function parse_content($text){
-$text=n2tobr($text);
-
 $text=auto_links($text);
 $text=auto_youku_video($text);
 $text=auto_email($text);
 $text=auto_user_link($text);
 $text=auto_image($text);
+$text=n2tobr($text);
 return $text;
-
 }
-
-//http://v.youku.com/v_show/id_XMzgzNDgwNjgw.html
-//http://www.tudou.com/programs/view/7FJ4sE-VAIM/?fr=rec2
-//http://v.ku6.com/special/show_6575403/vtmpOdEvX8U09rqH.html
-//
-
-
-
-?>
