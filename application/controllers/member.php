@@ -107,7 +107,7 @@ class Member extends CI_Controller {
                 $this->load->model('user');
                 $this->load->model('nodes');
                 $node = $this->user->get_user_fav_node($user['user_id']);
-                $post = $this->nodes->get_user_fav_node_post($user['user_id'], $page, $limit, false);
+                $post = $this->nodes->get_user_fav_node_post($user['user_id'], $this->page, $limit, false);
                 $count_post = $this->nodes->get_user_fav_node_post($user['user_id'], 0, 0, true);
                 $this->dpagination->items($count_post);
                 $this->dpagination->limit($limit);
@@ -127,7 +127,7 @@ class Member extends CI_Controller {
                 $this->load->model('user');
                 $this->load->model('follow');
                 $fo = $this->user->get_user_following_member($user['user_id']);
-                $stream = $this->follow->get_following_user_stream($user['user_id'], false, $page, $limit);
+                $stream = $this->follow->get_following_user_stream($user['user_id'], false, $this->page, $limit);
                 $count_post = $this->follow->get_following_user_stream($user['user_id'], true);
                 $this->dpagination->items($count_post);
                 $this->dpagination->limit($limit);
@@ -177,7 +177,7 @@ class Member extends CI_Controller {
                 $this->s->assign(
                         array(
                             'title' => $slug . '回复的帖子',
-                            'post' => $this->post->list_user_comment_post($slug, 'user_name', $page = 1, $limit),
+                            'post' => $this->post->list_user_comment_post($slug, 'user_name', 1, $limit),
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
@@ -198,7 +198,7 @@ class Member extends CI_Controller {
                     'latest_blog' => '',
                     'github' => ($u['other']['github']) ? $this->github->fetch($u['other']['github']) : '',
                     'hispost'=>$this->post->query_post("user_id={$slug}&user_type={$field}&order=post_last_comment&page={$this->page}&no={$limit}"),
-                    'hiscomment' => $this->post->list_user_comment_post($slug, $filed, $page = 1, $limit),
+                    'hiscomment' => $this->post->list_user_comment_post($slug, $filed,  1, $limit),
                     'is_follow' => $is_follow
                 ));
                 $this->s->display('member.html');
