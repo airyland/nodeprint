@@ -1,0 +1,44 @@
+@font-face {
+  font-family: icon;
+  src: url("./font/entypo.eot");
+  /* IE9 Compat Modes */
+  src: url("./font/entypo.eot") format("embedded-opentype"), url("./font/entypo.woff") format("woff"), url("./font/entypo.ttf") format("truetype"), url("./font/entypo.svg") format("svg");
+  /* Legacy iOS */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.icon {
+  font-family: icon;
+  font-size: 4em;
+  margin-right: 5px;
+  color: #ccc;
+  cursor: pointer;
+  &:hover {
+    color: $vivid;
+  }
+}
+
+.icon-list {
+  position: relative;
+  margin: 10px;
+  height: 25px;
+  overflow: hidden;
+  ul {
+    position: absolute;
+    left: 0;
+    top: -26px;
+    li {
+      float: left;
+      margin-right: 10px;
+    }
+  }
+}
+
+.rss-icon {
+  width: 12px;
+  height: 12px;
+  font-size: 25px;
+  display: block;
+}

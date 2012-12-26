@@ -1,0 +1,88 @@
+/* ==profile box 
+-----------------------------------------------------------------------------------*/
+
+.profile-box {
+  padding: 10px 0 0 10px;
+  img {
+    float: left;
+    margin-right: 10px;
+    border-radius: 24px;
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+    &:hover {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  ul {
+    overflow: hidden;
+  }
+  li {
+    padding-bottom: 10px;
+    ul {
+      width: 248px;
+      border-bottom: 1px solid #ececec;
+      overflow: hidden;
+      padding-bottom: 10px;
+      a {
+        color: #999;
+        font-size: 12px;
+      }
+      li {
+        width: 30%;
+        height: 30px;
+        float: left;
+        border-right: 1px solid #ececec;
+        text-align: center;
+        overflow: hidden;
+        &:last-child {
+          border: none;
+        }
+        &:hover {
+          background: #ececec;
+          @include radius(3px);
+          & > a {
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+  span.count-no {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #778087;
+  }
+}
+
+span.count-no:hover {
+  color: #385F8A;
+}
+
+span.user-name {
+  font-size: 16px;
+  a {
+    color: #555;
+  }
+}
+
+.profile-box span.user-name {
+  line-height: 48px;
+}
+
+a.message-notice {
+  color: #999;
+  font-size: 12px;
+  &:hover {
+    color: #666;
+  }
+  em {
+    margin: 0 5px;
+    font-style: normal;
+  }
+}
+
+.unread-notice {
+  font-weight: bold;
+}

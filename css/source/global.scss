@@ -1,0 +1,23 @@
+::-webkit-scrollbar-thumb {
+  &:vertical {
+    background-color: #666;
+    height: auto;
+    -webkit-border-radius: 20px;
+  }
+  &:horizontal {
+    background-color: #885c5c;
+    height: 6px;
+    -webkit-border-radius: 20px;
+  }
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 5px;
+  background-color: #dbdbdb;
+  -webkit-border-radius: 20px;
+  border-left: 1px solid #ececec;
+}
+
+::selection      { background:$vivid; color:#fff; /* Safari and Opera */ }
+::-moz-selection  { background:$vivid; color:#fff; /* Firefox */ }

@@ -1,0 +1,139 @@
+/* ==header
+----------------------------------------------------*/
+
+#header {
+  width: 100%;
+  height: 40px;
+  background: rgba(33, 33, 33, 0.85);
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 10px #666;
+  h1 {
+    text-indent: -9999px;
+    width: 112px;
+    height: 40px;
+    display: block;
+    overflow: hidden;
+    float: left;
+  }
+  ul>li {
+    height: 40px;
+    -webkit-transition: background-color 200ms ease-in;
+    transition: background-color 200ms ease-in;
+    &.icon-item {
+      padding: 0 8px;
+      position: relative;
+      width: 20px;
+      &:hover {
+        & > ul {
+          display: block;
+        }
+      }
+      .icon {
+        position: absolute;
+        top: -20px;
+        color: #fff;
+      }
+      & > ul {
+        display: none;
+        height: 60px;
+        width: 120px;
+        position: absolute;
+        left: -84px;
+        top: 40px;
+        z-index: 999;
+        overflow: hidden;
+        padding: 2px 0;
+        background: rgba(33, 33, 33, 0.85);
+        -webkit-border-radius: 0px 0px 3px 3px;
+        border-radius: 0px 0px 3px 3px;
+        >li {
+          height: 30px;
+          display: block;
+          -webkit-transition: none;
+        }
+        a {
+          width: 120px;
+          display: block;
+          line-height: 30px;
+        }
+      }
+    }
+    & > a {
+      display: block;
+      line-height: 40px;
+    }
+    &:hover {
+      background: #222;
+    }
+  }
+}
+
+.header-wrap {
+  width: $base-width;
+  height: 40px;
+  margin: 0 auto;
+}
+
+#logo {
+  width: 112px;
+  height: 23px;
+  display: block;
+  background: url(../img/logo.png) no-repeat;
+  margin-top: 9px;
+  overflow: hidden;
+}
+
+.search {
+  width: 276px;
+  float: left;
+  margin-left: 20px;
+  margin-top: 3px;
+}
+
+input[type='search'] {
+  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti;
+  border-radius: 3px;
+  width: 276px;
+  -webkit-appearance: none;
+  border: none;
+  margin-top: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #ccc;
+  background:#ccc;
+  &:hover{
+    background:#ececec;
+  }
+  &:focus{
+    background: #F1F4F2;  
+    width:280px;
+  }
+}
+
+#search-button {
+  display: none;
+}
+
+.site-nav {
+  ul {
+    float: right;
+    &>li:nth-child(2)>a{
+      text-transform: capitalize;
+    }
+  }
+  li {
+    float: left;
+    a {
+      color: #fff;
+      padding: 0 6px;
+      line-height: 40px;
+      font-size: 14px;
+      &:hover {
+        color: #ccc;
+        text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}

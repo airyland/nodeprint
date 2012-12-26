@@ -1,5 +1,14 @@
+//blur
+@mixin blur($value: 3px) {
+  -webkit-filter: blur($value);
+  -moz-filter: blur($value);
+  -o-filter: blur($value);
+  -ms-filter: blur($value);
+  filter: blur($value);
+}
+
 //border radius
-@mixin rounded($radius: 10px) {
+@mixin radius($radius: 10px) {
   border-radius: $radius;
   -moz-border-radius: $radius;
   -webkit-border-radius: $radius;

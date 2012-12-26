@@ -1,0 +1,52 @@
+/* ==member info
+-----------------------------------------------------------------------------------*/
+
+.member-info {
+  h2 {
+    margin-bottom: 10px;
+  }
+  img {
+    float: left;
+    margin-right: 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    border-radius: 36px;
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+    &:hover {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  span.user-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+  }
+  small {
+    display: block;
+    color: #ccc;
+    margin-top: 10px;
+  }
+  ul {
+    overflow: hidden;
+  }
+  ul li {
+    width: 250px;
+    float: left;
+    padding: 5px 5px 5px 0;
+  }
+  .member-info-wrap{
+    overflow:hidden;
+    margin-bottom: 10px;
+  }
+}
+
+.follow-user {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  a {
+    margin-right: 5px;
+  }
+}
