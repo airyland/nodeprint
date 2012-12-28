@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>404 Page Not Found-<?php echo read_config('name');?></title>
+<title>404 Page Not Found</title>
 <meta charset="utf-8"/>
 </head>
 <body>
