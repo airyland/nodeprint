@@ -103,6 +103,10 @@ class Configs extends CI_Model {
         return $config[$item];
     }
 
+    public function item($item){
+        return $this->get_config_item($item);
+    }
+
 /**
 * 获取不上首页节点
 */
