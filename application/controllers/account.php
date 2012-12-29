@@ -12,8 +12,8 @@
  * @package            NodePrint
  * @author             airyland <i@mao.li>
  * @copyright         Copyright (c) 2012 , mao.li.
- * @license		MIT License
- * @link		http://github.com/airyland/nodeprint
+ * @license		   MIT License
+ * @link		        http://github.com/airyland/nodeprint
  * @version            0.0.5
  */
 
@@ -30,8 +30,12 @@
  */
 class Account extends CI_Controller {
 
+	private $is_login;
+	private $current_user;
+
     function __construct() {
         parent::__construct();
+		$this->is_login=is_login();
         $this->load->library('s');
     }
 
@@ -42,10 +46,10 @@ class Account extends CI_Controller {
              * 登录页面
              */
             case 'signin':
-                //if ($this->auth->check_login()) {
-                   // redirect('/index');
-                   // exit;
-                //}
+                if ($this->is_login) {
+                    redirect(base_url());
+                    exit;
+                }
                 $this->load->model('user');
                 $this->s->assign(array(
                     'title' => $lang['signin'],
@@ -57,6 +61,10 @@ class Account extends CI_Controller {
              * 注册页面
              */
             case 'signup':
+				if ($this->is_login) {
+                    redirect(base_url());
+                    exit;
+                }
                 session_start();
                 $this->load->helper('captcha');
                 $random = get_random_strings(5);
@@ -74,7 +82,7 @@ class Account extends CI_Controller {
                 $this->s->assign(array(
                     'title' => $lang['signup'],
                     'lang' => $lang,
-                    'site_name' => read_config('name'),
+                    'site_name' =>$this->configs->get_config_item('name'),
                     'captcha' => create_captcha($vals)
                 ));
                 $this->s->display('signup.html');
