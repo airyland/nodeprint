@@ -28,6 +28,7 @@ class Cron extends CI_Controller {
     function backup() {
         $this->load->model('admins');
         $this->admins->backup();
+        header("HTTP/1.0 204 No Content");
     }
 
 }
