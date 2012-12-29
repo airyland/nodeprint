@@ -23,17 +23,20 @@ class Feeds extends CI_Model {
     public $site_descr;
     public $feed_post_no;
     public $feed_expire_time;
+    public $site_email;
 
     function __construct() {
         parent::__construct();
         $this->load->model('post');
         $this->load->library('s');
+        $this->load->model('configs');
 
-        $this->site_name = read_config('name');
-        $this->site_url = read_config('url');
-        $this->site_description = read_config('description');
-        $this->feed_post_no = read_config('feed_post_no');
-        $this->feed_expire_time = read_config('feed_expire_time');
+        $this->site_name = $this->configs->item('name');
+        $this->site_url = $this->configs->item('url');
+        $this->site_description = $this->configs->item('description');
+
+        $this->feed_post_no = $this->config->item('rss_items_no');
+        $this->feed_expire_time = $this->config->item('feed_expire_time');
 
         $this->s->assign("site_name", $this->site_name);
         $this->s->assign("site_url", $this->site_url);
@@ -44,7 +47,7 @@ class Feeds extends CI_Model {
     }
 
     function main_feed() {
-        $this->posts = $this->post->query_post();
+        $this->posts = $this->post->query_post("");
         $this->generate_feed();
     }
 
@@ -53,7 +56,7 @@ class Feeds extends CI_Model {
      * @param int $user_id
      */
     function user_feed($user_id) {
-        $this->post=$this->post->query_post("user_id={$user_id}");
+        $this->posts=$this->post->query_post("user_id={$user_id}");
         $this->generate_feed();
     }
 
@@ -61,8 +64,8 @@ class Feeds extends CI_Model {
      * node feed
      * @param int $node_id
      */
-    function node_feed($node_id) {
-        $this->post=$this->post->query_post("node_id={$node_id}");
+    function node_feed($node_slug) {
+        $this->posts=$this->post->query_post("node_id={$node_slug}&node_type=node_slug");
         $this->generate_feed();
     }
 
