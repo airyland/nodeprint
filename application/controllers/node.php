@@ -11,7 +11,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		GNU General Public License 2.0
+ * @license		MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */
@@ -53,6 +53,12 @@ class Node extends CI_Controller {
      * @param string $slug
      */
     function the_node($slug) {
+        $action=$this->uri->segment(3);
+        if($action==='feed'){
+            $this->load->model('feeds');
+            $this->feeds->node_feed($slug);
+            exit();
+        }
         $page = $this->input->get('page') ? $this->input->get('page') : 1;
         if (!is_numeric($page))
             show_error('抱歉，页面不存在', 404);
