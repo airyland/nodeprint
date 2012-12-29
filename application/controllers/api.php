@@ -11,7 +11,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		GNU General Public License 2.0
+ * @license	MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */
@@ -63,6 +63,16 @@ class Api extends CI_Controller {
      * 请求来源
      */
     public $from;
+	
+	/**
+	* 当前用户
+	*/
+	private $current_user;
+	
+	/**
+	* 是否登录
+	*/
+	private $is_login;
 
     /**
      * API构造
@@ -71,6 +81,9 @@ class Api extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('auth');
+        $this->config->load('validation');
+		$this->current_user=$this->auth->get_user();
+		$this->is_login=is_login();
         $this->is_ajax = $this->input->is_ajax_request();
         $this->from = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
     }
@@ -207,12 +220,12 @@ class Api extends CI_Controller {
                 $useremail = $this->input->post('user-email');
                 $userpwd = $this->input->post('user-pwd');
                 $register = $this->user->register_user($username, $useremail, $userpwd);
+                print_r($register);
                 if ($register['error'] == 0) {
-                    redirect();
+                    redirect($this->from);
                 } else {
-                    redirect('/signup');
+                    redirect('/signup?error='.$register['error']);
                 }
-
                 break;
             /**
              * 用户登录
@@ -326,13 +339,13 @@ class Api extends CI_Controller {
              * 
              */
             case 'avatar':
-                $user = get_user();
+                $user = $this->auth->get_user();
                 $upload = array(
                     'upload_path' => APPPATH . '../img/avatar/',
-                    'allowed_types' => 'gif|jpg|png',
-                    'max_size' => '1024',
-                    'max_width' => '1024',
-                    'max_height' => '1024',
+                    'allowed_types' => 'gif|jpg|png|jpeg',
+                    'max_size' => '1024*2',
+                    'max_width' => '1024*2',
+                    'max_height' => '1024*2',
                     'overwrite' => TRUE,
                     'file_name' => $user['user_id'],
                 );
@@ -340,11 +353,9 @@ class Api extends CI_Controller {
 
                 if (!$this->upload->do_upload('avatar')) {
                     $error = array('error' => $this->upload->display_errors());
-                    //print_r($error);
-                    alert('上传错误', '/settings');
+                    alert('上传错误 '.$error['error'], '/settings');
                 } else {
                     $data = array('upload_data' => $this->upload->data());
-                    //print_r($data);
                     $path = $data['upload_data']['full_path'];
 
                     $config = array(
@@ -362,7 +373,7 @@ class Api extends CI_Controller {
                     $this->image_lib->clear();
                     $config['width'] = 48;
                     $config['height'] = 48;
-                    $config['new_image'] = 'img/avatar//m/' . $user['user_id'] . '.png';
+                    $config['new_image'] = 'img/avatar/m/' . $user['user_id'] . '.png';
                     $this->image_lib->initialize($config);
                     $this->image_lib->resize();
                     $this->image_lib->clear();
@@ -450,6 +461,26 @@ class Api extends CI_Controller {
                         $this->user->user_update_profile($user['user_id'], $user_email, $github, $twitter, $douban,$weibo,$site, $location, $sign, $intro);
                         redirect('settings');
                         break;
+						
+						/**
+						*用户活动心跳包
+						*/
+						case '_get_online':
+						if($this->is_login&&$this->is_ajax){
+						$this->db->update('vx_user',array('user_last_login'=>current_time()),array('user_id'=>$this->current_user['user_id']));
+						}
+						break;
+						
+						/**
+						*取得在线用户数量
+						*/
+						case 'get_online_user':
+						if($this->is_ajax){
+							$time=date('Y-m-d H:i:s',time()-10*60);
+							json_output(0,'no',$this->db->where('user_last_login >=',$time)->from('vx_user')->count_all_results());
+						}
+						break;
+						
 
                     default:
                         $user = $this->user->get_user_profile($username);
@@ -872,13 +903,13 @@ class Api extends CI_Controller {
                 //send mentioned message
                 if (is_array($users)) {
                     foreach ($users as $k => $v) {
-                        $this->message->send_message(2, $v, $user['user_name'], $cm_content, $post_id = $post_id);
+                        $this->message->send_message(2, $v, $user['user_name'], $cm_content, $post_id = $post_id,$do);
                     }
                 }
 
                 //send comment message
                 if ($author != $user['user_name'])
-                    $this->message->send_message(1, $author, $user['user_name'], $cm_content, $post_id = $post_id);
+                    $this->message->send_message(1, $author, $user['user_name'], $cm_content, $post_id = $post_id,$do);
 
                 $cm = $this->db->where('cm_id', $do)->get('vx_comment')->row_array();
 
