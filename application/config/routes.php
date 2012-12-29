@@ -62,6 +62,8 @@ $route['account/(:any)']='account/index/$1';
 // account
 $route['signin']='account/index/signin';
 $route['signup']='account/index/signup';
+// avatar
+$route['avatar/(:num)/(:num)']='avatar/index/$1/$2';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
