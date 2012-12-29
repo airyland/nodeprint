@@ -11,6 +11,10 @@ img/captcha/*.jpg
 /application/cache/widget/*.php
 /application/cache/*.php
 /application/logs
+/img/avatar/*.png
+/img/avatar/l/*.png
+/img/avatar/m/*.png
+/img/avatar/s/*.png
 *.db
 /other
 /np-content/cache/*.txt
