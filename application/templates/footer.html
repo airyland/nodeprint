@@ -15,7 +15,7 @@
         </p>
         <p class="footer-text">
             </br>
-            Based on <a href="https://github.com/livid/v2ex" rel="external"><strong>Project Babel 2</strong></a>, Theme originally made by <a class="user-name" href="http://www.olivida.com/" rel="external"><strong>OLIVIDA</strong></a>, And especially  Grateful to <a href="http://www.v2ex.com" rel="external"><strong>V2EX</strong></a>  and V2EXers.
+            Based on <a href="https://github.com/livid/v2ex" rel="external"><strong>Project Babel 2</strong></a>, Theme originally made by <a class="user-name" href="http://www.olivida.com/" rel="external"><strong>OLIVIDA</strong></a>, And especially  Grateful to <a href="http://www.v2ex.com" rel="external"><strong>V2EX</strong></a>  and V2EXers.<span id="online"></span>
         </p>
     </div>
 </footer>
@@ -31,12 +31,10 @@
             }
         </script>
         <script type="text/javascript" src="js/LAB.min.js"></script>
+        <script type="text/javascript" src="{$site.url}js/plugin/jquery-1.7.2.min.js"></script>
         <script type="text/javascript">
             $LAB
-    .script("{$site.url}js/plugin/jquery-1.7.2.min.js").wait(function(){
-        $("body").preloadify({ imagedelay:0 });
-    })
-    .script("{$site.url}js/plugin/dialog/dialog.js?skin=blue")
+    .script("{$site.url}js/plugin/dialog/dialog.js?skin=twitter")
     .script("{$site.url}js/plugin/store.min.js")
     .script("{$site.url}js/plugin/jquery.tipsy.js")
     .script("{$site.url}js/plugin/jquery.validate.js")
@@ -47,7 +45,29 @@
     .script("{$site.url}js/admin.js")
     {/if}
     .script("{$site.url}js/main.js")
-    .script("{$site.url}js/cron.js");		
+    .script("{$site.url}js/cron.js");
+        {literal}
+        var href=location.href,
+             hash=location.hash,
+             isTopicPage=href.indexOf('/t/')!==-1,
+             isNodeinfoPage=href.indexOf('/node/')!==-1;
+        if(isTopicPage){
+            var data=['admin'],
+            $userNameNode=$('.cm-list>li>p>a.user-name');
+            authorName=$('.post-info .post_author>img').attr('alt');
+            data.push(authorName);
+            $.unique($.merge(data,$.unique($.map($userNameNode,function(val,key){return $(val).text();}))));
+            $LAB.script("/js/plugin/at.js")
+                    .wait(function(){
+                        $('#cm-box').atWho('@',{'data':data});
+                    });
+            $(hash).css('background-color','yellow');
+            setTimeout(function(){$(hash).css('background-color','#fff');},3000);
+            /*if(hash){$('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 2000);}*/
+        }
+        {/literal}
 </script>
 {include file="footer_analytics.html"}
 {literal}  
