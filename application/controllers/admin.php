@@ -158,17 +158,25 @@ class Admin extends CI_Controller {
                     echo 'node edit';
                 }
                 break;
-                
-                  case 'pages':                                                                                                
+
+            /**
+             * Page Management
+             */
+            case 'pages':
+                      $this->load->helper('directory');
+                      $this->config->load('site');
+                      $directory=$this->config->item('page_directory');
+                      $files=array_filter(directory_map($directory,1),function($item){return strpos($item,'html');});
                 if ($id == '') {                 
                     $this->s->assign(array(
-                        'title' => '页面管理',                                           
-                        'title' => 'Dashboard',
-                        'user' => get_user()                     
+                        'title' => '页面管理',
+                        'user' => get_user(),
+                        'files'=>$files,
+                        'count'=>count($files)
                     ));
                     $this->s->display('admin/admin_pages.html');
                 } else {
-                    echo 'node edit';
+                    echo 'page edit';
                 }
                 break;
 
