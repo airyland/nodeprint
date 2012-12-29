@@ -19,8 +19,6 @@ html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquot
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	/* background: transparent; */
-	/* background浼氳ie6涓嬬殑tip鍑虹幇閿欒 */
 }									
 
 
@@ -81,7 +79,7 @@ table {font-size: inherit; font: 100%;}
  
 /* Accessible focus treatment
 	people.opera.com/patrickl/experiments/keyboard/test */
-a:hover, a:active {outline: none;}
+/*a:hover, a:active {outline: none;}*/
 
 small {font-size: 85%;}
 
@@ -151,7 +149,6 @@ mark {background-color: #fcd700; color: #000; font-style: italic; font-weight: b
 
 h1,h2,h3,h4{font-size:14px;font-weight:bold;line-height:25px;}
 
-:focus {outline:none;}
 
 /* Print styles!
 -------------------------------------------------------------------------------*/
