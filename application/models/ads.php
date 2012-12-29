@@ -10,7 +10,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		GNU General Public License 2.0
+ * @license		MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */

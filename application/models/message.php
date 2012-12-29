@@ -10,7 +10,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		GNU General Public License 2.0
+ * @license		MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */
@@ -29,7 +29,7 @@ class Message extends CI_Model {
      * @param int $m_type 
      * @return void
      */
-    function send_message($m_type, $toname, $fromname, $content, $post_id=0) {
+    function send_message($m_type, $toname, $fromname, $content, $post_id=0,$cm_id=0) {
         $subject['id'] = '';
         $subject['title'] = '';
         $subject['content'] = $content;
@@ -39,6 +39,9 @@ class Message extends CI_Model {
             $subject['title'] = $post_title;
         }
         $subject['time'] = current_time();
+        //if($m_type===2){
+            $subject['cm_id']=$cm_id;
+       // }
         $data = array(
             'm_type' => $m_type,
             'm_to_username' => $toname,
