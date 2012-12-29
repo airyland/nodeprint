@@ -9,7 +9,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		GNU General Public License 2.0
+ * @license		MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */
@@ -71,12 +71,12 @@ class User extends CI_Model {
     }
 
     /**
-     * update user profile
+     * 更新用户资料
      * 
      * @access public
-     * @return void
+     * @todo 弃用
      */
-    function user_update_profile($user_id, $user_email, $github, $twitter,$douban,$weibo, $site, $location, $sign, $intro) {
+    public function user_update_profile($user_id, $user_email, $github, $twitter,$douban,$weibo, $site, $location, $sign, $intro) {
         $data = array(
             'user_email' => $user_email,
             'user_profile_info' => json_encode(array(
@@ -144,34 +144,40 @@ class User extends CI_Model {
      * @access public
      * @param  string $user_name
      * @param  string $user_email
-     * @param string  $user_pwd
+     * @param  string  $user_pwd
+     * @return array
      */
-    function register_user($user_name, $user_email, $user_pwd) {
-        $this->load->helper('validate');
-        if (is_numeric($user_name)) {
+    public function register_user($user_name, $user_email, $user_pwd) {
+        $this->load->library('form_validation');
+        $this->config->load('validation');
+
+        if(!$this->form_validation->required($user_name)||!$this->form_validation->required($user_email)||!$this->form_validation->required($user_pwd)){
+            return array('error' =>-1, 'msg' => '填写不完整');
+        }
+
+        if ($this->form_validation->numeric($user_name)) {
             return array('error' => 1, 'msg' => '账号不能为纯数字');
         }
 
-       // if (!is_safe_nickname($user_name)) {
-            //return array('error' => 2, 'msg' => '账号不符合要求');
-        //}
+        if(!$this->form_validation->min_length($user_name,$this->config->item('user_name_min_length'))||!$this->form_validation->max_length($user_name,$this->config->item('user_name_max_length'))){
+            return array('error'=>2,'msg'=>'账号字数不符合要求');
+        }
 
-       // if (!is_mail($user_email)) {
-           // return array('error' => 3, 'msg' => '邮箱格式不正确');
-       // }
+        if (!$this->form_validation->valid_email($user_email)) {
+            return array('error' => 3, 'msg' => '邮箱格式不正确');
+        }
 
-        //if (!is_length($user_pwd, 6, 16)) {
-           // return array('error' => 4, 'msg' => '密码不符合要求');
-       // } 
+        if(!$this->form_validation->min_length($user_pwd,$this->config->item('user_pwd_min_length'))||!$this->form_validation->max_length($user_pwd,$this->config->item('user_pwd_max_length'))){
+            return array('error'=>4,'msg'=>'密码长度不符合要求');
+        }
 
-        $check_user_name = $this->db->where('user_name', $user_name)->get('vx_user')->num_rows();
-        $check_user_email = $this->db->where('user_email', $user_email)->get('vx_user')->num_rows();
+        if(!$this->form_validation->is_unique($user_name,'vx_user.user_name')){
+            return array('error' => 5, 'msg' => '账号已存在');
+        }
 
-        if ($check_user_name)
-           return array('error' => 5, 'msg' => '账号已存在');
-
-        if ($check_user_email)
+        if($this->form_validation->is_unique($user_email,'vx_user.user_email')){
             return array('error' => 6, 'msg' => '邮箱地址已被注册');
+        }
 
         $this->load->helper('common');
         $salt = get_radom_string();
@@ -189,11 +195,10 @@ class User extends CI_Model {
         );
 
         if ($this->db->insert('vx_user', $data)) {
-
             $this->_set_cookie($this->db->insert_id(), $user_name);
             return array('error' => 0, 'msg' => '注册成功');
         } else {
-            return array('error' => 7, 'msg' => '未知错误');
+            return array('error' => 6, 'msg' => '未知错误');
         }
     }
 
@@ -202,10 +207,13 @@ class User extends CI_Model {
     }
 
     /**
+     * 用户登录
      *
-     * return int 0=>success,1=>not exist,2=>wrong pwd,
+     * @param string $user_name
+     * @param string $user_pwd
+     * @return array
      */
-    function login_user($user_name, $user_pwd) {
+    public function login_user($user_name, $user_pwd) {
         $user_id = 0;
         $user_get_name = '';
         $msg = '';
@@ -255,7 +263,6 @@ class User extends CI_Model {
      * @access public
      * @param int $user_id
      * @return void
-     *
      */
     function refresh_user_info($user_id=0) {
         //fav topics
