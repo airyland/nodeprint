@@ -77,6 +77,10 @@
                     <label for="topic-no">帖子列表显示数量</label>
                     <input type="text" id="topic-no" name="config[topic_no]" value="{$config.topic_no}" required />
                 </li>
+                 <li>
+                    <label for="comment-no">评论单页显示数量</label>
+                    <input type="text" id="comment-no" name="config[comment_no]" value="{$config.comment_no}" required />
+                </li>
                 <li><label>&nbsp;</label>
                     <input type="submit" class="vivid-button" id="update-config2-btn" value="{$lang.update}">
                 </li>
@@ -105,10 +109,6 @@
             </ul>
         </form>
     </section>
-
-
-
-
 
 </div>
 {include file="footer.html"}
