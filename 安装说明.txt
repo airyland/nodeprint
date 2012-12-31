@@ -1,8 +1,0 @@
-## 配置项
-
-+ 导入数据库文件
-+ 打开配置文件 `/application/config/config.php`，将第17行 $config['base_url']更改为您的网站地址。
-+ 打开数据库配置文件 `/application/config/database.php`，将第51行到54行更改为您的数据连接设置。
-+ 登录后台  admin 123456  更新网站设置
-
-
