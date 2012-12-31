@@ -81,8 +81,11 @@ class Comment extends CI_Model {
      * @param int $no  分页条数
      * @return array|0
      */
-    public function list_comment($post_id, $user_id = 0, $order_by = 'cm_id', $order = 'DESC', $page = 1, $no = 50) {
+    public function list_comment($post_id, $user_id = 0, $order_by = 'cm_id', $order = 'DESC', $page = 1, $no = 50,$count=FALSE) {
         $this->db->where('post_id', $post_id);
+        if($count){
+            return $this->db->from('comment')->count_all_results();
+        }
         if ($user_id)
             $this->db->where('user_id', $user_id);
         $rs = $this->db->order_by($order_by, $order)

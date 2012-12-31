@@ -38,14 +38,26 @@ class T extends CI_Controller {
         if(!$page){
             show_error('帖子不存在或者被删除', 404);
         }
-	$local_upload = $this->configs->item('local_upload');
-	$comment_no = $this->configs->item('comment_no');
+        $this->load->model('post');
+        $this->load->model('comment');
+        $local_upload = $this->configs->item('local_upload');
+        $comment_no = $this->configs->item('comment_no');
+       
         function time_ago($paras) {
             return friendlyDate(strtotime($paras['time']));
         }
         $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
-        $this->load->model('post');
-        $this->load->model('comment');
+         $count=$this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no,TRUE);
+        
+        $this->load->library('dpagination');
+        $this->dpagination->target("/t/{$id}");
+        $this->dpagination->adjacents(8);
+        $this->dpagination->items($count);
+        $this->dpagination->limit($comment_no);
+        $this->dpagination->currentPage($page);
+        $page_bar = $this->dpagination->getOutput();
+        
+        
         $user = get_user();
         $this->load->library('s');
         $this->s->registerPlugin('function', 'time_ago', 'time_ago');
@@ -61,7 +73,8 @@ class T extends CI_Controller {
             'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no),
             'lang' => $lang,
             'fav' => $this->post->check_post_fav($user['user_id'], $id),
-            'local_upload'=>$local_upload
+            'local_upload'=>$local_upload,
+            'page_bar'=>$page_bar
                 )
         );
 
