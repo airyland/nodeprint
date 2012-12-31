@@ -69,12 +69,8 @@ class Configs extends CI_Model {
         $rs = $this->db->get(self::CONFIG_TABLE)->result_array();
         $config = array();
         foreach ($rs as $conf) {
-            if ($conf['name'] != 'analytics') {
                 $config[$conf['name']] = $conf['value'];
                 file_put_contents(self::CONFIG_CACHE_FILE, '<?php $config=' . var_export($config, true) . '; ?>');
-            } else {
-                file_put_contents(self::CONFIG_FOOTER_FILE, '<script>' . $conf['value'] . '</script>');
-            }
         }
     }
 
