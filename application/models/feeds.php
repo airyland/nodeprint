@@ -52,7 +52,7 @@ class Feeds extends CI_Model {
     }
 
     /**
-     * user feed 
+     * User Topic feed
      * @param int $user_id
      */
     function user_feed($user_id) {
@@ -61,14 +61,19 @@ class Feeds extends CI_Model {
     }
 
     /**
-     * node feed
-     * @param int $node_id
+     * Node Feed Generator
+     * @param string $node_slug
      */
     function node_feed($node_slug) {
+        $node=$this->db->get_where('node',array('node_slug'=>$node_slug))->row_array();
         $this->posts=$this->post->query_post("node_id={$node_slug}&node_type=node_slug");
+        $this->s->assign('site_name',"{$node['node_name']}-Node Update-{$this->site_name}");
         $this->generate_feed();
     }
 
+    /**
+     * Comment Feed
+     */
     function comment_feed() {
         
     }
