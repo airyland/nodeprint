@@ -21,3 +21,4 @@ img/captcha/*.jpg
 /np-content/upload/*.png
 /css/source/.sass-cache
 /wiki
+/oauth
