@@ -10,11 +10,11 @@
  * NodePrint is an open source BBS System built on PHP and MySQL.
  *
  * @package	NodePrint
- * @author		airyland <i@mao.li>
+ * @author 	airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license		MIT
- * @link		https://github.com/airyland/nodeprint
- * @version	0.0.5
+ * @license	                 MIT
+ * @link	                 https://github.com/airyland/nodeprint
+ * @version                0.0.5
  */
 
 /**
@@ -34,11 +34,15 @@ class T extends CI_Controller {
 
     function the_post($id) {
         $lang = load_lang();
-		$local_upload=$this->configs->get_config_item('local_upload');
+        $page = $this->input->get_page();
+        if(!$page){
+            show_error('帖子不存在或者被删除', 404);
+        }
+	$local_upload = $this->configs->item('local_upload');
+	$comment_no = $this->configs->item('comment_no');
         function time_ago($paras) {
             return friendlyDate(strtotime($paras['time']));
         }
-
         $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
         $this->load->model('post');
         $this->load->model('comment');
@@ -54,7 +58,7 @@ class T extends CI_Controller {
         $this->s->assign(array(
             'title' => $topic['post_title'],
             't' => $topic,
-            'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, 1, 200),
+            'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no),
             'lang' => $lang,
             'fav' => $this->post->check_post_fav($user['user_id'], $id),
             'local_upload'=>$local_upload
