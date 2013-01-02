@@ -38,6 +38,10 @@ class Home extends CI_Controller {
         $this->load->model('site');
         $this->load->model('user');
         $this->tab = $this->input->get('tab');
+        function time_ago($paras) {
+            return relative_time(strtotime($paras['time']));
+        }
+        $this->s->registerPlugin('function', 'time_ago', 'time_ago');
     }
 
     /**
