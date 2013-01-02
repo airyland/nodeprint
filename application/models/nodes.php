@@ -93,6 +93,10 @@ class Nodes extends CI_Model {
 
     function update_node_info($node_id,$data){
         $this->db->update('vx_node',$data,array('node_id'=>$node_id));
+        if($this->db->affected_rows()>0){
+            return TRUE;
+        }
+        return FALSE;
     }
 
     /**
