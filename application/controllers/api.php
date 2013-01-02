@@ -594,8 +594,12 @@ class Api extends CI_Controller {
                     case 'update_info':
                         $node_id = $this->input->post('node_id');
                         $node_info = $this->input->post('node_info');
-                        print_r($node_info);
-                        $this->nodes->update_node_info($node_id, $node_info);
+                        $do_update=$this->nodes->update_node_info($node_id, $node_info);
+                        if($do_update){
+                            json_output(0);
+                        }else{
+                            json_output(1);
+                        }
                         break;
 
                     /**
