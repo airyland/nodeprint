@@ -65,8 +65,7 @@ class Member extends CI_Controller {
              * 
              */
             case 'topic':
-                $count_topic = $this->post->count_post($slug, 'user_name');
-
+                $count_topic = $this->post->query_post("user_id={$slug}&user_type=user_name&count=true");
                 $this->dpagination->items($count_topic);
                 $this->dpagination->limit($limit);
                 $this->dpagination->currentPage($this->page);
@@ -75,7 +74,7 @@ class Member extends CI_Controller {
                 $this->s->assign(
                         array(
                             'title' => $slug . '的帖子',
-                            'post' => $this->post->query_post('user_id=' . $user['user_id'] . '&page=' . $this->page . 'no=' . $limit),
+                            'post' => $this->post->query_post('user_id=' . $slug . '&user_type=user_name&page=' . $this->page . 'no=' . $limit),
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
