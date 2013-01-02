@@ -47,7 +47,7 @@
     top: 43px;
     left: 43px;
     img {
-      border-radius: 3px;
+      @include radius(3px);
       opacity: 0.8;
     }
   }
@@ -57,7 +57,7 @@
   img.l-avatar {
     float: left;
     margin-right: 15px;
-    border-radius: 3px;
+    @include radius(3px);
   }
   p {
     margin-left: 65px;

@@ -20,7 +20,7 @@
   padding: 4px 3px;
   width: 120px;
   margin: 0 auto;
-  border-radius: 3px;
+  @include radius(3px);
   display: block;
   /*border: 1px solid #999;*/
   margin-bottom: 10px;
@@ -59,6 +59,10 @@
     color: #000;
     margin-right: 10px;
   }
+  input{
+    width:250px;
+    padding:5px;
+  }
 }
 
 textarea {
@@ -72,7 +76,7 @@ input {
   #width: 320px;
   font-size: 14px;
   padding: 3px;
-  border-radius: 3px;
+  @include radius(3px);
   border: 1px solid #ccc;
   &:focus {
     border: 1px solid rgba(128, 128, 160, 0.6);
@@ -118,7 +122,7 @@ textarea:focus {
     font-size: 14px;
     border: 1px solid #CCC;
     width: 320px;
-    border-radius: 3px;
+    @include radius(3px);
     font-family:"Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti;
   }
   input {
