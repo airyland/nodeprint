@@ -256,6 +256,11 @@ function load_lang() {
     return lang($config['lang']);
 }
 
+function get_lang(){
+    include(APPPATH . 'cache/site/config_cache.php');
+    return $config['lang'];
+}
+
 if(!function_exists('mb_strlen')){
     function mb_strlen( $str, $enc = '' ) {
         $counts = count_chars( $str );
@@ -273,4 +278,101 @@ if(!function_exists('mb_strlen')){
 
 }
 
+/**
+ * Shortcut function for ET::translate().
+ *
+ * @see ET::translate()
+ */
+function T($string, $default = false)
+{
+    $_ci = &get_instance();
+    $_ci->lang->load('time',get_lang());
+    return $_ci->lang->line($string);
+}
 
+
+/**
+ * Translate a string to its normal form or its plurular form, depending on an amount.
+ *
+ * @param string $string The string to translate (singular).
+ * @param string $pluralString The string to translate (plurular).
+ * @param int $amount The amount.
+ */
+function Ts($string, $pluralString, $amount)
+{
+    return sprintf(T($amount == 1 ? $string : $pluralString), $amount);
+}
+
+
+
+/**
+ * Get a human-friendly string (eg. 1 hour ago) for how much time has passed since a given time.
+ *
+ * @param int $then UNIX timestamp of the time to work out how much time has passed since.
+ * @param bool $precise Whether or not to return "x minutes/seconds", or just "a few minutes".
+ * @return string A human-friendly time string.
+ */
+function relative_time($then, $precise = false)
+{
+
+    // If there is no $then, we can only assume that whatever it is never happened...
+    if (!$then) return T("never");
+
+    // Work out how many seconds it has been since $then.
+    $ago = time() - $then;
+
+    // If $then happened less than 1 second ago (or is yet to happen,) say "Just now".
+    if ($ago < 1) return T("just now");
+
+    // If this happened over a year ago, return "x years ago".
+    if ($ago >= ($period = 60 * 60 * 24 * 365.25)) {
+        $years = floor($ago / $period);
+        return Ts("%d year ago", "%d years ago", $years);
+    }
+
+    // If this happened over two months ago, return "x months ago".
+    elseif ($ago >= ($period = 60 * 60 * 24 * (365.25 / 12)) * 2) {
+        $months = floor($ago / $period);
+        return Ts("%d month ago", "%d months ago", $months);
+    }
+
+    // If this happend over a week ago, return "x weeks ago".
+    elseif ($ago >= ($period = 60 * 60 * 24 * 7)) {
+        $weeks = floor($ago / $period);
+        return Ts("%d week ago", "%d weeks ago", $weeks);
+    }
+
+    // If this happened over a day ago, return "x days ago".
+    elseif ($ago >= ($period = 60 * 60 * 24)) {
+        $days = floor($ago / $period);
+        return Ts("%d day ago", "%d days ago", $days);
+    }
+
+    // If this happened over an hour ago, return "x hours ago".
+    elseif ($ago >= ($period = 60 * 60)) {
+        $hours = floor($ago / $period);
+        return Ts("%d hour ago", "%d hours ago", $hours);
+    }
+
+    // If we're going for a precise value, go on to test at the minute/second level.
+    if ($precise) {
+
+        // If this happened over a minute ago, return "x minutes ago".
+        if ($ago >= ($period = 60)) {
+            $minutes = floor($ago / $period);
+            return Ts("%d minute ago", "%d minutes ago", $minutes);
+        }
+
+        // Return "x seconds ago".
+        elseif ($ago >= 1) return Ts("%d second ago", "%d seconds ago", $ago);
+
+    }
+
+    // Otherwise, just return "Just now".
+    return T("just now");
+}
+
+
+function get_relative_time($time){
+    echo relative_time($time);
+}
