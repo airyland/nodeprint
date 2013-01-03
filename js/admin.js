@@ -8,7 +8,9 @@ $(function() {
 	//节点介绍信息编辑
 	var $doc = $(document),
 		$nodeEditable = $('.node-editable'),
-		href = document.location.href;
+		$topic=$('.post-content'),
+		href = document.location.href,
+		isTopicPage=/\/t\/\d/.test(href);
 	nodeSlug = href.slice(href.lastIndexOf('/') + 1);
 	$nodeEditable.editable("/api/node/" + nodeSlug + '?do=update', {
 		indicator: "更新中...",
@@ -24,6 +26,17 @@ $(function() {
 		cssclass: "editable",
 		tooltip: '点击编辑'
 	});
+
+	//帖子编辑
+    if(isTopicPage){
+    		$topic.editable('/api/topic',{
+		type:'textarea',
+		height:'300px',
+		submit: '更新',
+		cancel: '取消'
+	});
+    }
+
 
 	//帖子移动到其他节点
 

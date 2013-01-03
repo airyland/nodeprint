@@ -857,9 +857,15 @@ $(function () {
     $('.onindex').change(function () {
         var $form = $(this).parent('form'),
             data = $form.serialize();
-        $.post($form.attr('action'), data, function (e) {
-            //@todo 
-        });
+            var $dialog=$.dialog({content:'更新中'});
+        $.post($form.attr('action'), data, function (data) {
+            if(data.error===0){
+                $dialog.content('更新成功');
+                setTimeout(function(){$dialog.close();},1000);
+            }
+        },'json');
     });
+
+     //autoTextarea($('#cm-box')[0],20,300);
 
 });
