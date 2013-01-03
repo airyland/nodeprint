@@ -1,7 +1,9 @@
         <ul class="topic-list"> 
             {if is_array($post)&&count($post)>0}{foreach from=$post item=p} 
             <li class="topic-item t-{$p.post_id}">
+                {if !isset($show_avatar)}
                 <img src="/avatar/{$p.user_id}/48" width="48" height="48" alt="{$p.user_name}" />
+                {/if}
                 <p><a class="post-title" href="t/{$p.post_id}" title="{$p.post_title}">{$p.post_title|truncate:58:"...":true}</a></p>
                 <p>
                     <a class="post-node" href="/node/{$p.node_slug}">{$p.node_name}</a><a class="post-author" href="/member/{$p.user_name}">{$p.user_name}</a>
