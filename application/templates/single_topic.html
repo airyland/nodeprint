@@ -12,13 +12,11 @@
                 <a class="post_author" href="/member/{$t.user_name}"><img src="/avatar/{$t.user_id}/73"  alt="{$t.user_name}" /></a>
                 <span>By <a href="/member/{$t.user_id}">{$t.user_name}</a> at <time class="time-txt">{$t.post_time}</time>, {$t.post_hit} hits</span>
             </header>
-            <div class="post-content">
-                {$t.post_content}
-            </div>
+            <div class="post-content">{$t.post_content}</div>
             <footer class="topic-footer">
                 <ul class="post-footer-bar">
 					{if $t.post_fav_no_cache > 0}<li>已有 <span id="topic-fav-count">{$t.post_fav_no_cache}</span> 人收藏此主题</li>{/if}
-                    {if $is_login}<li><a title="{if $fav eq true}{$lang.clickToUnfav}{else}click to fav{/if}" class="{if $fav eq true}fav-link{else}unfav-link{/if}" id="do-fav" href="api/post/{$t.post_id}/?do={if $fav eq true}unfav{else}fav{/if}">{$lang.favTopic}</a></li>{/if}
+                    {if $is_login}<li><a title="{if $fav eq true}{$_.clickToUnfav}{else}click to fav{/if}" class="{if $fav eq true}fav-link{else}unfav-link{/if}" id="do-fav" href="api/post/{$t.post_id}/?do={if $fav eq true}unfav{else}fav{/if}">{$_.favTopic}</a></li>{/if}
                     <li><a class="share" title="分享到Twitter" href="https://twitter.com/share?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&related=nodeprint&hashtags={$t.node_slug}&text={$t.post_title}">Tweet</a></li>
                     <li><a class="share" title="分享到豆瓣" href=" http://www.douban.com/recommend/?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&title={$t.post_title}">Douban</a></li>
                     <li><a class="share" title="分享到微博" href="http://service.weibo.com/share/share.php?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&title={$t.post_title}">Weibo</a></li>
@@ -30,8 +28,8 @@
     </div>
 
     <div class="box">
-        <span class="title"><strong id="post-comment-no" class="vivid-notice">{$t.post_comment_no}</strong> {$lang.replies} {if $t.post_comment_no neq 0} |  {$lang.until} {$t.post_last_comment}{/if}</span>
-        <span class="cm-order"><a href="/t/{$t.post_id}?order={if isset($smarty.get.order)&&$smarty.get.order eq desc}asc{else}desc{/if}">{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$lang.olderReplyFirst}{else}{$lang.newerReplyFirst}{/if}</a></span>
+        <span class="title"><strong id="post-comment-no" class="vivid-notice">{$t.post_comment_no}</strong> {$_.replies} {if $t.post_comment_no neq 0} |  {$_.until} {time_ago time=$t.post_last_comment}{/if}</span>
+        <span class="cm-order"><a href="/t/{$t.post_id}?order={if isset($smarty.get.order)&&$smarty.get.order eq desc}asc{else}desc{/if}">{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$_.olderReplyFirst}{else}{$_.newerReplyFirst}{/if}</a></span>
         <ul class="cm-list">
             {if $cm}
             {section name=cm loop=$cm start=0}<li id="comment-{{$cm[cm].cm_id}}" data-id="{$cm[cm].cm_id}" data-replyTo="{$cm[cm].cm_reply_to}">
@@ -40,7 +38,7 @@
                 <p><a class="user-name" href="/member/{$cm[cm].user_id}">{$cm[cm].user_name}</a><span class="time-ago" data-time="{$cm[cm].cm_time}">{time_ago time=$cm[cm].cm_time}</span></p>
                 <p class="comment-content">{$cm[cm].cm_content}</p>
                 <span class="floor">{*#*}{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$smarty.section.cm.total-$smarty.section.cm.index}{else}{$smarty.section.cm.index+1}{/if}</span> 
-                    <a class="reply" title="{$lang.reply}" href="" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$lang.reply}</a>
+                    <a class="reply" title="{$_.reply}" href="" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$_.reply}</a>
             </li>
             {/section}
             {else}
@@ -53,16 +51,16 @@
     <script type="text/template" id="comment-template">
         {literal}<li style="display:none;" data-id="{{data.cm_id}}" data-replyTo="{{data.cm_reply_to}}">
             <img class="l-avatar" src="/avatar/{{data.user_id}}/48" alt="" width="48" height="48"/>{/literal}
-            {literal}<p><a class="user-name" href="/member/{{data.user_id}}">{{data.user_name}}</a><span class="time-ago" data-time="{{data.cm_time}}">{/literal}{$lang.justNow}</span></p>
+            {literal}<p><a class="user-name" href="/member/{{data.user_id}}">{{data.user_name}}</a><span class="time-ago" data-time="{{data.cm_time}}">{/literal}{$_.justNow}</span></p>
            {literal}<p class="comment-content">{{{data.cm_content}}}</p>{/literal}             
-                {literal}<a class="reply" href="" data-id="{{data.cm_id}}" data-username="{{data.user_name}}">{/literal}{$lang.reply}</a>
+                {literal}<a class="reply" href="" data-id="{{data.cm_id}}" data-username="{{data.user_name}}">{/literal}{$_.reply}</a>
            
              <span class="floor"></span>
             </script>
 
             <div class="box post-box cm-box">
-                <h4 class="title">{$lang.addReply}</h4>
-                <a class="back-to-top" href="/t/{$t.post_id}#body" title="{$lang.backToTop}"><span class="up-arrow">&uarr;</span>{$lang.backToTop}</a>
+                <h4 class="title">{$_.addReply}</h4>
+                <a class="back-to-top" href="/t/{$t.post_id}#body" title="{$_.backToTop}"><span class="up-arrow">&uarr;</span>{$_.backToTop}</a>
                 {if $is_login}
                  <div class="icon-list">
                         <ul>
@@ -79,7 +77,7 @@
                     <input type="hidden" name="cm-reply-to" id="cm-reply-to" value="0"/>
                     <input type="hidden" name="cm-reply-name" id="cm-reply-name" value=""/>
                     <textarea name="cm-content" id="cm-box"></textarea>                                      
-                    <input type="submit" value="{$lang.send}" class="button" id="cm-button"/>
+                    <input type="submit" value="{$_.send}" class="button" id="cm-button"/>
                     <small>Ctrl+Enter</small>
 
                     <div id="preview">
@@ -95,7 +93,7 @@
                         <!--<li><p>邮件地址会被自动替换@为#</p></li>-->
                     </ul>
 
-                    <span class="box-footer">{$lang.replyTip}</span>
+                    <span class="box-footer">{$_.replyTip}</span>
                 </form>
                 {else}
                 {include file="login_box.html" showtitle=false}

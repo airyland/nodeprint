@@ -28,7 +28,7 @@
                     <label for="lang">默认语言</label>
                     <select name="config[lang]" id="lang">
                         <option value="zh" {if $config.lang=='zh'}selected{/if}>中文</option>
-                        <option value="en" {if $config.lang=='en'}selected{/if}>英文</option>
+                        <option value="english" {if $config.lang=='english'}selected{/if}>英文</option>
                     </select>
                 </li>
                 <li>
@@ -80,6 +80,10 @@
                  <li>
                     <label for="comment-no">评论单页显示数量</label>
                     <input type="text" id="comment-no" name="config[comment_no]" value="{$config.comment_no}" required />
+                </li>
+                <li>
+                    <label for="topic_edit_expire">帖子编辑有效时间(单位为分钟)</label>
+                    <input type="text" id="topic_edit_expire" name="config[topic_edit_expire]" value="{$config.topic_edit_expire}" required />
                 </li>
                 <li><label>&nbsp;</label>
                     <input type="submit" class="vivid-button" id="update-config2-btn" value="{$lang.update}">

@@ -1,0 +1,32 @@
+{include file="header.html"}
+        <div class="content" id="content">
+            <div class="box oauth-qq">
+                <img src="" alt="">
+                    <p>尚未在本站注册</p>
+                    <form action="">
+                        <label for="name">请确定您在本站的用户名</label>
+                        <input type="text" id="name" value="">
+                        <small>抱歉，该用户名已被其他用户使用，请重新填写一个</small>
+                        <input type="submit" calss="vivid" value="确定">
+                    </form>
+
+                    <p>已经注册，绑定账号</p>
+                    <form action="/oauth/do_join" method="post">
+                        <label for="user_name">用户名</label>
+                        <input name="user_name" id="user_name" type="text">
+                        <label for="user_pwd">密码</label>
+                        <input name="user_pwd" id="user_pwd" type="password">
+                        <input type="submit" value="绑定">
+                    </form>
+                
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+           <div class="box">
+               hello world
+           </div>
+
+        </div>
+
+{include file="footer.html"}

@@ -14,16 +14,26 @@
         <link rel="stylesheet" href="/css/reset.css" />
         <link rel="stylesheet" href="/css/style.css" />
         <link rel="stylesheet" href="/js/plugin/dialog/skins/twitter.css" />
+        <script type="text/javascript" src="{$site.url}js/plugin/jquery-1.7.2.min.js"></script>
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->      
+        <![endif]-->
+        <!--[if (gte IE 6)&(lte IE 8)]>
+        <link rel="stylesheet" href="/css/ie6.css" />
+  <script type="text/javascript" src="/js/plugin/selectivizr-min.js"></script>
+  <script type="text/javascript" src="/js/plugin/DD_belatedPNG_0.0.8a-min.js"></script>
+  <script type="text/javascript">
+   DD_belatedPNG.fix('#logo');
+  </script>
+  <noscript><link rel="stylesheet" href="[fallback css]" /></noscript>
+<![endif]-->      
     </head>
     <body id="body">
         <header id="header">
             <div class="header-wrap">
-                <h1><a id="logo" href="" title="{$site.name}-首页"></a></h1>
+                <h1><a id="logo" href="{$site.url}" title="{$site.name}-首页"></a></h1>
                 <form action="/api/post/0/search" method="get" class="search">
-                    <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}" speech="speech" x-webkit-speech="x-webkit-speech" x-webkit-grammar="builtin:translate" required/>
+                    <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}" required/>
                     <input type="submit" value="搜索" id="search-button"/>
                 </form>
                 <nav class="site-nav" id="site-nav" role="navigation">

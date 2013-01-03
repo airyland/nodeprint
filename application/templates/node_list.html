@@ -1,11 +1,12 @@
 <div class="box">
     <h3><a href="{$site.url}" title="{$site.name}">{$site.name}</a> › 浏览节点</h3>
     <span class="more"><a href="/node" title="All nodes">All Nodes</a></span>
+    {if isset($smarty.get.for)}<p class="choose-tip">请选择一个节点发贴：<p>{/if}
     <ul class="nodes-list">
         {foreach from=$nodes item=n}{if $n.child_node}<li>
             <span class="parent-node">{$n.node_name}</span>
             <ul>
-                {if $n.child_node}{foreach from=$n.child_node item=cn}<li><a href="/node/{$cn.node_slug}" title="{$cn.node_name}">{$cn.node_name}</a></li>
+                {if $n.child_node}{foreach from=$n.child_node item=cn}<li><a href="/node/{$cn.node_slug}{if isset($smarty.get.for)}/add{/if}" title="{$cn.node_name}">{$cn.node_name}</a></li>
                 {/foreach}{/if} 
             </ul>
         </li>{/if} 

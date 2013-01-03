@@ -14,9 +14,9 @@
             {if $message}
             {foreach from=$message item=m}<li>
                 <p{if $m.m_read eq 1} class="unread-notice"{/if}><a href="/member/{$m.m_from_username}">{if $m.m_from_username eq $me.user_name}你无聊地{else}{$m.m_from_username}{/if}</a>{if $m.m_type eq 1}在{elseif $m.m_type eq 2}在回复{elseif $m.m_type eq 3}在创建主题{elseif $m.m_type eq 4}给你发了私信
-                    {/if}{if $m.m_type eq 1}<a href="t/{$m.sub.id}#comment-{$m.sub.cm_id}">{$m.sub.title}</a>回复了你{/if}{if $m.m_type eq 2}<a href="t/{$m.sub.id}#comment-{$m.sub.cm_id}">{$m.sub.title}</a>时提到了你{/if}{if $m.m_type eq 3}<a href="t/{$m.sub.id}#comment-{$m.sub.cm_id}">{$m.sub.title}</a>时提到了你{/if}</p>
+                    {/if}{if $m.m_type eq 1}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>回复了你{/if}{if $m.m_type eq 2}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>时提到了你{/if}{if $m.m_type eq 3}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>时提到了你{/if}</p>
                 <p>{$m.sub.content}</p>
-                <p class="time">{$m.sub.time}</p>
+                <p class="time">{time_ago time=$m.sub.time}</p>
                 {if $m.m_type eq 4}<p class="reply-message"><a href="/messages/send?to={$m.m_from_username}">回复</a></p>{/if}
                 {if isset($smarty.get.type)&&$smarty.get.type!=='pm'} <a href="/api/message/{$m.m_id}/delete?m_id={$m.m_id}" class="delete-link">删除</a>{/if}
             </li>

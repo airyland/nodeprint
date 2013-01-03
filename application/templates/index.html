@@ -3,15 +3,14 @@
             <div class="box">
                 <nav class="site-tab">
                 <ul>
-                    <li class="current"><a href="#" title="全部帖子">全部</a></li>
+                    <li {if !isset($smarty.get.tab) or $smarty.get.tab==='all'}class="current"{/if}><a href="?tab=all" title="全部帖子">全部</a></li>
                     <!-- <li><a href="?tab=ana">问答</a></li> -->
                     {if $is_login}
-                    <!-- <li><a href="?tab=ana">收藏</a></li>
-                    <li><a href="?tab=follow-member">关注用户</a></li>
-                    <li><a href="?tab=follow-node">关注节点</a></li> -->
+                    <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-node'}class="current"{/if}><a href="?tab=following-node">关注节点</a></li>
+                    <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-member'}class="current"{/if}><a href="?tab=following-member">关注用户</a></li>
                     {/if}
                 </ul>
-                <!-- <a id="add-topic" href="/t/add-topic">+创建帖子</a> -->
+                {if $is_login}<a id="add-topic" href="/node?for=create_topic">+创建帖子</a>{/if}
                 </nav>
                 {include file="topic_list.html"}
                 <span class="box-footer"><a href="/t/recent" class="more" title="更多主题">»更多新主题</a></span>

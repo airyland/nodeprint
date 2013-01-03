@@ -11,7 +11,7 @@
         <ul>
             {if isset($u.other.douban) && $u.other.douban}<li>豆瓣:<a href="{$u.other.douban}/">{$u.other.douban}</a></li>{/if}
             {if $u.other.site}<li>blog:<a href="{{$u.other.site}}" rel="external">{{$u.other.site}}</a></li>{/if}
-            {if $u.other.location}<li>location:<a href="">{$u.other.location}</a></li>{/if}
+            {if $u.other.location}<li>location:{$u.other.location}</li>{/if}
             {if isset($u.other.weibo)&& $u.other.weibo}<li>微博:<a href="{$u.other.weibo}" rel="external">{$u.other.weibo}</a></li>{/if}
             {if $u.site.follower}<li>followers:<a href="">{$u.site.follower}</a></li>{/if}
         </ul>
@@ -21,23 +21,9 @@
     <div id="topic-list" class="box">
         <p class="title">最近创建主题</p>
         <span class="more"><a href="/member/{$u.user_name}/topic">更多</a></span>
-        <ul class="topic-list  user-topic-list">
-            {if $hispost}
-            {foreach from=$hispost item=p}
-            <li class="topic-item topic-1">
-                <p><a class="post-title" href="t/{$p.post_id}">{$p.post_title}</a></p>
-                <p>
-                    <a  class="post-node" href=""><strong>{$p.node_name}</strong></a>
-                    <span>{$p.post_hit}次点击</span>
-                    <span>{$p.post_time} {if {$p.post_last_comment_author}}replied by <a href="">{$p.post_last_comment_author}</a>{/if}</span>
-                </p>
-                <span class="last-reply"><a class="post-cm-count" href="">{$p.post_comment_no}</a></span>
-            </li>
-            {/foreach}
-            {else}
-            <li>没有创建过帖子</li>
-            {/if}
-        </ul>
+        {include file="topic_list.html" show_avatar=true}
+        <span class="box-footer"><a href="/member/{$u.user_name}/topic">&nbsp;&nbsp;查看更多主题</a></span>
+
     </div>
     <div id="topic-list" class="box">
         <p class="title">最近回复主题</p>
@@ -46,19 +32,16 @@
             {if $hiscomment}
             {foreach from=$hiscomment item=p}
             <li class="topic-item topic-1">
-                <p><a class="post-title" href="/t/{$p.post_id}">{$p.post_title}</a></p>
-                <p>
-                    <a  class="post-node" href=""><strong>{$p.node_name}</strong></a>
-                    <span>{$p.post_hit}次点击</span>
-                      <span>{$p.post_time} {if {$p.post_last_comment_author}}replied by <a href="">{$p.post_last_comment_author}</a>{/if}</span>
-                </p>
-                <span class="last-reply"><a class="post-cm-count" href="">{$p.post_comment_no}</a></span>
+                <p class="post-title-wrap">回复了主题：<a class="post-title small-title" href="/t/{$p.post_id}">{$p.post_title}</a></p>
+                <p class="cm-content">{$p.cm_content}</p>
+                <span class="last-reply">{time_ago time={$p.cm_time}}</span>
             </li>
             {/foreach}
             {else}
             <li>没有最近回复的帖子</li>
             {/if}
         </ul>
+        <span class="box-footer"><a href="/member/{$u.user_name}/replies">&nbsp;&nbsp;查看更多回复</a></span>
     </div>
 </div>
 <div class="sidebar">

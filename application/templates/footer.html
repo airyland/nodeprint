@@ -31,7 +31,6 @@
             }
         </script>
         <script type="text/javascript" src="js/LAB.min.js"></script>
-        <script type="text/javascript" src="{$site.url}js/plugin/jquery-1.7.2.min.js"></script>
         <script type="text/javascript">
             $LAB
     .script("{$site.url}js/plugin/dialog/dialog.js?skin=twitter")
@@ -40,6 +39,8 @@
     .script("{$site.url}js/plugin/jquery.validate.js")
     .script("{$site.url}js/plugin/jquery.hotkeys.js")
     .script("{$site.url}js/plugin/jquery.filedrop.js")
+    .script("{$site.url}js/plugin/autoTextarea.js")
+    //.script("{$site.url}js/tool.js")
     .script("{$site.url}js/plugin/mustache.js").wait()
     {if $is_admin}.script("{$site.url}js/plugin/jquery.jeditable.mini.js")
     .script("{$site.url}js/admin.js")
