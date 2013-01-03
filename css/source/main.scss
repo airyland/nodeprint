@@ -71,9 +71,9 @@ span.more {
     float:left;
     li {
       float: left;
-      background:#ececec;
+      background:#fff;
       padding: 3px;
-      margin-right:5px;
+      margin-right:0px;
       @include radius(2px);
       &.current {
         background: $vivid;
@@ -83,7 +83,7 @@ span.more {
         }
       }
       a {
-        padding: 5px 10px;
+        padding: 5px 5px;
         &:hover {
             text-decoration: underline;
           }
@@ -107,9 +107,9 @@ span.more {
 
 .index-content, .box, .article-box, .profile-box, .sidebar section {
   @include radius(3px);
-  @include shadow(0,2px,2px,rgba(0, 0, 0, 0.15));
+  @include shadow(0,2px,5px,rgba(0, 0, 0, 0.15));
   background-color: white;
-  border: 2px solid white;
+  border: 1px solid #ccc;
   overflow: hidden;
   margin-bottom: 20px;
 }
@@ -1277,4 +1277,26 @@ td strong {
 .admin-list {
   color:#000;
   padding:0 10px 0 0;
+}
+
+.choose-tip {
+  font-size:16px;
+  text-align:center;
+  color:$vivid;
+  font-family:宋体;
+  padding:10px 0;
+  background:#fdfdfd;
+  border-bottom:1px solid $vivid;
+}
+
+#online {
+  background:$vivid;
+  @include radius(2px);
+  color:#fff;
+  text-shadow:none;
+}
+
+.topic-list li p.cm-content{
+  font-size:14px;
+  color:#000;
 }

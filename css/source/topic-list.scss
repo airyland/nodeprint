@@ -25,7 +25,6 @@
     border-radius: 4px;
   }
   li p {
-    margin-left: 63px;
     font-size: 12px;
     /*font-weight:bold;*/
     word-wrap: break-word;
@@ -64,6 +63,10 @@ a.post-title {
     text-decoration: underline;
     text-shadow: 0 1px 0 #fff;
   }
+}
+
+a.small-title {
+  font-size:12px;
 }
 
 .topic-list span.last-reply {

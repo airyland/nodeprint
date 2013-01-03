@@ -21,3 +21,9 @@
 
 ::selection      { background:$vivid; color:#fff; /* Safari and Opera */ }
 ::-moz-selection  { background:$vivid; color:#fff; /* Firefox */ }
+
+.editable-box {
+	input,textarea{
+		@include radius(3px);
+	}
+}
