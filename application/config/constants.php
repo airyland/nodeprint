@@ -62,7 +62,7 @@ define('ST_NAME', 'STBlog');
 define('ST_SALT_LENGTH', 9);
 define('ST_VERSION', '0.1.2');
 define('ST_AUTHOR', 'Saturn');
-define('ST_AUTHOR_URL', 'http://www.cnsaturn.com/');
+define('ST_AUTHOR_URL', 'http://nodeprint.com/');
 define('ST_CONTENT_BREAK', '[--break--]');
 /** 系统核心内部规定的插件钩子名称 */
 define('ST_CORE_HOOK_EDITOR', 'Core::Editor');

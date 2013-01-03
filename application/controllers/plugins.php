@@ -1,5 +1,21 @@
 <?php
 
+!defined('BASEPATH') && exit('No direct script access allowed');
+
+/**
+ * NodePrint
+ *
+ * 轻论坛程序
+ *
+ * NodePrint is a lightweight BBS built on Ci.
+ *
+ * @package            NodePrint
+ * @author             airyland <i@mao.li>
+ * @copyright         Copyright (c) 2012 , mao.li.
+ * @license		    MIT License
+ * @link		        http://github.com/airyland/nodeprint
+ * @version            0.0.5
+ */
 /**
  * plugin Controllers
  * @autho airyland@qq.com <i@mao.li>

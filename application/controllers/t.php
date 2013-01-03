@@ -26,6 +26,7 @@ class T extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('configs');
+        $this->load->library('s');
     }
 
     function index() {
@@ -33,7 +34,6 @@ class T extends CI_Controller {
     }
 
     function the_post($id) {
-        $lang = load_lang();
         $page = $this->input->get_page();
         if(!$page){
             show_error('帖子不存在或者被删除', 404);
@@ -42,12 +42,9 @@ class T extends CI_Controller {
         $this->load->model('comment');
         $local_upload = $this->configs->item('local_upload');
         $comment_no = $this->configs->item('comment_no');
-       
-        function time_ago($paras) {
-            return friendlyDate(strtotime($paras['time']));
-        }
+ 
         $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
-         $count=$this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no,TRUE);
+        $count=$this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no,TRUE);
         
         $this->load->library('dpagination');
         $this->dpagination->target("/t/{$id}");
@@ -56,12 +53,8 @@ class T extends CI_Controller {
         $this->dpagination->limit($comment_no);
         $this->dpagination->currentPage($page);
         $page_bar = $this->dpagination->getOutput();
-        
-        
+                
         $user = get_user();
-        $this->load->library('s');
-        $this->s->registerPlugin('function', 'time_ago', 'time_ago');
-
         $this->post->get_post_fav_no($id);
         $this->post->add_post_hit($id);
         $topic = $this->post->post_info($id);
@@ -71,7 +64,6 @@ class T extends CI_Controller {
             'title' => $topic['post_title'],
             't' => $topic,
             'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no),
-            'lang' => $lang,
             'fav' => $this->post->check_post_fav($user['user_id'], $id),
             'local_upload'=>$local_upload,
             'page_bar'=>$page_bar
