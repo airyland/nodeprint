@@ -35,7 +35,7 @@ class Admin extends CI_Controller {
 
     function the_action($action, $id = '') {
         $this->load->library('s');
-        $lang = lang('en');
+        $lang = lang('english');
         $this->s->assign('lang', $lang);
         switch ($action) {
             /**
@@ -166,7 +166,17 @@ class Admin extends CI_Controller {
                       $this->load->helper('directory');
                       $this->config->load('site');
                       $directory=$this->config->item('page_directory');
-                      $files=array_filter(directory_map($directory,1),function($item){return strpos($item,'html');});
+                      $all_files=array_filter(directory_map($directory,1),function($item){return strpos($item,'html');});
+                      $files=array();
+                      foreach($all_files as $key => $val){
+                          $files[$key]['name']=$val;
+                          $files[$key]['time'] = filemtime($directory.$val);    
+                      }
+                      unset($all_files);
+                      function time_ago($paras) {
+            return friendlyDate($paras['time']);
+        }
+        $this->s->registerPlugin('function', 'time_ago', 'time_ago');
                 if ($id == '') {                 
                     $this->s->assign(array(
                         'title' => '页面管理',
@@ -176,7 +186,21 @@ class Admin extends CI_Controller {
                     ));
                     $this->s->display('admin/admin_pages.html');
                 } else {
-                    echo 'page edit';
+                    $page=$this->input->get('p');
+                    if(file_exists($directory.$page)){
+                         $this->s->assign(array(
+                        'title' => '页面管理',
+                        'user' => get_user(),
+                        'files'=>$files,
+                        'count'=>count($files),
+                        'file_content'=>  file_get_contents($directory.$page)
+                    ));
+
+                    $this->s->display('admin/admin_pages_edit.html');
+                    }else{
+                        show_error('文件不存在哦',404);
+                    }
+                   
                 }
                 break;
 
