@@ -31,7 +31,7 @@ class Member extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('configs');
-        $this->page = $this->input->get('page') ? $this->input->get('page') : 1;
+        $this->page = $this->input->get_page();
         if (!is_numeric($this->page))
             show_error('页面不存在', 404);
         $this->load->library('dpagination');
@@ -176,7 +176,7 @@ class Member extends CI_Controller {
                 $this->s->assign(
                         array(
                             'title' => $slug . '回复的帖子',
-                            'post' => $this->post->list_user_comment_post($slug, 'user_name', 1, $limit),
+                            'post' => $this->post->list_user_comment_post($slug, 'user_name', $this->page, $limit),
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
@@ -196,7 +196,7 @@ class Member extends CI_Controller {
                     'title' => $u['user_name'],
                     'latest_blog' => '',
                     'github' => ($u['other']['github']) ? $this->github->fetch($u['other']['github']) : '',
-                    'hispost'=>$this->post->query_post("user_id={$slug}&user_type={$field}&order=post_last_comment&page={$this->page}&no={$limit}"),
+                    'post'=>$this->post->query_post("user_id={$slug}&user_type={$field}&order=post_last_comment&page={$this->page}&no={$limit}"),
                     'hiscomment' => $this->post->list_user_comment_post($slug, $filed,  1, $limit),
                     'is_follow' => $is_follow
                 ));
