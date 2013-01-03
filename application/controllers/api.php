@@ -1095,56 +1095,14 @@ class Api extends CI_Controller {
     }
 
     function fetch() {
-
-        function set_filename($path, $ext) {
-            mt_srand();
-            $filename = md5(uniqid(mt_rand())) . '.' . $ext;
-            if (!file_exists($path . $filename)) {
-                return $filename;
-            }
-            $filename = str_replace($ext, '', $filename);
-
-            $new_filename = '';
-            for ($i = 1; $i < 100; $i++) {
-                if (!file_exists($path . $filename . $i . $ext)) {
-                    $new_filename = $filename . $i . $ext;
-                    break;
-                }
-            }
-
-            if ($new_filename == '') {
-                $this->set_error('upload_bad_filename');
-                return FALSE;
-            } else {
-                return $new_filename;
-            }
-        }
-
-        $path = 'np-content/upload/';
-        $type = array(
-            'image/gif' => 'gif',
-            'image/jpeg' => 'jpg',
-            'image/jpg' => 'jpg',
-            'image/png' => 'png'
-        );
-
+        $this->load->library('FetchAvatar');
         $url = 'http://qzapp.qlogo.cn/qzapp/100343915/09A4CE4BEE02C91D86B76BE2B0AD37BF/100';
-        $header = get_headers($url, 1);
-        if (is_array($header)) {
-            $contentType = $header['Content-Type'];
-        }
-        $ch = curl_init($url);
-        $name = set_filename($path, $type[$contentType]);
-        $fp = fopen($path . $name, "w");
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_exec($ch);
-        curl_close($ch);
-        fclose($fp);
+        $this->fetchavatar->fetch($url,73,TRUE);
+        //$this->fetchavatar->fetch_gravatar('airyland@qq.com',73);
     }
 
     /**
-     * 管理员相关API
+     * admin api
      * 
      * @access public
      * @param string $action
