@@ -18,7 +18,9 @@ img/captcha/*.jpg
 *.db
 /other
 /np-content/cache/*.txt
+/application/backup/*.zip
 /np-content/upload/*.png
+/np-content/upload/*.jpg
 /css/source/.sass-cache
 /wiki
 /oauth
