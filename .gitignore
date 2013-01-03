@@ -15,10 +15,14 @@ img/captcha/*.jpg
 /img/avatar/l/*.png
 /img/avatar/m/*.png
 /img/avatar/s/*.png
+/img/avatar/l/*.jpg
+/img/avatar/m/*.jpg
+/img/avatar/s/*.jpg
 *.db
 /other
 /np-content/cache/*.txt
 /application/backup/*.zip
+/application/backup/*.sql
 /np-content/upload/*.png
 /np-content/upload/*.jpg
 /css/source/.sass-cache
