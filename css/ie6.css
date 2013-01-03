@@ -1,0 +1,5 @@
+html,html body{background-image:url(about:blank);background-attachment:fixed}
+header,section,footer{display:block;}
+#header {position:absolute;background:#333;top:expression(eval(document.documentElement.scrollTop));left:0;}
+
+.topic-list li {border:1px solid red;}
