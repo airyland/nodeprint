@@ -20,10 +20,18 @@ class S extends Smarty {
         //$this->caching=FALSE;
         //缓存过期时间
         $this->setCaching(0);
+
+        function time_ago($paras) {
+            return relative_time(strtotime($paras['time']));
+        }
+        $this->registerPlugin('function', 'time_ago', 'time_ago');
+
+
         $this->assign('is_login', is_login());
         $this->assign('is_admin', $this->_ci->auth->is_admin());
         $this->assign('site', $configs);
         $this->assign('me', $this->_ci->user->get_user_profile($current_user['user_id'], 'user_id'));
         $this->assign('lang', lang($configs['lang']));
+        $this->assign('_', lang($configs['lang']));
     }
 }
