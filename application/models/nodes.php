@@ -156,14 +156,14 @@ class Nodes extends CI_Model {
      * @param bool $count
      * @return mixed
      */
-    public function get_user_fav_node_post($user_id, $page = 1, $no = 20, $count = false) {
+    public function get_user_fav_node_post($user_id, $page = 1, $no = 20, $count = false,$order_by = 'post_id') {
         $this->db->from('vx_post')
                 ->join('vx_follow', 'vx_follow.f_keyid=vx_post.node_id')
                 ->join('vx_node', 'vx_post.node_id=vx_node.node_id')
                 ->where('vx_follow.f_type', 2)
                 ->where('vx_follow.user_id', $user_id);
         if ($count == false) {
-            $rs = $this->db->order_by('post_id', 'DESC')->limit($no, count_offset($page, $no))->get();
+            $rs = $this->db->order_by($order_by, 'DESC')->limit($no, count_offset($page, $no))->get();
             return $rs->num_rows() > 0 ? $rs->result_array() : 0;
         } else {
             return $this->db->count_all_results();
