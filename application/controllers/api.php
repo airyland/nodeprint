@@ -750,9 +750,10 @@ class Api extends CI_Controller {
 
                 $node_id = $this->input->post('node-id');
                 $post_content = $this->input->post('post-content');
+                $raw_content=$post_content;
                 $users = get_at_users(' ' . $post_title . ' ' . $post_content . ' ');
                 $post_content = parse_content($post_content);
-                $add = $this->post->add_post($post_title, $post_content, $user['user_id'], $user['user_name'], $node_id);
+                $add = $this->post->add_post($post_title, $post_content, $user['user_id'], $user['user_name'], $node_id, $raw_content);
                 $post_id = $this->db->insert_id();
                 $this->load->model('nodes');
                 $this->nodes->refresh_node_post_no();
