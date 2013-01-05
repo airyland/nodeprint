@@ -3,6 +3,7 @@
 class Settings extends CI_Controller {
 
     function index() {
+        $this->auth->check_login();
         $this->load->helper('config');
         $lang = load_lang();
         $this->load->model('user');
@@ -13,7 +14,6 @@ class Settings extends CI_Controller {
             'lang' => $lang,
             'avatar' => get_avatar($user['user_id'])
         ));
-
         $this->s->display('user_settings.html');
     }
 
