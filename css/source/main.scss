@@ -617,10 +617,12 @@ a {
   }
   p {
     line-height: 25px;
+    padding-right: 35px;
+    word-wrap: break-word;
     &.time {
       position: absolute;
       right: 15px;
-      top: 10px;
+      bottom: 10px;
     }
   }
   .delete-link {

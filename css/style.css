@@ -1,4 +1,4 @@
-@charset "GB2312";
+@charset "GBK";
 /* ==settings
 --------------------------------------------------*/
 ::-webkit-scrollbar-thumb:vertical {
@@ -1251,11 +1251,13 @@ a.unfav-link {
     max-width: 80%;
     display: table-cell; }
 .m-list p {
-  line-height: 25px; }
+  line-height: 25px;
+  padding-right: 35px;
+  word-wrap: break-word; }
   .m-list p.time {
     position: absolute;
     right: 15px;
-    top: 10px; }
+    bottom: 10px; }
 .m-list .delete-link {
   color: #e82a73; }
 
