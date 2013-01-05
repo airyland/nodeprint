@@ -28,3 +28,4 @@ img/captcha/*.jpg
 /css/source/.sass-cache
 /wiki
 /oauth
+/application/config/oauth.php
