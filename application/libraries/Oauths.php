@@ -1,92 +1,92 @@
-<?php
+<?php  !defined('BASEPATH') && exit('No direct script access allowed');
+/**
+ * Oauth library
+ * @author airyland <i@mao.li>
+ * @version 0.5
+ */
 if (!function_exists('curl_init')) {
-    throw new Exception('Simple douban oauth2 needs the CURL PHP extension.');
+    throw new Exception('oauth2 needs the CURL PHP extension.');
 }
 if (!function_exists('json_decode')) {
-    throw new Exception('Simple douban oauth2 needs the JSON PHP extension.');
+    throw new Exception('oauth2 needs the JSON PHP extension.');
 }
 
 class Oauths {
-    
-    /**
-     * @brief 豆瓣Oauth类词头
-     */
-    const PREFIX = 'Douban';
 
     /**
-     * @brief authorizeCode请求链接
+     * @brief authorizeCode request uri
      */
     protected $authorizeUri;
-    
+
     /**
-     * @brief accessToken请求链接
+     * @brief accessToken request uri
      */
     protected $accessUri;
-    
+
     /**
-     * @brief api请求链接
+     * @brief api uri
      */
     protected $apiUri;
-                
+
     /**
-     * @brief 豆瓣应用public key
+     * @brief appkey
      */
     protected $clientId;
-    
+
     /**
-     * @brief 豆瓣应用secret key
+     * @brief app secret
      */
     protected $secret;
 
     /**
-     * @brief callback链接
+     * @brief callback uri
      */
     protected $redirectUri;
 
     /**
-     * @brief Api权限
+     * @brief Api scope
      */
     protected $scope;
-    
+
     /**
-     * @brief 返回类型，默认使用code
+     * @brief response type
      */
     protected $responseType;
-    
+
     /**
-     * @brief 用户授权码
+     * @brief authorize code
      */
     protected $authorizeCode;
 
     /**
-     * @brief 储存返回的令牌（accessToken,refreshToken）
+     * @brief tokens contains accessToken and refreshToken
      */
     protected $tokens;
 
     /**
-     * @brief 通过authorizeCode获得的访问令牌
+     * @brief access token
      */
     protected $accessToken;
 
     /**
-     * @brief 用于刷新accessToken
+     * @brief refresh token
      */
     protected $refreshToken;
 
     /**
-     * @var 默认请求头信息 
+     * @var default header
      */
     protected $defaultHeader = array(
                 'Content_type: application/x-www-form-urlencoded'
                 );
 
     /**
-     * @var 需授权的请求头
+     * @var authorize header
      */
     protected $authorizeHeader;
-    
+
     /**
-     * @var curl默认设置  
+     * @var curl default option
      */
     protected $CURL_OPTS = array(
                 CURLOPT_CONNECTTIMEOUT => 10,
@@ -97,7 +97,7 @@ class Oauths {
                 );
 
     /**
-     * 初始化OAUTH，设置相关参数
+     * initialize
      *
      * @param array $params
      * @return void
@@ -120,22 +120,20 @@ class Oauths {
     }
 
     /**
-     * @brief 跳转到豆瓣用户授权页面，获取AuthorizeCode
+     * redirect to authorize page
      *
      * @return redirect
      */
     public function requestAuthorizeCode()
     {
-        // 获取AuthorizeCode请求链接
         $authorizeUrl = $this->getAuthorizeUrl();
         header('Location:'.$authorizeUrl);
     }
     
     /**
-     * @brief 设置AuthorizeCode
+     * set authorize code
      *
      * @param string $authorizeCode
-     *
      * @return void
      */
     public function setAuthorizeCode($authorizeCode)
@@ -144,7 +142,7 @@ class Oauths {
     }
 
     /**
-     * @brief 通过AuthorizeCode获取accessToken
+     * get accessToken with AuthorizeCode
      *
      * @return string
      */
@@ -159,19 +157,16 @@ class Oauths {
                     'grant_type' => 'authorization_code',
                     'code' => $this->authorizeCode,
                     );
-
         $result = $this->curl($accessUrl, 'POST', $header, $data);
         $this->tokens = json_decode($result);
-        print_r($this->tokens);
         $this->refreshToken = $this->tokens->refresh_token;
         $this->accessToken = $this->tokens->access_token;
     }
     
     /**
-     * @brief 设置accessToken
+     * set accessToken
      *
      * @param string $accessToken
-     *
      * @return object
      */
     public function setAccessToken($accessToken)
@@ -180,7 +175,7 @@ class Oauths {
     }
 
     /**
-     * @brief 获取accessToken
+     * get accessToken
      *
      * @return string
      */
@@ -189,61 +184,27 @@ class Oauths {
         return $this->accessToken;
     }
 
-    /**
-     * @brief 注册豆瓣Api
-     *
-     * @param string $api
-     * @param array $params
-     *
-     * @return object
-     */
-    public function api($api, $params = array())
-    {
-        $info = explode('.', $api);
-        $class = $info[0];
-        $func = $info[1];
-        $type = strtoupper($info[2]);
-
-        $doubanApi = self::PREFIX.ucfirst(strtolower($class));
-        // 豆瓣Api路径
-        $apiFile = dirname(__FILE__).'/api/'.$doubanApi.'.php';
-        // 豆瓣Api基类路径
-        $basePath = dirname(__FILE__).'/api/DoubanBase.php';
-        
-        try {
-            $this->fileLoader($basePath);
-            $this->fileLoader($apiFile);
-        } catch(Exception $e) {
-            echo 'Apiloader error:'.$e->getMessage();
-        }
-
-        $instance = new $doubanApi($this->clientId);
-        return $instance->$func($type, $params);
-    }
 
     /**
-     * @brief 请求豆瓣API,返回包含相关数据的对象
+     * make request
      *
-     * @param object $API
+     * @param string $uri
+     * @param string $type 'POST' or 'GET'
      * @param array $data
-     * @param boolean 为true时会在header中发送accessToken
-     *
+     * @param boolean if true, accessToken will be sent in header
      * @return object
      */
-    public function makeRequest($uri='',$type='', $data = array(), $authorization = false)
+    public function makeRequest($uri='',$type='GET', $data = array(), $authorization = false)
     {
-        // API的完整URL
-       // $url = $this->apiUri.$uri;
-        $url = $this->apiUri.'/v2/user/~me';
+        $url = $this->apiUri.$uri;
         $header = $authorization ? $this->getAuthorizeHeader() : $this->defaultHeader;
-        //$type = $type;
+        $type = $type;
         $type='GET';
-
         return $this->curl($url, $type, $header, $data);
     }
 
     /**
-     * @brief 生成豆瓣用户授权页面完整地址
+     * build authorize url
      *
      * @return string
      */
@@ -260,7 +221,7 @@ class Oauths {
     }
 
     /**
-     * @brief 获取Authorization header
+     * get Authorization header
      *
      * @return array
      */
@@ -270,7 +231,7 @@ class Oauths {
     }
 
     /**
-     * @brief 使用CURL模拟请求，并返回取得的数据
+     * use curl to request data
      *
      * @param string $url
      * @param string $type
@@ -289,33 +250,17 @@ class Oauths {
         if ($type == 'POST' || $type =='PUT') {
             $opts[CURLOPT_POSTFIELDS] = $data;
         }
-
         $ch = curl_init();
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
-
         if (curl_errno($ch)) {
             die('CURL error: '.curl_error($ch));
         }
-
         curl_close($ch);  
         return $result;
     }
-    
-    /**
-     * @brief 文件加载类
-     *
-     * @param string $path
-     *
-     * @return void
-     */
-    protected function fileLoader($path)
-    {
-        // 文件路径错误时抛出异常
-        if ( ! file_exists($path)) {
-            throw new Exception('The file you wanted to load does not exists.');
-        }
 
-        require $path;
-    }
 }
+
+/* End of file Oauths.php */
+/* Location: ./application/libraries.Oauths.php */
