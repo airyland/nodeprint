@@ -1,17 +1,18 @@
 /**
- * new feature related script
+ * new features related script
  */
 
 (function ($) {
     var href = document.location.href,
         isSupportLocalstorage = window.localStorage,
-        isSupportNotification = window.webkitNotifications;
+        isSupportNotification = window.webkitNotifications,
+        lastMessageFetch = store.get('lastMessageFetch');
     // message notifications
     //@todo render the messages
     $.get('api/user/0/message', {
         type:1,
         count:1,
-        start_time:+new Date()
+        start_time:lastMessageFetch
     }, function (res) {
         var no = res.count;
         if (isSupportLocalstorage && isSupportNotification) {
@@ -23,5 +24,6 @@
                 }, 2000);
             }
         }
+        store.set('lastMessageFetch', +new Date());
     }, 'json');
 })(jQuery);
