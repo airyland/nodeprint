@@ -308,7 +308,7 @@ class Api extends CI_Controller {
                 echo json_encode(array('code' => 0, 'favnode' => $favtopic));
                 break;
             /**
-             * 获得用户消息
+             * get messages
              * @url api/user/$username/message
              * @ return json
              */
@@ -317,7 +317,8 @@ class Api extends CI_Controller {
                 $this->load->model('message');
                 $type = $this->input->get('type');
                 $count = $this->input->get('count');
-                $message = $this->message->list_message($user['user_name'], 'm_to_username', $type, 1, 20, $count);
+                $start_time = $this->input->get('start_time')?$this->input->get('start_time'):null;
+                $message = $this->message->list_message($user['user_name'], 'm_to_username', $type, 1, 20, $count,0,$start_time);
 
                 if ($count) {
                     echo json_encode(array('error' => 0, 'count' => $message));
