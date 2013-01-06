@@ -19,6 +19,7 @@
  * @author airyland <i@mao.li>
  */
 class Message extends CI_Model {
+    const MSG_TABLE = 'message';
 
     function __construct() {
         parent::__construct();
@@ -49,7 +50,7 @@ class Message extends CI_Model {
             'm_subject' => json_encode($subject),
             'm_read' => 1
         );
-        $this->db->insert('vx_message', $data);
+        $this->db->insert(self::MSG_TABLE, $data);
     }
 
     /**
@@ -58,37 +59,45 @@ class Message extends CI_Model {
      * @return void
      */
     function del_message($m_id) {
-        return $this->db->where('m_id', $m_id)->delete('vx_message');
+        return $this->db->where('m_id', $m_id)->delete(self::MSG_TABLE);
     }
 
     /**
      * list message by user
      * @param string $user
-     * @param string $user_type m_to_username or m_from_username
+     * @param string $user_type 'm_to_username' or 'm_from_username'
      * @param int $read
      * @param int $page
      * @param int $no
      * @param int $count
-     * @return array|0 
+     * @param int $m_type
+     * @param string $start_time
+     * @return mixed
      */
-    function list_message($user, $user_type='m_to_username', $read=1, $page=1, $no=20, $count=0,$m_type=0) {
+    function list_message($user, $user_type='m_to_username', $read=1, $page=1, $no=20, $count=0,$m_type=0,$start_time=null) {
         $this->db->where($user_type, $user);
         
-        //收到的私信
+        //private message
         if($m_type==4)
             $this->db->where('m_type', 4);
         
-         //若为发送信息，则不分是否已读
-        if($user_type=='m_to_username'){
-             if ($read!=-1) $this->db->where('m_read', $read);
+         //for received message, $m_read is ignored
+        if($user_type=='m_to_username'&&$read!=-1){
+            $this->db->where('m_read', $read);
+        }
+
+        //if $start_time given, then get the messaged received after the $start_time
+        if($start_time){
+            $this->db->where('m_time>',$start_time);
         }
         
-       //只计数
-        if ($count)
-            return $this->db->from('vx_message')->count_all_results();
+       //count only
+        if ($count){
+            return $this->db->from(self::MSG_TABLE)->count_all_results();
+        }
 
         $this->db->order_by('m_id', 'DESC')->limit($no, count_offset($page, $no));
-        $message = $this->db->get('vx_message');
+        $message = $this->db->get(self::MSG_TABLE);
         $rs = $message->result_array();
         foreach ($rs as $k => $v) {
             $rs[$k]['sub'] = json_decode($v['m_subject'], true);
@@ -99,8 +108,8 @@ class Message extends CI_Model {
 
     /**
      * set the message status to read
-     * @param type $id
-     * @param type $type 
+     * @param int $id
+     * @param string $type
      */
     function set_read($id=0, $type='message') {
         $user=$this->auth->get_user();
@@ -110,7 +119,7 @@ class Message extends CI_Model {
             $this->db->where('post_id', $id);
         if ($type== 'setallread')
             $this->db->where_in('m_type',array('1','2','3','4'));
-        $this->db->set('m_read', '0')->where('m_to_username',$user['user_name'])->update('vx_message');
+        $this->db->set('m_read', '0')->where('m_to_username',$user['user_name'])->update(self::MSG_TABLE);
     }
 }
 
