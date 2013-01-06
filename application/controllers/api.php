@@ -317,7 +317,7 @@ class Api extends CI_Controller {
                 $this->load->model('message');
                 $type = $this->input->get('type');
                 $count = $this->input->get('count');
-                $start_time = $this->input->get('start_time')?$this->input->get('start_time'):null;
+                $start_time = $this->input->get('start_time')?date('Y-m-d H:i:s',$this->input->get('start_time')):null;
                 $message = $this->message->list_message($user['user_name'], 'm_to_username', $type, 1, 20, $count,0,$start_time);
 
                 if ($count) {
