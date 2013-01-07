@@ -868,4 +868,26 @@ $(function () {
 
      //autoTextarea($('#cm-box')[0],20,300);
 
+    var href=location.href,
+        hash=location.hash,
+        isTopicPage=href.indexOf('/t/')!==-1,
+        isNodeinfoPage=href.indexOf('/node/')!==-1;
+    if(isTopicPage){
+        var data=['admin'],
+            $userNameNode=$('.cm-list>li>p>a.user-name');
+        authorName=$('.post-info .post_author>img').attr('alt');
+        data.push(authorName);
+        $.unique($.merge(data,$.unique($.map($userNameNode,function(val,key){return $(val).text();}))));
+        $LAB.script("/js/plugin/at.js")
+            .wait(function(){
+                $('#cm-box').atWho('@',{'data':data,'tpl':"<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"});
+            });
+        $(hash).css('background-color','yellow');
+        setTimeout(function(){$(hash).css('background-color','#fff');},3000);
+        /*if(hash){$('html, body').animate({
+         scrollTop: $(hash).offset().top
+         }, 2000);}*/
+    }
+
+
 });

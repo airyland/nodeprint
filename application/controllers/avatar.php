@@ -64,6 +64,11 @@ class Avatar extends CI_Controller
         }
     }
 
+    public function by_name($name,$size){
+        $user_id = $this->db->get_where('user',array('user_name'=>$name))->row()->user_id;
+        $this->index($user_id,$size);
+    }
+
     public function img2data()
     {
         return $this->imgdata = fread(fopen($this->imgsrc, 'rb'), filesize($this->imgsrc));

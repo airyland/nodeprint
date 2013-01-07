@@ -47,28 +47,6 @@
     {/if}
     .script("{$site.url}js/main.js")
     .script("{$site.url}js/cron.js");
-        {literal}
-        var href=location.href,
-             hash=location.hash,
-             isTopicPage=href.indexOf('/t/')!==-1,
-             isNodeinfoPage=href.indexOf('/node/')!==-1;
-        if(isTopicPage){
-            var data=['admin'],
-            $userNameNode=$('.cm-list>li>p>a.user-name');
-            authorName=$('.post-info .post_author>img').attr('alt');
-            data.push(authorName);
-            $.unique($.merge(data,$.unique($.map($userNameNode,function(val,key){return $(val).text();}))));
-            $LAB.script("/js/plugin/at.js")
-                    .wait(function(){
-                        $('#cm-box').atWho('@',{'data':data});
-                    });
-            $(hash).css('background-color','yellow');
-            setTimeout(function(){$(hash).css('background-color','#fff');},3000);
-            /*if(hash){$('html, body').animate({
-                scrollTop: $(hash).offset().top
-            }, 2000);}*/
-        }
-        {/literal}
 </script>
 {include file="footer_analytics.html"}
 {literal}  
