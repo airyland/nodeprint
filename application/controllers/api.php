@@ -185,7 +185,7 @@ class Api extends CI_Controller {
                 $this->auth->check_login();
                 $this->load->library('FetchAvatar');
                 $user_id=$this->current_user['user_id'];
-                $this->fetchavatar->fetch_gravatar($size = 73,$user_id);
+                $this->fetchavatar->fetch_gravatar(200,$user_id);
                 redirect('/settings#avatar');
                 break;
             /**

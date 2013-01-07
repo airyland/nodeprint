@@ -49,8 +49,8 @@
         <h2><span class="title">{$lang.avatar}</span></h2>
         <p>
             <img src="/img/avatar/l/{$me.user_id}.png?t={$timestamp}" width="73" height="73" onerror="this.src='/img/avatar/l/0.png'" alt="{$me.user_name}">
-            <img src="/img/avatar/s/{$me.user_id}.png?t={$timestamp}" onerror="this.src='/img/avatar/m/0.png'" width="48" height="48" alt="{$me.user_name}">
-            <img src="/img/avatar/m/{$me.user_id}.png?t={$timestamp}" onerror="this.src='/img/avatar/s/0.png'" width="20" height="20" alt="{$me.user_name}">
+            <img src="/img/avatar/m/{$me.user_id}.png?t={$timestamp}" onerror="this.src='/img/avatar/m/0.png'" width="48" height="48" alt="{$me.user_name}">
+            <img src="/img/avatar/s/{$me.user_id}.png?t={$timestamp}" onerror="this.src='/img/avatar/s/0.png'" width="20" height="20" alt="{$me.user_name}">
         </p>
         <span class="title">上传新头像</span>
         <form action="api/user/0/avatar" method="post" enctype="multipart/form-data">
