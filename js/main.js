@@ -882,8 +882,10 @@ $(function () {
             .wait(function(){
                 $('#cm-box').atWho('@',{'data':data,'tpl':"<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"});
             });
-        $(hash).css('background-color','yellow');
-        setTimeout(function(){$(hash).css('background-color','#fff');},3000);
+        if(parseInt(hash)){
+            $(hash).css('background-color','yellow');
+            setTimeout(function(){$(hash).css('background-color','#fff');},3000);
+        }
         /*if(hash){$('html, body').animate({
          scrollTop: $(hash).offset().top
          }, 2000);}*/
