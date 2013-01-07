@@ -210,7 +210,7 @@ var comment = {
         //提交成功删除本地保存回复
         store.remove(this.storeId);
         var html = Mustache.render($('#comment-template').html(), e);
-        if (e.data.cm_reply_name != '') html += '<a href="t/' + e.data.post_id + '#comment-' + e.data.cm_reply_to + '" class="s-avatar"><img src="avatar/' + e.data.cm_reply_id + '/20' + e.data.cm_reply_name + '" width="20" height="20" alt=""></a>';
+        if (e.data.cm_reply_name != '') html += '<a href="t/' + e.data.post_id + '#comment-' + e.data.cm_reply_to + '" class="s-avatar"><img src="avatar/' + e.data.cm_reply_id + '/20' + '" '+'width="20" height="20" alt=""></a>';
         html += '</li>';
         if ($('#no-reply').length > 0) $('#no-reply').remove();
         var floor = this.getMaxFloor();
