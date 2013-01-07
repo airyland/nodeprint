@@ -312,7 +312,7 @@ function Ts($string, $pluralString, $amount)
  * @param bool $precise Whether or not to return "x minutes/seconds", or just "a few minutes".
  * @return string A human-friendly time string.
  */
-function relative_time($then, $precise = false)
+function relative_time($then, $precise = TRUE)
 {
 
     // If there is no $then, we can only assume that whatever it is never happened...

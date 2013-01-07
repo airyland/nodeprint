@@ -1,4 +1,5 @@
 <?php
+$lang["just now"] = "刚刚";
 $lang["%d day ago"] = "昨天";
 $lang["%d days ago"] = "%d 天前";
 $lang["%d hour ago"] = "1 小时前";

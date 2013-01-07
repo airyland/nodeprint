@@ -10,7 +10,7 @@
             <header>
                 <h2>{$t.post_title}</h2>
                 <a class="post_author" href="/member/{$t.user_name}"><img src="/avatar/{$t.user_id}/73"  alt="{$t.user_name}" /></a>
-                <span>By <a href="/member/{$t.user_id}">{$t.user_name}</a> at <time class="time-txt">{$t.post_time}</time>, {$t.post_hit} hits</span>
+                <span>By <a href="/member/{$t.user_id}">{$t.user_name}</a>  <time class="time-txt">{time_ago time=$t.post_time}</time> {$t.post_hit} {$_.hits}</span>
             </header>
             <div class="post-content">{$t.post_content}</div>
             <footer class="topic-footer">

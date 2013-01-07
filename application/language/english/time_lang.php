@@ -1,5 +1,5 @@
 <?php
-
+$lang["just now"] = "just now";
 $lang["%d day ago"] = "yesterday";
 $lang["%d days ago"] = "%d days ago";
 $lang["%d hour ago"] = "1 hour ago";
