@@ -180,6 +180,14 @@ class Api extends CI_Controller {
                 $e = ($this->db->where('user_name', $user_name)->get('vx_user')->num_rows() == 0) ? 'true' : 'false';
                 echo $e;
                 break;
+
+            case 'use_gravatar':
+                $this->auth->check_login();
+                $this->load->library('FetchAvatar');
+                $user_id=$this->current_user['user_id'];
+                $this->fetchavatar->fetch_gravatar($size = 73,$user_id);
+                redirect('/settings#avatar');
+                break;
             /**
              * 发送找回密码的邮件
              * 只针对在网站上用邮箱注册的用户

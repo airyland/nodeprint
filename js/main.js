@@ -891,5 +891,11 @@ $(function () {
          }, 2000);}*/
     }
 
+    $('#fetch-gravatar').on('click',function(e){
+        e.preventDefault();
+        var url=$(this).data('url');
+        $.dialog({title:'获取Gravatar头像',content:'<img style="vertical-align: bottom;" src="'+url+'?s=73"/>&nbsp;<img style="vertical-align: bottom;" src="'+url+'?s=48"/>&nbsp;<img style="vertical-align: bottom;" src="'+url+'?s=20"/> <br/><br/><br/><a href="/api/user/0/use_gravatar" class="vivid-button">确认使用Gravatar头像</a> '});
+    });
+
 
 });

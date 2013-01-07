@@ -28,6 +28,7 @@ class FetchAvatar
      * @var string
      */
     private $save_path = 'img/avatar/';
+    private $_ci;
 
     function __construct()
     {
@@ -70,7 +71,7 @@ class FetchAvatar
      * @param int $size
      * @param bool $generate_all
      */
-    function fetch($url, $size, $generate_all = FALSE)
+    function fetch($url, $size, $id, $generate_all = FALSE)
     {
         $type = array(
             'image/gif' => 'gif',
@@ -91,11 +92,11 @@ class FetchAvatar
         curl_close($ch);
         fclose($fp);
         if ($generate_all) {
-            $this->save_avatar($name, 99, 20);
-            $this->save_avatar($name, 99, 48);
-            $this->save_avatar($name, 99, 73);
+            $this->save_avatar($name, $id, 20);
+            $this->save_avatar($name, $id, 48);
+            $this->save_avatar($name, $id, 73);
         } else {
-            $this->save_avatar($name, 99, $size);
+            $this->save_avatar($name, $id, $size);
         }
     }
 
@@ -104,9 +105,11 @@ class FetchAvatar
      * @param $email
      * @param int $size
      */
-    public function fetch_gravatar($email, $size = 73)
+    public function fetch_gravatar($size = 73,$user_id)
     {
-        $this->fetch($this->get_gravatar_url($email, $size), $size);
+        $this->_ci=&get_instance();
+        $user_email=$this->_ci->db->get_where('user',array('user_id'=>$user_id))->row()->user_email;
+        $this->fetch($this->get_gravatar_url($user_email, $size), $size, $user_id, TRUE);
     }
 
     /**
