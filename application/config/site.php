@@ -7,4 +7,8 @@ $config['feed_expire_time']=0;
 $config['site_email']='i@mao.li';
 //page directory
 $config['page_directory']='./application/templates/page/';
-//
+
+//hot nodes item list number
+$config['np.node.hot_nodes_no']=10;
+//new nodes item list number
+$config['np.node.new_nodes_no']=10;

@@ -29,6 +29,8 @@ class Home extends CI_Controller {
     private $curr_user;
     public $limit;
     public $count;
+    private $new_nodes_item_no;
+    private $hot_nodes_item_no;
 
     /**
      * 构造器
@@ -41,8 +43,11 @@ class Home extends CI_Controller {
         $this->load->model('post');
         $this->load->model('nodes');
         $this->load->model('site');
+        $this->config->load('site');
         $this->load->model('user');
         $this->limit = $this->configs->get_config_item('topic_no');
+        $this->hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
+        $this->new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
         $this->curr_user = $this->auth->get_user();
         $this->tab = $this->input->get('tab');
     }
@@ -92,8 +97,8 @@ class Home extends CI_Controller {
                 'nodes' => $nodes,
                 'show_status'=>$show_status,
                 'status' => $this->site->get_site_status(),
-                'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, 10),
-                'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, 10),
+                'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $this->new_nodes_item_no),
+                'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $this->new_nodes_item_no),
                 'ad' => ''
                     )
             );
