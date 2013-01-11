@@ -22,23 +22,26 @@
  * @author airyland <i@mao.li>
  */
 class T extends CI_Controller {
+    private $author;
 
     function __construct() {
         parent::__construct();
         $this->load->model('configs');
         $this->load->library('s');
+        $this->author=$this->auth->get_user();
     }
 
     function index() {
         redirect('/t/recent');
     }
 
-    function the_post($id) {
+    function the_post($id,$action='') {
+        $this->load->model('post');
+        if(!$action){
         $page = $this->input->get_page();
         if(!$page){
             show_error('帖子不存在或者被删除', 404);
         }
-        $this->load->model('post');
         $this->load->model('comment');
         $local_upload = $this->configs->item('local_upload');
         $comment_no = $this->configs->item('comment_no');
@@ -70,7 +73,35 @@ class T extends CI_Controller {
                 )
         );
 
-        $this->s->display('single_topic.html');
+        $this->s->display('topic/single_topic.html');
+    }else if($action==='edit'){
+            $this->auth->check_login();
+            $this->load->model('nodes');
+            $topic = $this->post->post_info($id);
+            $topic_edit_expire=$this->configs->item('topic_edit_expire');
+            $diff=time()-strtotime($topic['post_time']);
+            $has_expire=$diff>intval($topic_edit_expire)*60;
+            $is_author=$this->author['user_id']===intval($topic['user_id']);
+            if(!$is_author&&!$this->auth->is_admin()){
+                die('米有权限哦');
+            }
+            if($is_author&&$has_expire){
+                die('可编辑时间已经超过了哦，可以联系管理员修改');
+            }
+            $raw_topic = $this->db->get_where('temp',array('t_type'=>'topic','t_keyid'=>$id));
+            if($raw_topic->num_rows()>0){
+                $raw_topic_info=$raw_topic->row_array();
+                $this->s->assign('ori_topic',$raw_topic_info['t_content']);
+                $this->s->assign('ori_topic_exists',TRUE);
+            }else{
+                $this->s->assign('ori_topic',$topic['post_content']);
+                $this->s->assign('ori_topic_exists',FALSE);
+            }
+            $this->s->assign('title', '编辑帖子');
+            $this->s->assign('node', $this->nodes->get_node('test'));
+            $this->s->assign('topic',$topic);
+            $this->s->display('topic/edit_post.html');
+        }
     }
 
     function the_list($cat, $key = '') {
