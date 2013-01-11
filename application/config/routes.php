@@ -41,7 +41,8 @@
 $route['default_controller'] = "home";
 $route['404_override'] = '';
 $route['t/(:num)'] = 't/the_post/$1';
-$route['t/(:any)']='t/the_list/$1';
+$route['t/(:num)/(:any)'] = 't/the_post/$1/$2';
+$route['t/(:any)'] = 't/the_list/$1';
 $route['member/(:any)'] = 'member/the_member/$1';
 //node routers
 $route['node/(:any)/add']='node/add_post/$1';
