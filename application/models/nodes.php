@@ -127,15 +127,30 @@ class Nodes extends CI_Model {
      * @param  int     $no
      * @return mixed
      */
-    function list_node($node_type = 2, $node_parent = 0, $order_by = 'node_id', $order = 'DESC', $page = 1, $no = 15) {
+    function list_node($node_type = 2, $node_parent = 0, $order_by = 'node_id', $order = 'DESC', $page = 1, $no = 15, $count=FALSE) {
         if($node_type){
              $this->db->where('node_type', $node_type);
         }
-        if ($node_parent)
-            $this->db->where('node_parent', $node_parent);
-        $this->db->order_by($order_by, $order)->limit($no, ($page - 1) * $no);
+        if ($node_parent){
+             $this->db->where('node_parent', $node_parent);
+        }
+        $this->db->order_by($order_by, $order);
+        if($count){
+            return $this->db->count_all('node');
+        }
+        if($no!==0){
+            $this->db->limit($no, ($page - 1) * $no);
+        }
         $rs = $this->db->get('vx_node');
         return $rs->num_rows() > 0 ? $rs->result_array() : 0;
+    }
+
+    function get_all_nodes($parent=0,$child=0){
+        $nodes = $this->list_node($node_type = 1, $node_parent = 0, $order_by = 'node_id', $order = 'DESC', $page = 1, $parent);
+        foreach ($nodes as $k => $v) {
+            $nodes[$k]['child_node'] = $this->list_node($node_type = 2, $node_parent = $nodes[$k]['node_id'], $order_by = 'node_id', $order = 'DESC', $page = 1, $child);
+        }
+        return $nodes;
     }
 
     function refresh_node_post_no() {

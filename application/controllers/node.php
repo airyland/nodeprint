@@ -36,13 +36,9 @@ class Node extends CI_Controller {
      */
     function index() {
         $this->load->model('nodes');
-        $nodes = $this->nodes->list_node($node_type = 1, $node_parent = 0, $order_by = 'node_id', $order = 'DESC', $page = 1, $no = 15);
-        foreach ($nodes as $k => $v) {
-            $nodes[$k]['child_node'] = $this->nodes->list_node($node_type = 2, $node_parent = $nodes[$k]['node_id'], $order_by = 'node_id', $order = 'DESC', $page = 1, $no = 15);
-        }
         $this->s->assign(array(
             'title' => 'Nodes',
-            'nodes' => $nodes
+            'nodes' => $this->nodes->get_all_nodes()
         ));
         $this->s->display('nodes.html');
     }
@@ -101,7 +97,7 @@ class Node extends CI_Controller {
         $this->load->model('nodes');
         $this->s->assign('title', '创建帖子');
         $this->s->assign('node', $this->nodes->get_node($slug));
-        $this->s->display('add_post.html');
+        $this->s->display('topic/add_post.html');
     }
 
     /**
