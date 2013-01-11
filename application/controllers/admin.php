@@ -43,15 +43,14 @@ class Admin extends CI_Controller {
              *
              */
             case 'plugin':
-                $this->utility->clear_db_cache();
+                //$this->utility->clear_db_cache();
                 $this->load->model('plugins_mdl');
                 $plugins = $this->plugins_mdl->get_all_plugins_info();
                 $activated_plugins = $this->utility->get_active_plugins();
                 $deactivated_plugins = array();
-                $this->load->model('metas_mdl');
-
-                //$this->plugin->trigger('Widget::Categories', '<li><a href="{permalink}" title="{description}">{title} [{count}]</a></li>');
-
+                //$this->load->model('metas_mdl');
+                $this->load->library('plugin');
+                echo $this->plugin->trigger('Widget::Categories', '<li><a href="{permalink}" title="{description}">{title} [{count}]</a></li>');
                 foreach ($plugins as $plugin) {
                     if (!in_array($plugin, $activated_plugins)) {
                         $deactivated_plugins[] = $plugin;
@@ -68,7 +67,7 @@ class Admin extends CI_Controller {
                     'title' => '插件管理'
                 ));
 
-                $this->s->display('admin_plugin.html');
+                $this->s->display('admin/admin_plugin.html');
                 break;
 
             case 'settings':
@@ -78,15 +77,14 @@ class Admin extends CI_Controller {
                 $this->s->display('admin/admin_settings.html');
                 break;
             /**
-             * 节点管理
+             * nodes management
              */
             case 'nodes':
                 $this->load->model('nodes');
                 $user = $this->user->user_list();
                 if ($id == '') {
-                    $node = $this->nodes->list_node(0, 0, 'node_id', 'DESC', 1, 15);
-                    $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 15);
-
+                    $node = $this->nodes->list_node(0, 0, 'node_id', 'DESC', 1, 0);
+                    $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 0);
                     $this->s->assign(array(
                         'title' => '节点管理-网站设置',
                         'p_node' => $parent_node,
