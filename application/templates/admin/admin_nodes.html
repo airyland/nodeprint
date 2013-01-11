@@ -7,10 +7,12 @@
             <ul>
                 <li>
                     <label>父分类</label>
-                    <input class="radio" type="radio" name="node-parent" value="0" checked/>无父节点
+                    <ul class="radio-list">
+                        <li> <input class="radio" type="radio" name="node-parent" value="0" id="no-parent" checked/><label class="inline-label" for="no-parent">无父节点</label></li>
                     {foreach from=$p_node item=n}
-                    <input class="radio node-parent-{$n.node_id}" type="radio" name="node-parent" value="{$n.node_id}" data-name="{$n.node_name}" />{$n.node_name}
-                    {/foreach}
+                    <li><input class="radio node-parent-{$n.node_id}" type="radio" name="node-parent" value="{$n.node_id}" data-name="{$n.node_name}" id="parent-{$n.node_id}"/><label class="inline-label" for="parent-{$n.node_id}">{$n.node_name}</label>
+                    {/foreach}</li>
+                    </ul>
                 </li>
                 <li>
                     <label for="node-name">节点名</label>

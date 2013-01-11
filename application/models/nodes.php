@@ -63,6 +63,10 @@ class Nodes extends CI_Model {
         if(!$node_slug||!$node_name){
             return 0;
         }
+        $this->load->library('form_validation');
+        if(!$this->form_validation->is_unique($node_slug,'node.node_slug')){
+            return array('e'=>1,'msg'=>'slug:'.$node_slug.'重复了哦');
+        }
         $data = array(
             'node_type' => $node_type,
             'node_name' => $node_name,

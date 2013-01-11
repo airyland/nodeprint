@@ -109,6 +109,18 @@ textarea:focus {
     margin: 10px;
     width: 100%;
   }
+  ul.radio-list {
+      overflow:hidden;
+      &:after{
+      clear:both;
+    }
+    li{
+    width:100px;
+    float:left;
+    margin:0 0 10px 0;
+    overflow:hidden;
+  }
+  }
   label {
     width: 150px;
     float: left;
@@ -116,6 +128,13 @@ textarea:focus {
     text-align: right;
     margin-right: 15px;
     font-size:14px;
+    &.inline-label{
+      margin:0;
+      text-align:left;
+      float:none;
+      width:auto;
+      font-size:12px;
+    }
   }
   input, textarea {
     padding: 3px;

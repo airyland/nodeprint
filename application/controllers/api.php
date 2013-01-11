@@ -555,27 +555,6 @@ class Api extends CI_Controller {
                 echo json_encode($rs);
                 break;
 
-            /**
-             * add node
-             *
-             */
-            case 'add':
-                $this->auth->check_admin();
-                $node_name = $this->input->post('node-name');
-                $node_slug = $this->input->post('node-slug');
-                $node_parent = $this->input->post('node-parent');
-                $node_type = (!$node_parent) ? 1 : 2;
-                $node_intro = $this->input->post('node-intro') || '';
-                $add = $this->nodes->add_node($node_type, $node_name, $node_slug, $node_parent, $node_intro);
-                $e = 1;
-                if ($add)
-                    $e = 0;
-                if (is_ajax())
-                    echo json_encode(array('error' => $e));
-                redirect('/admin');
-                break;
-
-
             default:
 
                 $do = $this->input->get('do');
@@ -695,13 +674,18 @@ class Api extends CI_Controller {
                 $node_intro = $this->input->post('node-intro') || '';
                 $add = $this->nodes->add_node($node_type, $node_name, $node_slug, $node_parent, $node_intro);
                 $e = 1;
-                if ($add)
-                    $e = 0;
-                if ($this->input->is_ajax_request()) {
-                    echo json_encode(array('error' => $e));
-                } else {
-                    redirect('/admin');
+                if (!is_array($add)&&$add!==0){
+                     $e = 0;
+                     $msg='success';
+                 }else{
+                    $e=$add['e'];
+                    $msg=$add['msg'];
+                 }
+                if ($this->is_ajax){
+                    json_output($e,'msg',$msg);
                 }
+                redirect('/admin');
+                
                 break;
 
             case 'delete':

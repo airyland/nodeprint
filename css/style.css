@@ -715,6 +715,15 @@ textarea:focus {
 .form li {
   margin: 10px;
   width: 100%; }
+.form ul.radio-list {
+  overflow: hidden; }
+  .form ul.radio-list:after {
+    clear: both; }
+  .form ul.radio-list li {
+    width: 100px;
+    float: left;
+    margin: 0 0 10px 0;
+    overflow: hidden; }
 .form label {
   width: 150px;
   float: left;
@@ -722,6 +731,12 @@ textarea:focus {
   text-align: right;
   margin-right: 15px;
   font-size: 14px; }
+  .form label.inline-label {
+    margin: 0;
+    text-align: left;
+    float: none;
+    width: auto;
+    font-size: 12px; }
 .form input, .form textarea {
   padding: 3px;
   font-size: 14px;
