@@ -85,12 +85,7 @@ class Home extends CI_Controller {
         $lang = load_lang();
         $show_status=$this->configs->get_config_item('show_status');
         if (!$this->s->isCached("index.html")) {
-            $nodes = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 15);
-            if(is_array($nodes)){
-                foreach ($nodes as $k => $v) {
-                $nodes[$k]['child_node'] = $this->nodes->list_node(2, $nodes[$k]['node_id'], 'node_id', 'DESC', 1, 15);
-            }
-            }
+            $nodes = $this->nodes->get_all_nodes();
             $this->s->assign(array(
                 'title' => $lang['index'],          
                 'post' => $this->get_topic(),
