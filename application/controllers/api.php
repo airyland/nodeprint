@@ -752,16 +752,19 @@ class Api extends CI_Controller {
                 $this->auth->check_login();
                 $user = $this->auth->get_user();
                 $this->load->helper('parse_content');
-                $this->load->model('message');
-                $post_title = $this->input->post('post-title');
-                if (!$post_title)
+                $this->load->model(array('message','nodes'));
+                $post = $this->input->post('post');
+                $post_title=$post['post_title'];
+                $format = $this->input->post('format');
+                if (!$post['post_title'])
                     die('没写标题啊，同学');
-
-                $node_id = $this->input->post('node-id');
-                $post_content = $this->input->post('post-content');
+                $node_id = $post['node_id'];
+                $post_content = $post['post_content'];
                 $raw_content=$post_content;
                 $users = get_at_users(' ' . $post_title . ' ' . $post_content . ' ');
-                $post_content = parse_content($post_content);
+                if(!$format){
+                    $post_content = parse_content($post_content);
+                }
                 $add = $this->post->add_post($post_title, $post_content, $user['user_id'], $user['user_name'], $node_id, $raw_content);
                 $post_id = $this->db->insert_id();
                 $this->load->model('nodes');
@@ -780,18 +783,75 @@ class Api extends CI_Controller {
                 }
                 break;
 
+            case 'preview':
+                $this->load->library('s');
+                $this->auth->check_login();
+                $post=$this->input->post('post');
+                $preview=$this->input->post('preview');
+                $user = $this->auth->get_user();
+                $this->load->helper('parse_content');
+                $this->load->model(array('message','nodes'));
+                $post_title = $post['post_title'];
+                $format = $this->input->post('format');
+                
+                $node_id = $post['node_id'];
+                $post_content = $post['post_content'];
+               
+                if(!$format){
+                    $post_content = parse_content($post_content);
+                }
+
+                if($this->is_ajax){
+                    return json_output(0,$post_content);
+                }
+                    $t=array(
+                        'user_name'=>$this->current_user['user_name'],
+                        'user_id'=>$this->current_user['user_id'],
+                        'post_title'=>$post_title,
+                        'post_time'=>current_time(),
+                        'post_hit'=>1,
+                        'post_content'=>$post_content,
+                        'post_fav_no_cache'=>0,
+                        'post_comment_no'=>0,
+                        'post_id'=>0,
+                        'node_slug'=>'test',
+                        'node_name'=>'test'
+                    );
+                    $this->s->assign('t',$t);
+                    $this->s->assign('fav',true);
+                    $this->s->assign('title',$post_title);
+                    $this->s->assign('page_bar','');
+                    $this->s->assign('local_upload',0);
+                    $this->s->display('topic/preview_topic.html');
+
+
+            break;
+
             /**
              * 是否过后可以修改？
              * 可修改时间为300s
              * @todo 文字处理未完成，所以还不好做更新
              */
             case 'update':
-                $this->auth->check_admin();
-                //@todo 将表单中的字段值设为数组类型
-                $post = $this->input->post('post');
-                $this->post->update_post($post);
-                json_output(0, 'msg', '更新成功');
+                //when update, do not send message to mentioned people by @
+                $this->load->helper('parse_content');
+                $post=$this->input->post('post');
+                $raw_content = $post['post_content'];
+                $has_draft=$this->input->post('draft');
 
+                if(!isset($post['format']) ||!$post['format']){
+                    $post['post_content'] = parse_content($post['post_content']);
+                }
+
+                $this->db->update('post',$post,array('post_id'=>$post['post_id']));
+                if($has_draft){
+                    $this->db->update('temp',array('t_content'=>$raw_content),array('t_keyid'=>$post['post_id']));   
+                }
+	           if($this->is_ajax){
+		          json_output(0, 'msg', '更新成功');
+	            }else{
+		          redirect('/t/'.$post['post_id']);
+	                }
                 break;
 
             case 'search':
