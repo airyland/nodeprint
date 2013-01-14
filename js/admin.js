@@ -10,8 +10,9 @@ $(function () {
         $nodeEditable = $('.node-editable'),
         $topic = $('.post-content'),
         href = document.location.href,
-        isTopicPage = /\/t\/\d/.test(href),
-        isNodePage = /\/node\//.test(href);
+        isTopicPage = /\/t\/\d$/.test(href),
+        isNodePage = /\/node\//.test(href),
+        isAdminPage =/\/admin\/.*?/.test(href);
     if (isNodePage) {
         nodeSlug = href.slice(href.lastIndexOf('/') + 1);
         $nodeEditable.editable("/api/node/" + nodeSlug + '?do=update', {
@@ -83,6 +84,18 @@ $(function () {
             $(this).text('');
         }
     });
+
+
+if(isAdminPage){
+    var messageMap={
+        'clearCompiledTemplate_success':'清除Smarty编译缓存成功!'
+    },
+    closeTip ='两秒后自动关闭';
+    hash = document.location.hash.replace('#','');
+    if(messageMap[hash]){
+        $.dialog({'title':false,cancel:false,content:messageMap[hash],time:2});
+    }
+}
 
 
 });
