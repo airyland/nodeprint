@@ -204,15 +204,19 @@ class Api extends CI_Controller {
                 break;
 
             /**
-             * 检查邮箱是否已经被注册
-             * @url /api/user/check_email
+             * check if the email exists
+             *
+             * if email exists, return 0, else 1
+             * @url /api/user/0/check_email?user-email=i@mao.li
              * @return bool
              */
             case 'check_email':
                 $user_email = $this->input->get('user-email');
-                $e = ($this->db->where('user_email', $user_email)->get('vx_user')->num_rows() == 0) ? 'true' : 'false';
-                echo $e;
-
+                if(!$user_email){
+                    json_output(-1,'wrong params');
+                }
+                $this->load->library('form_validation');
+                echo $this->form_validation->is_unique($user_email,'user.user_email')?1:0;
                 break;
 
             /**
