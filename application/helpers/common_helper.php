@@ -8,10 +8,22 @@ function count_offset($page, $no) {
     return ($page - 1) * $no;
 }
 
+/**
+ * get formated current time
+ *
+ * @return string
+ */
 function current_time() {
     return date('Y-m-d H:i:s');
 }
 
+/**
+ * get random strings
+ *
+ * @param int $length
+ * @param string $valid_chars
+ * @return string
+ */
 function get_random_strings($length, $valid_chars = 'abcdefghjkmnpqrsuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789') {
     // start with an empty random string
     $random_string = "";
@@ -87,7 +99,7 @@ function authcode($string, $operation = 'DECODE', $key = 'justtest', $expiry = 0
 /**
  * get random string, used as the salt
  */
-function get_radom_string($length = 5) {
+function get_random_string($length = 5) {
     $code = md5(uniqid(rand(), true));
     return substr($code, 0, $length);
 }
@@ -149,16 +161,16 @@ function is_ajax() {
 }
 
 function is_login() {
-    return (!empty($_COOKIE['vx_auth'])) ? TRUE : FALSE;
+    return (!empty($_COOKIE['NP_auth'])) ? TRUE : FALSE;
 }
 
 function get_user() {
     $e = 2;
-    if (empty($_COOKIE['vx_auth'])) {
+    if (empty($_COOKIE['NP_auth'])) {
         $user_id = '';
         $user_name = '';
     } else {
-        list($user_id, $user_name) = explode("\t", authcode($_COOKIE['vx_auth'], 'DECODE'));
+        list($user_id, $user_name) = explode("\t", authcode($_COOKIE['NP_auth'], 'DECODE'));
         if ($user_id && $user_name)
             $e = 1;
     }

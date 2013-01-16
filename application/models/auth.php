@@ -54,11 +54,11 @@ class Auth extends CI_Model {
      */
     public function get_user() {
         $e = 2;
-        if (empty($_COOKIE['vx_auth'])) {
+        if (empty($_COOKIE['NP_auth'])) {
             $user_id = '';
             $user_name = '';
         } else {
-            list($user_id, $user_name) = explode("\t", authcode($_COOKIE['vx_auth'], 'DECODE'));
+            list($user_id, $user_name) = explode("\t", authcode($_COOKIE['NP_auth'], 'DECODE'));
             if ($user_id && $user_name)
                 $e = 1;
         }
