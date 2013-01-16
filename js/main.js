@@ -897,5 +897,34 @@ $(function () {
         $.dialog({title:'获取Gravatar头像',content:'<img style="vertical-align: bottom;" src="'+url+'?s=73"/>&nbsp;<img style="vertical-align: bottom;" src="'+url+'?s=48"/>&nbsp;<img style="vertical-align: bottom;" src="'+url+'?s=20"/> <br/><br/><br/><a href="/api/user/0/use_gravatar" class="vivid-button">确认使用Gravatar头像</a> '});
     });
 
+    $(document).on('click','#JS_fav_action',function(e){
+        e.preventDefault();
+        var $this=$(this),
+            api=$this.attr('href'),
+            isFav=api.indexOf('=fav')!==-1;
+        $this.css('background','yellow');
+        $.get(api,function(data){
+            if(data.error===0){
+               $this.attr('href',isFav?api.replace('fav','unfav'):api.replace('unfav','fav'));
+               $this.text(isFav?'取消收藏':'加入收藏');
+                $this.css('background','white');
+            }
+        },'json');
+    });
+        $(document).on('click','#JS_follow_action',function(e){
+            e.preventDefault();
+            var $this=$(this),
+                api=$this.attr('href'),
+                isFo=api.indexOf('=fo')!==-1;
+            $.get(api,function(data){
+                if(data.error===0){
+                    $this.attr('href',isFo?api.replace('=fo','=unfo'):api.replace('=unfo','=fo'));
+                    $this.text(isFo?'取消关注':'关注TA');
+                }
+            },'json');
+
+
+    });
+
 
 });
