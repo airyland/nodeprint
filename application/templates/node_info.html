@@ -7,7 +7,10 @@
         </nav>
         <p class="node-count">
                 主题总数<em>{$node.node_post_count}</em>
-                <a href="api/node/{$node.node_slug}?do={if $fav eq true}unfav{else}fav{/if}">{if $fav eq true}取消收藏{else}加入收藏{/if}</a><a href="/node/{$node.node_slug}/feed">订阅节点更新</a>
+                {if $is_login}
+                <a href="/api/node/{$node.node_slug}?do={if $fav eq true}unfav{else}fav{/if}" id="JS_fav_action">{if $fav eq true}取消收藏{else}加入收藏{/if}</a>
+                {/if}
+                <a href="/node/{$node.node_slug}/feed">订阅节点更新</a>
         </p>
         <p class="node-intro{if $is_admin} node-editable{/if}">{if !$node.node_intro}该节点暂时没有介绍哦~{else}{$node.node_intro}{/if}</p>
         {if $is_login}<p class="node-create-button"><a class="vivid-button" href="/node/{$node.node_slug}/add">创建新主题</a></p>{/if}

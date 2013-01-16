@@ -24,10 +24,12 @@ class Node extends CI_Controller {
 
     public $slug;
     public $page;
+    protected $is_login;
 
     function __construct() {
         parent::__construct();
         $this->load->library('s');
+        $this->is_login=$this->auth->is_login;
     }
 
     /**
@@ -55,7 +57,7 @@ class Node extends CI_Controller {
             $this->feeds->node_feed($slug);
             exit();
         }
-        $page = $this->input->get('page') ? $this->input->get('page') : 1;
+        $page = $this->input->get_page();
         if (!is_numeric($page))
             show_error('抱歉，页面不存在', 404);
         $this->load->model('nodes');
@@ -74,15 +76,17 @@ class Node extends CI_Controller {
         $this->dpagination->target('/node/' . $node['node_slug']);
         $this->dpagination->adjacents(8);
         $pagebar = $this->dpagination->getOutput();
-
-        $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
+        if($this->is_login){
+             $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
+             $this->s->assign('fav',$fav);
+        }
+       
         $this->s->assign(array(
             'title' => $node['node_name'] . ' ' . $page . '/' . intval($node['node_post_count'] / 20 + 1) . ' ',
             'node' => $node,
             'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no=20'),
             'showPageBar' => $node['node_post_count'] > 0 ? true : false,
-            'page_bar' => $pagebar,
-            'fav' => $fav
+            'page_bar' => $pagebar
         ));
         $this->s->display('node_info.html');
     }
