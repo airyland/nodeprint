@@ -3,11 +3,11 @@
 class Settings extends CI_Controller {
 
     function index() {
+        global $lang;
         $this->auth->check_login();
         $this->load->model('user');
         $user = $this->auth->get_user();
         $user_info = $this->user->get_user_profile($user['user_id'],'user_id');
-        $lang =  load_lang();
         $this->load->library('s');
         $this->s->assign(array(
             'title' => $lang['settings'],

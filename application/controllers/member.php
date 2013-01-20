@@ -23,26 +23,34 @@
 class Member extends CI_Controller {
 
     /**
-     * 分页页数
+     * current page
      * @var int
      */
-    public $page;
+    private $page;
+    
+    /**
+    * if is an ajax request
+    * @var bool
+    */
+    private $is_ajax;
 
     function __construct() {
         parent::__construct();
-        $this->load->model('configs');
         $this->page = $this->input->get_page();
-        if (!is_numeric($this->page))
-            show_error('页面不存在', 404);
+        if (!$this->page){
+	        show_404();
+        }
+
+        $this->load->model('configs');
         $this->load->library('dpagination');
     }
 
     /**
      * member list
-     *  
+     * @todo members list page
      */
     function index() {
-        show_error('页面不存在', 404);
+        show_404();
     }
 
     function the_member($slug, $action = '') {
@@ -57,7 +65,7 @@ class Member extends CI_Controller {
         $field = (is_numeric($slug)) ? 'user_id' : 'user_name';
         $u = $this->user->get_user_profile($slug, $field);
         if (!$u)
-            show_error('抱歉，用户不存在', 404);
+            show_404();
         $this->s->assign('u', $u);
         switch ($action) {
             /**

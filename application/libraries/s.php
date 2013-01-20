@@ -9,10 +9,10 @@ class S extends Smarty {
         $this->compile_dir = SMARTY_COMPILE_DIR;
         $this->cache_dir = SMARTY_CACHE_DIR;
         $this->config_dir = SMARTY_CONFIG_DIR;
-  
         $this->_ci = &get_instance();
         $this->_ci->load->model('user');
-        $configs=$this->_ci->configs->get_config();
+        global $lang;
+        global $config;
         $current_user = get_user();
         //模块编译改动检查，开发时请设为TRUE,线上时设为FALSE;
         $this->compile_check=TRUE;
@@ -25,13 +25,11 @@ class S extends Smarty {
             return relative_time(strtotime($paras['time']));
         }
         $this->registerPlugin('function', 'time_ago', 'time_ago');
-
-
         $this->assign('is_login', is_login());
         $this->assign('is_admin', $this->_ci->auth->is_admin());
-        $this->assign('site', $configs);
+        $this->assign('site', $config);
         $this->assign('me', $this->_ci->user->get_user_profile($current_user['user_id'], 'user_id'));
-        $this->assign('lang', lang($configs['lang']));
-        $this->assign('_', lang($configs['lang']));
+        $this->assign('lang', $lang);
+        $this->assign('_', lang($config['lang']));
     }
 }

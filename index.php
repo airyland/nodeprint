@@ -1,5 +1,5 @@
 <?php
-
+define('IN_NODEPRINT',1);
 define('ENVIRONMENT', 'development');
 if (defined('ENVIRONMENT')) {
     switch (ENVIRONMENT) {
@@ -15,6 +15,12 @@ if (defined('ENVIRONMENT')) {
             exit('The application environment is not set correctly.');
     }
 }
+
+// Make sure a default timezone is set
+if (ini_get("date.timezone") == "") date_default_timezone_set("Asia/Hong_Kong");
+
+// Start a page load timer
+define("NP_START_TIME", microtime(true));
 
 $system_path = 'system';
 $application_folder = 'application';
@@ -51,4 +57,9 @@ if (is_dir($application_folder)) {
     }
     define('APPPATH', BASEPATH . $application_folder . '/');
 }
+//load site config
+include(APPPATH.'cache/site/config_cache.php');
+//load language
+include(APPPATH.'helpers/lang_helper.php');
+$lang = lang($config['lang']);
 require_once BASEPATH . 'core/CodeIgniter.php';

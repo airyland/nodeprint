@@ -16,8 +16,8 @@ class Admin extends CI_Controller {
     }
 
     function index() {
+        global $lang;
         $this->load->library('s');
-        $lang =load_lang();
         $this->load->model('configs');
         $config = $this->configs->get_config();
         $this->load->model('site');
@@ -34,8 +34,8 @@ class Admin extends CI_Controller {
     }
 
     function the_action($action, $id = '') {
+        global $lang;
         $this->load->library('s');
-        $lang = lang('english');
         $this->s->assign('lang', $lang);
         switch ($action) {
             /**
@@ -51,6 +51,7 @@ class Admin extends CI_Controller {
                 //$this->load->model('metas_mdl');
                 $this->load->library('plugin');
                 echo $this->plugin->trigger('Widget::Categories', '<li><a href="{permalink}" title="{description}">{title} [{count}]</a></li>');
+				echo 'fuck';
                 foreach ($plugins as $plugin) {
                     if (!in_array($plugin, $activated_plugins)) {
                         $deactivated_plugins[] = $plugin;
@@ -213,6 +214,29 @@ class Admin extends CI_Controller {
             case 'backup':
                 $this->admins->backup();
                 break;
+            case 'tools':
+                $this->s->assign(array(
+                    'title'=>'Admin tools'
+                ));
+                $this->s->display('admin/admin_tools.html');
+                break;
+            case 'tool':
+                switch($id){
+                    //clear smarty compiled templates
+                    case 'clearCompiledTemplate':
+                        $this->load->library('s');
+                        $this->s->clearCompiledTemplate();
+                        redirect('/admin/tools#clearCompiledTemplate_success');
+                        break;
+                    
+                    case 'clearAllCache':
+                        $this->load->library('s');
+                        $this->s->clearAllCache();
+                        redirect('/admin/tools#clearAllCache_success');
+                        break;
+                }
+                break;
+
         }
     }
 }
