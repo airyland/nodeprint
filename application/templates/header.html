@@ -31,16 +31,16 @@
     <body id="body">
         <header id="header">
             <div class="header-wrap">
-                <h1><a id="logo" href="{$site.url}" title="{$site.name}-首页"></a></h1>
+                <h1><a id="logo" href="{$site.url}#home" title="{$site.name}-首页">{$_['index']}</a></h1>
                 <form action="/api/post/0/search" method="get" class="search">
                     <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}" required/>
                     <input type="submit" value="搜索" id="search-button"/>
                 </form>
                 <nav class="site-nav" id="site-nav" role="navigation">
                     <ul>{nocache}
-                        <li><a href="{$site.url}">{$lang.index}</a></li>{if $is_login} 
+                        <li><a href="{$site.url}#home">{$lang.index}</a></li>{if $is_login} 
                         <li><a href="/member/{$me.user_name}">{$me.user_name}</a></li>
-                        <li><a href="/messages">{$lang.message}</a></li>
+                        <li><a href="/messages" id="JS_msg" data-router="false">{$lang.message}<span class="msg-count">0</span></a></li>
                         {if $is_admin}<li><a href="/admin">{$lang.admin}</a></li>{/if}
                         <li class="icon-item"><span class="icon">&#9871;</span>
                             <ul>
@@ -48,8 +48,8 @@
                                <li><a href="/api/user/logout">{$lang.signout}</a></li> 
                             </ul>
                         </li>
-                  {else}<li><a href="/signup" id="signup-btn" title="">{$lang.signup}</a></li>
-                        <li><a href="/signin" id="signin-btn" title="">{$lang.signin}</a></li>
+                  {else}<li><a href="/signup" id="signup-btn" title="{$lang.signup}">{$lang.signup}</a></li>
+                        <li><a href="/signin" id="signin-btn" title="{$lang.signin}" data-router="false">{$lang.signin}</a></li>
                        {/if}
                     {/nocache}
                     </ul>
