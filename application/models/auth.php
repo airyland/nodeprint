@@ -23,9 +23,10 @@
  * @subpackage Model
  */
 class Auth extends CI_Model {
-
+    private $is_login;
     function __construct() {
         parent::__construct();
+        $this->is_login=$this->is_login();
     }
 
     /**
@@ -44,6 +45,11 @@ class Auth extends CI_Model {
                 exit();
             }
         }
+    }
+    
+    function is_login(){
+         $user_status=$this->get_user();
+         return $user_status['error']===1;
     }
 
     /**
