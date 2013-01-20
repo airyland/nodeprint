@@ -1,6 +1,6 @@
 <div class="box">
-    <h3><a href="{$site.url}" title="{$site.name}">{$site.name}</a> › 浏览节点</h3>
-    <span class="more"><a href="/node" title="All nodes">All Nodes</a></span>
+    <h3><a href="{$site.url}#home" title="{$site.name}">{$site.name}</a> › 浏览节点</h3>
+    {if !isset($smarty.get.for)}<span class="more"><a href="/node" title="All nodes">All Nodes</a></span>{/if}
     {if isset($smarty.get.for)}<p class="choose-tip">请选择一个节点发贴：<p>{/if}
     <ul class="nodes-list">
         {foreach from=$nodes item=n}{if $n.child_node}<li>

@@ -8,13 +8,13 @@
             </li>
             <li>
                 <ul>
-                    <li><a href="/member/{$me.user_name}/favnode" title="我收藏的节点"><span class="count-no">{$me.site.favnode}</span>{$lang.favnodes}</a></li>
-                    <li><a href="/member/{$me.user_name}/favtopic" title="我收藏的帖子"><span class="count-no">{$me.site.favtopic}</span>{$lang.favtopics}</a></li>
-                    <li><a href="/member/{$me.user_name}/following" title="我关注的用户"><span class="count-no">{$me.site.following}</span>{$lang.followings}</a></li>
+                    <li><a href="/member/{$me.user_name}/favnode" title="{$_['my following nodes']}"><span class="count-no">{$me.site.favnode}</span>{$_['favnodes']}</a></li>
+                    <li><a href="/member/{$me.user_name}/favtopic" id="JS_fav_topic" title="{$_['my favourite topics']}"><span class="count-no">{$me.site.favtopic}</span>{$_['favtopics']}</a></li>
+                    <li><a href="/member/{$me.user_name}/following" title="{$_['my following users']}"><span class="count-no">{$me.site.following}</span>{$_['followings']}</a></li>
                 </ul>
             </li>
             <li>
-                <a class="message-notice" href="/messages" title="查看未读消息"><em id="unread-count"><img src="img/loading.gif" alt="loading message"></em>{$lang.unread_message}</a>
+			<a href="/node?for=create_topic" class="vivid-button">{$_['create a new topic']}</a>
             </li>
         </ul>
     </div>

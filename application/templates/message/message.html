@@ -1,0 +1,22 @@
+{include file="header.html"}
+<div class="content">
+    <section class="box">
+        <span class="send-message"><a href="/messages/send" class="vivid-button">发送私信</a></span>
+        <dl class="ui-tab">
+            <dt class="ui-tab-trigger clearfix">  
+            <a href="/messages/?type=unread" class="ui-tab-trigger-item {if isset($smarty.get.type)&&($smarty.get.type=='' or $smarty.get.type=='unread')||!isset($smarty.get.type)}ui-tab-trigger-item-current{/if}">未读消息(<span class="vivid-notice">{$unread_count}</span>)</a> 
+            <a href="/messages/?type=all" class="ui-tab-trigger-item {if isset($smarty.get.type)&&$smarty.get.type=='all'}ui-tab-trigger-item-current{/if}">所有消息({$all_count})</a>   
+            <a href="/messages/?type=pm" class="ui-tab-trigger-item {if isset($smarty.get.type)&&$smarty.get.type=='pm'}ui-tab-trigger-item-current{/if}">私信({$pm_count})</a>    
+            </dt>  
+        </dl>
+       {include file="message/message_list.html"}
+    </section>
+    <nav class="box">
+        <div class="pagination-wrap">{$pagination}</div>
+    </nav>
+</div>
+<div class="sidebar">
+    {include file="profile_box.html"}
+</div>
+{include file="footer.html"}
+

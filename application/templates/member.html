@@ -16,7 +16,11 @@
             {if $u.site.follower}<li>followers:<a href="">{$u.site.follower}</a></li>{/if}
         </ul>
         {if $u.other.intro}<p>个人介绍：{$u.other.intro}</p>{/if}
-        {if $me.user_id neq $u.user_id}<p class="follow-user"><a href="/api/user/{$u.user_name}?do={if $is_follow eq false}fo{else}unfo{/if}" class="vivid-button">{if $is_follow eq false}关注TA{else}取消关注{/if}</a><a href="messages/send?to={$u.user_name}">发送私信</a></p>{/if}
+        {if $me.user_id neq $u.user_id}
+            <p class="follow-user">
+                <a href="/api/user/{$u.user_name}?do={if $is_follow eq false}fo{else}unfo{/if}" class="vivid-button" id="JS_follow_action">{if $is_follow eq false}关注TA{else}取消关注{/if}</a>
+                <a id="JS_send_message" href="messages/send?to={$u.user_name}">发送私信</a>
+            </p>{/if}
     </section>
     <div id="topic-list" class="box">
         <p class="title">最近创建主题</p>
@@ -46,4 +50,22 @@
 </div>
 <div class="sidebar">
 </div>
+        <script type="text/NP-template" id="send-message-template">
+            <form class="form  message-form">
+                <ul>
+                    <li>
+                    <label for="send_to">发给</label>
+                    <input type="text" id="send_to"/> 
+                    </li>
+                    <li>
+                        <label for="pm_content">内容</label>
+                        <textarea>hello</textarea>
+                    </li>
+                    <li style="text-align:right;">
+                        <a href="#" class="cancel">取消</a>
+                        <input type="submit" class="vivid-button small-button" value="发送"/>
+                    </li>
+                </ul>
+            </form>
+         </script>
 {include file="footer.html"}

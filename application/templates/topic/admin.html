@@ -1,0 +1,13 @@
+        {if $is_admin}
+        <section class="box">
+            <h3>操作</h3>
+            <ul class="list">
+                <li><a href="/t/{$t.post_id}/edit">修改</a></li>
+                <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete">删除</a></li>
+                <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer">移动帖子</a></li>
+                <li><a href="/api/post/{$t.post_id}/?do=up">up</a></li>
+                <li><a href="/api/post/{$t.post_id}/?do=down">down</a></li>
+                <li>说明：上面up和down主要是为了实现后期可能需要的帖子首页权重排名</li>
+            </ul>
+        </section>
+        {/if}

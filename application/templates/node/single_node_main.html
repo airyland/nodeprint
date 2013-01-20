@@ -1,14 +1,12 @@
-{include file="header.html"}
-<div class="content">
     <div class="node_info box">
         <nav class="breadcrumb">
-            <a href="{$site.url}">{$site.name}</a>
+            <a href="{$site.url}#home">{$site.name}</a>
             <a href="/node/{$node.node_slug}">{$node.node_name}</a>
         </nav>
         <p class="node-count">
                 主题总数<em>{$node.node_post_count}</em>
                 {if $is_login}
-                <a href="/api/node/{$node.node_slug}?do={if $fav eq true}unfav{else}fav{/if}" id="JS_fav_action">{if $fav eq true}取消收藏{else}加入收藏{/if}</a>
+                <a href="/api/node/{$node.node_slug}?do={if $fav eq true}unfav{else}fav{/if}" id="JS_fav_action" data-router="false">{if $fav eq true}取消收藏{else}加入收藏{/if}</a>
                 {/if}
                 <a href="/node/{$node.node_slug}/feed">订阅节点更新</a>
         </p>
@@ -22,8 +20,3 @@
     <div class="pagination-wrap">{$page_bar}</div>
     </nav>
     {/if}
-</div>
-<div class="sidebar">
-    {include file='profile_box.html'}
-</div>
-{include file="footer.html"}

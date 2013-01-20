@@ -36,7 +36,8 @@
                 <tr>
                     <th>节点</th>
                     <th>slug</th>
-                    <th>首页显示</th>
+                    <th>帖子在首页显示</th>
+                    <th>推荐节点</th>
                     <th width="60">分类</th>
                     <th width="100">位面</th>
                     <th width="100">操作</th>
@@ -54,6 +55,16 @@
                             <select name="node_info[node_onindex]" class="onindex">
                                 <option value="0" {if $n.node_onindex eq 0}selected{/if}>否</option>
                                 <option value="1" {if $n.node_onindex eq 1}selected{/if}>是</option>
+                            </select>
+                          
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/api/node/0/?do=update_info" method="post">
+                            <input type="hidden" name="node_id" value="{$n.node_id}">
+                            <select name="node_info[node_recommend]" class="onindex">
+                                <option value="0" {if $n.node_recommend eq 0}selected{/if}>否</option>
+                                <option value="1" {if $n.node_recommend eq 1}selected{/if}>是</option>
                             </select>
                         </form>
                     </td>

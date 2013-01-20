@@ -71,7 +71,7 @@
                     <label for="new-pwd">{$lang.newpwd}</label>
                     <input type="password" name="new-pwd" required />
                 </li>
-                 <li>
+                <li>
                     <label for="new-pwd2">again</label>
                     <input type="password" name="new-pwd2" required />
                 </li>
@@ -84,20 +84,18 @@
     </section>
 
     {if $is_admin}
-        <!--  <section class="box" id="change_pwd">
+    <section class="box" id="change_pwd">
         <h2><span class="title">实验功能</span></h2>
 
         <form action="" method="" class="form">
             <ul>
-
-                <li>
-                     <label for="enable-notification">开启桌面提醒</label>
-        <input type="checkbox" id="enable-notification" name=""/><span>(当前浏览器有效)</span>
+                <li  id="desktop-notification">
+                    <label for="enable-notification">开启桌面提醒</label>
+                    <input type="checkbox" id="enable-notification" name=""/><span>(当前浏览器有效)</span>
                 </li>
-       
-       
-</form>
-    </section> -->
+            </ul>
+        </form>
+    </section>
     {/if}
 
 </div>
