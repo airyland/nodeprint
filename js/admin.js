@@ -88,7 +88,8 @@ $(function () {
 
 if(isAdminPage){
     var messageMap={
-        'clearCompiledTemplate_success':'清除Smarty编译缓存成功!'
+        'clearCompiledTemplate_success':'清除Smarty编译缓存成功!',
+        'clearAllCache_success':'清除Smarty静态缓存成功!'
     },
     closeTip ='两秒后自动关闭';
     hash = document.location.hash.replace('#','');

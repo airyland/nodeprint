@@ -13,24 +13,11 @@
  * @link		https://github.com/airyland/nodeprint
  * @version		0.0.5
  */
- 
-// ------------------------------------------------------------------------
- 
-/**
- * STBLOG Plugin Manager Class
- *
- * 插件经理类，用于管理STBlog的第三方插件，受到68KB的启发。
- *
- * @package		STBLOG
- * @subpackage	Libraries
- * @category	Libraries
- * @author		Saturn <huyanggang@gmail.com>
- * @link 		http://code.google.com/p/stblog/
- */
+
 class Plugin
 {
 	/**
-     * 已注册的插件(类和方法)
+     * the registered listeners
      *
      * @access private
      * @var array
@@ -38,7 +25,7 @@ class Plugin
     private $_listeners = array();
 	
 	/**
-    * CI句柄
+    * CI instance
     * 
     * @access private
     * @var object
@@ -46,14 +33,12 @@ class Plugin
 	private $_CI;
 
 	 /**
-     * 构造函数
+     * construct
      * 
      * @access public
-     * @return void
      */
     public function __construct()
     {
-        /** 获取CI句柄 **/
 		$this->_CI = & get_instance();
 		
 		$plugins = $this->_CI->utility->get_active_plugins();
@@ -75,18 +60,18 @@ class Plugin
 					
 					if (class_exists($class)) 
 					{
-						/** 初始化插件 */
+						/** initialize */
 						new $class($this);
 					}
 				}
 			}
 		}
 		
-		log_message('debug', "STBLOG: Plugins Libraries Class Initialized");
+		log_message('debug', "NodePrint: Plugins Libraries Class Initialized");
     }
 	
 	/**
-	 * 注册需要监听的插件方法（钩子）
+	 * register hook
 	 *
 	 * @param string $hook
 	 * @param object $reference
@@ -101,18 +86,15 @@ class Plugin
 	}
 
 	/**
-	 * 触发一个钩子
+	 * trigger a hook
 	 *
-	 *	e.g.: $this->plugin->trigger('hook_name'[, arg1, arg2, arg3...]);	
-	 *
-	 *
-	 * @param string $hook 钩子的名称
-	 * @param mixed $data 钩子的入参
+	 * @brief e.g.: $this->plugin->trigger('hook_name'[, arg1, arg2, arg3...]);
+	 * @param string $hook hook name
 	 * @return mixed
 	 */
 	public function trigger($hook)
 	{
-		$result = '';
+		$result = 'llll';
 		
 		if($this->check_hook_exist($hook))
 		{
@@ -130,16 +112,16 @@ class Plugin
 			}
 		}
 		
-		log_message('debug', "Hook Triggerred: $hook");
-		
+		log_message('debug', "Hook Triggered: $hook");
+
 		return $result;
 	}
 
 	/**
-	 * 检查钩子是否存在
+	 * check if hook exists
 	 *
 	 *
-	 * @param string $hook 钩子的名称
+	 * @param string $hook hook name
 	 * @return array
 	 */
 	public function check_hook_exist($hook)

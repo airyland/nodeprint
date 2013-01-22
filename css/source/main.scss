@@ -11,7 +11,7 @@ body {
   //background-color: #eeeeee;
   background-color:#e1dad0;
   font-family:$basic-family;
-  #background-image: url("../img/bg/tea.jpg");
+  background-image: url(http://img02.taobaocdn.com/tps/i2/T1BsZZXhVfXXXgtLTf-1648-1165.png);
   color: #999;
   padding-top: 40px;
   -webkit-backface-visibility: hidden;
@@ -66,9 +66,9 @@ span.more {
   border-bottom: 1px solid #ececec;
   padding: 10px 10px 10px 15px;
   overflow:hidden;
+  position:relative;
   ul {
     overflow: hidden;
-    float:left;
     li {
       float: left;
       background:#fff;
@@ -92,8 +92,29 @@ span.more {
   }
 }
 
+.site-sub-tab {
+  position:relative;
+  border:1px solid #ececec;
+  clear:both;
+  margin-top:10px;
+  padding:5px 0 5px 5px;
+  background:#ececec;
+  @include radius(3px);
+  a{
+    padding-right:5px;
+  }
+  .triangle{
+    position:absolute;
+    color:#ececec;
+    top:-10px;
+    left:70px;
+  }
+}
+
 #add-topic {
-  float:right;
+  position:absolute;
+  right:10px;
+  top:15px;
 }
 
 
@@ -128,6 +149,7 @@ span.more {
     color: #ececec;
     background: #ececec;
     border: none;
+    margin:13px 0 0 0;
   }
 }
 
@@ -636,6 +658,19 @@ a {
   }
 }
 
+.aui_content {
+ .m-list{
+ 	font-size:12px;
+ 	li{
+ 	padding:5px 0;
+ 	}
+ 	p{
+	padding:0;
+ 	}
+	
+  }
+}
+
 .send-message {
   position: absolute;
   top: 10px;
@@ -682,6 +717,19 @@ p.reply-message {
   margin: 10px;
   padding: 5px;
   @include radius(3px);
+}
+
+.node  li.no-favnode{
+  border:none;
+  margin:0 0 5px 0;
+  a {
+    font-size:12px;
+    margin:0 5px;
+    padding:2px 5px;
+    background:$vivid;
+    color:#fff;
+    @include radius(2px);
+  }
 }
 
 .following li a, .node li a {
@@ -957,6 +1005,11 @@ input.vivid-button:hover, .vivid-button:hover {
   margin: 0 3px;
 }
 
+input.left-button{
+  float:left;
+  margin-right:15px;
+}
+
 /* == pagination
 -------------------------------------------------------------------*/
 
@@ -1020,10 +1073,20 @@ input.vivid-button:hover, .vivid-button:hover {
 #loading {
   position: absolute;
   left: 50%;
-  top: 50%;
-  margin-left: -21px;
-  margin-top: -21px;
-  display: none;
+  top: -2px;
+  z-index:9999;
+  margin-left: -50px;
+  width:100px;
+  height:35px;
+  background:$vivid;
+  @include radius(3px);
+  text-align:center;
+  color:#fff;
+  font-size:14px;
+  display:none;
+  span{
+	line-height:35px;
+  }
 }
 
 
@@ -1325,3 +1388,6 @@ td strong {
   color:#000;
 }
 
+#desktop-notification {
+  display:none;
+}

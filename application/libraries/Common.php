@@ -851,11 +851,11 @@ function &get_settings()
 		
 		$CI->load->library('stcache');
 		
-		$settings = $CI->stcache->get('settings');
+		$settings = $CI->stcache->get('plugins');
 		
 		if(FALSE == $settings)
 		{
-			$query = $CI->db->get('settings');
+			$query = $CI->db->get_where('temp',array('t_type'=>'plugin'));
 		
 			foreach($query->result() as $row)
 			{

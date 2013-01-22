@@ -3,6 +3,8 @@
 !defined('BASEPATH') && exit('No direct script access allowed');
 
 class Messages extends CI_Controller {
+    public $page;
+    public $no;
     /**
      * 构造器
      */
@@ -10,6 +12,8 @@ class Messages extends CI_Controller {
         parent::__construct();
         $this->auth->check_login();
         $this->load->model('message');
+        $this->page = $this->input->get_page();
+        $this->no=$this->input->get('no')?$this->input->get('no'):5;
     }
 
     /**
@@ -23,34 +27,41 @@ class Messages extends CI_Controller {
         $this->load->library('s');
         $this->load->library('dpagination');
         $user = get_user();
-        $page = $this->input->get('page');
-        if (!$page)
-            $page = 1;
         $m_type = $type == 'pm' ? 4 : 0;
-        $message = $this->message->list_message($user['user_name'], $reply_type, $read, $page, 10, 0, $m_type);
-        $count_current_message = $this->message->list_message($user['user_name'], $reply_type, $read, $page, 20, 1, $m_type);
+        $message = $this->message->list_message($user['user_name'], $reply_type, $read, $this->page, $this->no, 0, $m_type);
+        $count_current_message = $this->message->list_message($user['user_name'], $reply_type, $read, $this->page, 20, 1, $m_type);
         $count_unread_message = $this->message->list_message($user['user_name'], 'm_to_username', 1, 1, 20, 1);
         $count_all_message = $this->message->list_message($user['user_name'], 'm_to_username', -1, 1, 20, 1);
         $count_pm_message = $this->message->list_message($user['user_name'], 'm_to_username', -1, 1, 20, 1, 4);
 
         $this->dpagination->items($count_current_message);
-        $this->dpagination->limit(10);
-        $this->dpagination->currentPage($page);
+        $this->dpagination->limit($this->no);
+        $this->dpagination->currentPage($this->page);
         $this->dpagination->target('/messages/?type=' . $type);
         $this->dpagination->adjacents(8);
-
-        if ($type == 'unread' || !$type)
-            $this->message->set_read(0, 'setallread');
-
+        
         $this->s->assign(array(
             'title' => '我的消息',
             'message' => $message,
             'unread_count' => $count_unread_message,
             'all_count' => $count_all_message,
             'pm_count' => $count_pm_message,
-            'pagination' => $this->dpagination->getOutput()
+            'pagination' => $this->dpagination->getOutput(),
+            'has_msg' => $count_current_message>0,
+            'is_dialog' => FALSE
         ));
-        $this->s->display('user_message.html');
+
+        if($this->input->is_ajax_request()){
+             $this->s->assign('is_dialog',true);
+             $this->s->display('message/message_list.html');
+             return;
+        }else{
+            if ($type == 'unread' || !$type)
+            //$this->message->set_read(0, 'setallread');
+            $this->s->display('message/message.html');
+        }
+
+        
     }
 
     /**

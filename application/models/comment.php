@@ -17,10 +17,12 @@
  */
 
 /**
- * 评论 Model
+ * Comment Model
  * @subpackage Model
  */
 class Comment extends CI_Model {
+    const CM_TABLE='comment';
+    const TOPIC_TABLE='post';
 
     function __construct() {
         parent::__construct();
@@ -50,47 +52,49 @@ class Comment extends CI_Model {
             'cm_reply_id' => $cm_reply_id,
             'cm_other' => $cm_other
         );
-        $this->db->insert('vx_comment', $data);
+        $this->db->insert(self::CM_TABLE, $data);
         $no = $this->db->insert_id();
         $this->db->set('post_comment_no', 'post_comment_no+1', FALSE)
                 ->set('post_last_comment', current_time())
                 ->set('post_last_comment_author', $user_name)
                 ->where('post_id', $post_id)
-                ->update('vx_post');
+                ->update(self::TOPIC_TABLE);
         return $no;
     }
 
     /**
-     * 删除评论
-     * @param int     $id        评论id
-     * @param boolean $by_post   是否根据帖子id删除评论
+     * delete comment
+     * @param int $id
+     * @param bool $by_post
      * @return void
      */
     public function del_comment($id, $by_post = FALSE) {
         $field = ($by_post == FALSE) ? 'cm_id' : 'post_id';
-        return $this->db->where($field, $id)->delete('vx_comment');
+        return $this->db->where($field, $id)->delete(self::CM_TABLE);
     }
 
     /**
-     * 获取评论
-     * @param int $post_id 帖子id
-     * @param int $user_id 可选 用户id
-     * @param string $order_by 排序字段
-     * @param string $order 排序方式
-     * @param int $page 分页页数
-     * @param int $no  分页条数
+     * get comments
+     * @param int $post_id
+     * @param int $user_id optional
+     * @param string $order_by
+     * @param string $order
+     * @param int $page
+     * @param int $no
+     * @param bool $count
      * @return array|0
      */
     public function list_comment($post_id, $user_id = 0, $order_by = 'cm_id', $order = 'DESC', $page = 1, $no = 50,$count=FALSE) {
         $this->db->where('post_id', $post_id);
         if($count){
-            return $this->db->from('comment')->count_all_results();
+            return $this->db->from(self::CM_TABLE)->count_all_results();
         }
         if ($user_id)
             $this->db->where('user_id', $user_id);
+
         $rs = $this->db->order_by($order_by, $order)
                 ->limit($no, count_offset($page, $no))
-                ->get('vx_comment');
+                ->get(self::CM_TABLE);
         return $rs->num_rows() > 0 ? $rs->result_array() : 0;
     }
 

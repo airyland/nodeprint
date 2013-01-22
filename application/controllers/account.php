@@ -6,70 +6,70 @@
  * NodePrint
  *
  * 轻论坛程序
- * 
+ *
  * NodePrint is a lightweight BBS built on Ci.
  *
  * @package            NodePrint
  * @author             airyland <i@mao.li>
  * @copyright         Copyright (c) 2012 , mao.li.
- * @license		   MIT License
- * @link		        http://github.com/airyland/nodeprint
+ * @license           MIT License
+ * @link                http://github.com/airyland/nodeprint
  * @version            0.0.5
  */
 
 /**
  * Account Controller
  *
- * 用户账号相关管理器
- *
  * @package        NodePrint
- * @subpackage 	Controller
- * @category	    Account Controller
- * @author		    airyland <i@mao.li>
- * @link 		    http://github.com/airyland/nodeprint
+ * @subpackage     Controller
+ * @category        Account Controller
+ * @author            airyland <i@mao.li>
+ * @link             http://github.com/airyland/nodeprint
  */
-class Account extends CI_Controller {
+class Account extends CI_Controller
+{
 
-	private $is_login;
-	private $current_user;
+    private $is_login;
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
-		$this->is_login=is_login();
+        $this->is_login = is_login();
         $this->load->library('s');
     }
 
-    function index($action = '') {
-        $lang = load_lang();
+    function index($action = '')
+    {
+        global $lang;
         switch ($action) {
+
             /**
-             * 登录页面
+             * Sign in page
              */
             case 'signin':
                 if ($this->is_login) {
                     redirect(base_url());
-                    exit;
                 }
                 $this->load->model('user');
                 $this->s->assign(array(
                     'title' => $lang['signin'],
                     'lang' => $lang,
                 ));
-                $this->s->display('login.html'); 
+                $this->s->display('login.html');
                 break;
+
             /**
-             * 注册页面
+             * Sign up page
              */
             case 'signup':
-				if ($this->is_login) {
+                if ($this->is_login) {
                     redirect(base_url());
-                    exit;
                 }
                 session_start();
                 $this->load->helper('captcha');
                 $random = get_random_strings(5);
                 $_SESSION['captcha'] = strtolower($random);
-                $vals = array(
+                $config = array(
                     'word' => $random,
                     'img_path' => 'img/captcha/',
                     'img_url' => base_url() . 'img/captcha/',
@@ -82,41 +82,49 @@ class Account extends CI_Controller {
                 $this->s->assign(array(
                     'title' => $lang['signup'],
                     'lang' => $lang,
-                    'site_name' =>$this->configs->get_config_item('name'),
-                    'captcha' => create_captcha($vals)
+                    'site_name' => $this->configs->get_config_item('name'),
+                    'captcha' => create_captcha($config)
                 ));
                 $this->s->display('signup.html');
                 break;
+
             /**
-             * 邮箱地址激活
+             * email activation
              */
             case 'email_auth_confirm':
                 $this->load->model('user');
                 $auth = $this->input->get('auth');
                 $check = $this->user->email_confirm($auth);
-                if ($check)
+                if ($check){
+                    redirect('/settings');
+                }
                     break;
+
             /**
-             * 重设密码
+             * reset password
              */
             case 'reset_password':
                 break;
+
             /**
-             * 忘记密码
+             * forget password
              */
             case 'forget_password':
-                $this->s->assign('title', '找回密码');
+                $this->s->assign('title', $lang['find password']);
                 $this->s->display('forget_password.html');
                 break;
+
             /**
-             * 注销账号
-             * @note 评论需要删除还是像豆瓣一样显示“用户已注销”?
+             * delete account
+             *
+             * @todo delete account
              */
             case 'delete_account':
                 show_404();
                 break;
+
             /**
-             * 默认页面
+             * account default page
              */
             default:
                 show_404();
@@ -125,3 +133,6 @@ class Account extends CI_Controller {
     }
 
 }
+
+/* End of file account.php */
+/* Location: ./application/controllers/account.php */

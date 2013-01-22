@@ -35,7 +35,7 @@ class Plugins_mdl extends CI_Model {
      * @access private
      * @var string
      */
-	public $plugins_dir = '';
+	public $plugins_dir ='./application/plugins';
 	
 	/**
      *	active plugins
@@ -59,7 +59,7 @@ class Plugins_mdl extends CI_Model {
        $this->plugins_dir = FCPATH. ST_PLUGINS_DIR . DIRECTORY_SEPARATOR ;
        
        
-       $this->active_plugins = $this->utility->get_active_plugins();
+       //$this->active_plugins = $this->utility->get_active_plugins();
        
 	   log_message('debug', "STBLOG: Plugins Model Class Initialized");
     }
@@ -85,7 +85,7 @@ class Plugins_mdl extends CI_Model {
 		
 		$active_plugins = serialize($this->active_plugins);
 		
-		$this->db->query("update settings set value='$active_plugins' where name='active_plugins'");
+		//$this->db->query("update settings set value='$active_plugins' where name='active_plugins'");
 		
 		$this->utility->clear_db_cache();
 	}
@@ -106,13 +106,12 @@ class Plugins_mdl extends CI_Model {
 		else
 		{
 			$key = array_search($plugin, $this->active_plugins);
-			
 			unset($this->active_plugins[$key]);
 		}
 		
 		$active_plugins = serialize($this->active_plugins);
 		
-		$this->db->query("update settings set value='$active_plugins' where name='active_plugins'");
+		//$this->db->query("update settings set value='$active_plugins' where name='active_plugins'");
 		
 		$this->utility->clear_db_cache();
 	}

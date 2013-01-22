@@ -2,119 +2,154 @@
 
 !defined('BASEPATH') && exit('No direct script access allowed');
 
-/**
- * NodePrint
- *
- * 基于HTML5及CSS3的轻论坛程序
- * 
- * NodePrint is an open source BBS System built on PHP and MySQL.
- *
- * @package	NodePrint
- * @author	                  airyland <i@mao.li>
- * @copyright	              Copyright (c) 2012, mao.li.
- * @license	                  MIT
- * @link	                  https://github.com/airyland/nodeprint
- * @version	0.0.5
- */
 
 /**
- * Topic pages
+ * Topic pages Controller
  * @author airyland <i@mao.li>
  */
-class T extends CI_Controller {
+class T extends CI_Controller
+{
+    /**
+     * topic author
+     * @var mixed
+     */
     private $author;
 
-    function __construct() {
+    /**
+     * current page
+     * @var int
+     */
+    private $page;
+
+    /**
+     * if user has signed in
+     * @var bool
+     */
+    private $is_login;
+
+    /**
+     * topics number for each page
+     * @var int
+     */
+    private $limit;
+
+	/**
+	* if the request is ajax
+	* @var bool
+	*/
+    private $is_ajax;
+
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('configs');
         $this->load->library('s');
-        $this->author=$this->auth->get_user();
+        $this->author = $this->auth->get_user();
+        $this->is_login = $this->auth->is_login();
+        $this->page = $this->input->get_page();
+        $this->is_ajax=$this->input->is_ajax_request();
     }
 
-    function index() {
+    /**
+     * redirect /t to /t/recent
+     */
+    function index()
+    {
         redirect('/t/recent');
     }
 
-    function the_post($id,$action='') {
-        $this->load->model('post');
-        if(!$action){
-        $page = $this->input->get_page();
-        if(!$page){
-            show_error('帖子不存在或者被删除', 404);
-        }
-        $this->load->model('comment');
-        $local_upload = $this->configs->item('local_upload');
-        $comment_no = $this->configs->item('comment_no');
- 
-        $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
-        $count=$this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no,TRUE);
-        
-        $this->load->library('dpagination');
-        $this->dpagination->target("/t/{$id}");
-        $this->dpagination->adjacents(8);
-        $this->dpagination->items($count);
-        $this->dpagination->limit($comment_no);
-        $this->dpagination->currentPage($page);
-        $page_bar = $this->dpagination->getOutput();
-                
-        $user = get_user();
-        $this->post->get_post_fav_no($id);
-        $this->post->add_post_hit($id);
-        $topic = $this->post->post_info($id);
-        if (!$topic)
-            show_error('帖子不存在或者被删除', 404);
-        $this->s->assign(array(
-            'title' => $topic['post_title'],
-            't' => $topic,
-            'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $page, $comment_no),
-            'fav' => $this->post->check_post_fav($user['user_id'], $id),
-            'local_upload'=>$local_upload,
-            'page_bar'=>$page_bar
-                )
-        );
+    function the_post($id, $action = '')
+    {
+        $this->load->model(array('post', 'comment'));
+        if (!$action) {
+            if (!$this->page) {
+                show_404();
+            }
 
-        $this->s->display('topic/single_topic.html');
-    }else if($action==='edit'){
+            $topic = $this->post->post_info($id);
+            if (!$topic) {
+                show_404();
+            }
+
+            //if enable local server images upload
+            $local_upload = $this->configs->item('local_upload');
+            //comments number for each page
+            $comment_no = $this->configs->item('comment_no');
+            //get comments' order
+            $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
+            //get comments' number
+            $count = $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no, TRUE);
+
+            $this->load->library('dpagination');
+            $this->dpagination->target("/t/{$id}");
+            $this->dpagination->adjacents(8);
+            $this->dpagination->items($count);
+            $this->dpagination->limit($comment_no);
+            $this->dpagination->currentPage($this->page);
+            $page_bar = $this->dpagination->getOutput();
+
+            $user = get_user();
+            $this->post->get_post_fav_no($id);
+            $fav = $this->is_login ? $this->post->check_post_fav($user['user_id'], $id) : FALSE;
+
+            //@todo for each request add 1 hit is not a proper way
+            $this->post->add_post_hit($id);
+
+            $this->s->assign(array(
+                    'title' => $topic['post_title'],
+                    't' => $topic,
+                    'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
+                    'fav' => $fav,
+                    'local_upload' => $local_upload,
+                    'page_bar' => $page_bar
+                )
+            );
+			if($this->is_ajax){
+				$this->s->display('topic/single_topic_main.html');
+				exit;
+			}
+            $this->s->display('topic/single_topic.html');
+        } else if ($action === 'edit') {
             $this->auth->check_login();
             $this->load->model('nodes');
             $topic = $this->post->post_info($id);
-            $topic_edit_expire=$this->configs->item('topic_edit_expire');
-            $diff=time()-strtotime($topic['post_time']);
-            $has_expire=$diff>intval($topic_edit_expire)*60;
-            $is_author=$this->author['user_id']===intval($topic['user_id']);
-            if(!$is_author&&!$this->auth->is_admin()){
+            $topic_edit_expire = $this->configs->item('topic_edit_expire');
+            $diff = time() - strtotime($topic['post_time']);
+            $has_expire = $diff > intval($topic_edit_expire) * 60;
+            $is_author = $this->author['user_id'] === intval($topic['user_id']);
+            if (!$is_author && !$this->auth->is_admin()) {
                 die('米有权限哦');
             }
-            if($is_author&&$has_expire){
+            if ($is_author && $has_expire) {
                 die('可编辑时间已经超过了哦，可以联系管理员修改');
             }
-            $raw_topic = $this->db->get_where('temp',array('t_type'=>'topic','t_keyid'=>$id));
-            if($raw_topic->num_rows()>0){
-                $raw_topic_info=$raw_topic->row_array();
-                $this->s->assign('ori_topic',$raw_topic_info['t_content']);
-                $this->s->assign('ori_topic_exists',TRUE);
-            }else{
-                $this->s->assign('ori_topic',$topic['post_content']);
-                $this->s->assign('ori_topic_exists',FALSE);
+            $raw_topic = $this->db->get_where('temp', array('t_type' => 'topic', 't_keyid' => $id));
+            if ($raw_topic->num_rows() > 0) {
+                $raw_topic_info = $raw_topic->row_array();
+                $this->s->assign('ori_topic', $raw_topic_info['t_content']);
+                $this->s->assign('ori_topic_exists', TRUE);
+            } else {
+                $this->s->assign('ori_topic', $topic['post_content']);
+                $this->s->assign('ori_topic_exists', FALSE);
             }
             $this->s->assign('title', '编辑帖子');
             $this->s->assign('node', $this->nodes->get_node('test'));
-            $this->s->assign('topic',$topic);
+            $this->s->assign('topic', $topic);
             $this->s->display('topic/edit_post.html');
         }
     }
 
-    function the_list($cat, $key = '') {
-        $page = $this->input->get('page');
-        $limit = $this->configs->get_config_item('topic_no');
-        if ($page == 0)
-            $page = 1;
-        if (!is_numeric($page) || !in_array($cat, array(' ', 'recent', 'changes', 'search')))
-            show_error('抱歉，页面不存在', 404);
-        $this->load->library('s');
+    function the_list($cat, $key = '')
+    {
+        //get topic no
+        $this->limit = $this->configs->item('topic_no');
+
+        if (!$this->page || !in_array($cat, array(' ', 'recent', 'changes', 'search'))) {
+            show_404();
+        }
+
         $this->load->model('post');
         $this->load->library('dpagination');
-
 
         switch ($cat) {
             /**
@@ -122,8 +157,8 @@ class T extends CI_Controller {
              * @package topic
              */
             case 'recent':
-                $post= $this->post->query_post("page={$page}&no={$limit}");
-                $count_post=$this->post->query_post("count=true");
+                $post = $this->post->query_post("page={$this->page}&no={$this->limit}");
+                $count_post = $this->post->query_post("count=true");
                 $title = '最新主题';
                 $this->dpagination->target('/t/recent');
                 $template = 'topic_recent.html';
@@ -133,8 +168,8 @@ class T extends CI_Controller {
              * @package topic
              */
             case 'changes':
-                $post=$this->post->query_list("orderby=post_last_comment&page={$page}&no={$limit}");
-                $count_post=$this->post->query_list("count=true");
+                $post = $this->post->query_list("orderby=post_last_comment&page={$this->page}&no={$this->limit}");
+                $count_post = $this->post->query_list("count=true");
                 $title = '最新更改';
                 $this->dpagination->target('/t/changes');
                 $template = 'topic_recent.html';
@@ -147,7 +182,7 @@ class T extends CI_Controller {
                 $key = urldecode($key);
                 $count_post = $this->post->search_post($key, 0, 0, TRUE);
                 $this->dpagination->target('/t/search/' . $key);
-                $post = $this->post->search_post($key, $page, $limit);
+                $post = $this->post->search_post($key, $this->page, $this->limit);
                 $title = $key . '-帖子搜索';
                 $template = 'search_result.html';
                 break;
@@ -155,18 +190,18 @@ class T extends CI_Controller {
 
         $this->dpagination->adjacents(8);
         $this->dpagination->items($count_post);
-        $this->dpagination->limit($limit);
-        $this->dpagination->currentPage($page);
+        $this->dpagination->limit($this->limit);
+        $this->dpagination->currentPage($this->page);
         $page_bar = $this->dpagination->getOutput();
 
         $this->s->assign(array(
-            'title' => $title . ' ' . $page . '/' . intval($count_post / $limit + 1),
-            'key' => $key,
-            'post' => $post,
-            'page_bar' => $page_bar,
-            'count' => $count_post,
-            'show_pagebar' => $count_post > 0 ? TRUE : FALSE
-                )
+                'title' => $title . ' ' . $this->page . '/' . intval($count_post / $this->limit + 1),
+                'key' => $key,
+                'post' => $post,
+                'page_bar' => $page_bar,
+                'count' => $count_post,
+                'show_pagebar' => $count_post > 0 ? TRUE : FALSE
+            )
         );
         $this->s->display($template);
     }

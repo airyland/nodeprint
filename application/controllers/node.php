@@ -17,36 +17,57 @@
  */
 
 /**
- * 节点信息
+ * Node Controller
  * @subpackage Controller
  */
 class Node extends CI_Controller {
 
     public $slug;
+    /**
+     * current page
+     * @var number
+     */
     public $page;
+
+    /**
+     * check if the use has signed in
+     * @var bool
+     */
     protected $is_login;
+
+    /**
+     * check if it is an ajax request
+     * @var bool
+     */
+    private $is_ajax;
 
     function __construct() {
         parent::__construct();
         $this->load->library('s');
-        $this->is_login=$this->auth->is_login;
+        $this->load->model('nodes');
+        $this->is_login=$this->auth->is_login();
+        $this->is_ajax = $this->input->is_ajax_request();
+        $this->page=$this->input->get_page();
     }
 
     /**
-     * 所有节点列表
+     * nodes list
      * @url /node/
      */
     function index() {
-        $this->load->model('nodes');
         $this->s->assign(array(
             'title' => 'Nodes',
             'nodes' => $this->nodes->get_all_nodes()
         ));
+        if($this->is_ajax){
+            $this->s->display('node_list.html');
+            exit;
+        }
         $this->s->display('nodes.html');
     }
 
     /**
-     * 节点介绍及帖子列表
+     * single node controller
      * @link /node/node_slug 
      * @param string $slug
      */
@@ -57,63 +78,70 @@ class Node extends CI_Controller {
             $this->feeds->node_feed($slug);
             exit();
         }
-        $page = $this->input->get_page();
-        if (!is_numeric($page))
-            show_error('抱歉，页面不存在', 404);
-        $this->load->model('nodes');
-        $this->load->model('post');
-        $this->load->model('follow');
+        if ($this->page===0)
+            show_404();
+
+        $this->load->model(array('post','follow','configs'));
+        $limit=$this->configs->item('topic_no');
         $user = get_user();
+
         $node = $this->nodes->get_node($slug);
         if (!$node)
-            show_error('抱歉，节点尚未创建', 404);
-        $limit = 20;
+            show_404();
 
         $this->load->library('dpagination');
         $this->dpagination->items($node['node_post_count']);
         $this->dpagination->limit($limit);
-        $this->dpagination->currentPage($page);
+        $this->dpagination->currentPage($this->page);
         $this->dpagination->target('/node/' . $node['node_slug']);
         $this->dpagination->adjacents(8);
         $pagebar = $this->dpagination->getOutput();
+
         if($this->is_login){
              $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
              $this->s->assign('fav',$fav);
         }
        
         $this->s->assign(array(
-            'title' => $node['node_name'] . ' ' . $page . '/' . intval($node['node_post_count'] / 20 + 1) . ' ',
+            'title' => $node['node_name'] . ' ' . $this->page . '/' . intval($node['node_post_count'] / $limit + 1) . ' ',
             'node' => $node,
-            'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no=20'),
+            'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no='.$limit),
             'showPageBar' => $node['node_post_count'] > 0 ? true : false,
             'page_bar' => $pagebar
         ));
-        $this->s->display('node_info.html');
+        if($this->is_ajax){
+	        $this->s->display('node/single_node_main.html');
+	        exit;
+        }
+        $this->s->display('node/single_node.html');
     }
 
     /**
-     * 发表帖子
+     *  add topic
      * @url /node/node_slug/add
      * @param string $slug
      */
     function add_post($slug) {
         $this->auth->check_login();
-        $this->load->model('nodes');
         $this->s->assign('title', '创建帖子');
         $this->s->assign('node', $this->nodes->get_node($slug));
-        $this->s->display('topic/add_post.html');
+        if($this->is_ajax){
+	         $this->s->display('topic/add_topic_main.html');
+	         exit;
+        }
+        $this->s->display('topic/add_topic.html');
     }
 
     /**
-     * 加载节点自定义样式
+     * load custom css
      * @param string  $slug
-     * @todo 待支持
+     * @todo 
      */
-    function load_css() {
+    function load_css($slug) {
         
     }
 
 }
 
-/* End of file post.php */
+/* End of file node.php */
 /* Location: ./application/controllers/node.php */

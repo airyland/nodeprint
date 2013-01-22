@@ -11,7 +11,7 @@
  * @package	NodePrint
  * @author		airyland <i@mao.li>
  * @copyright	Copyright (c) 2012, mao.li.
- * @license	MIT
+ * @license                  MIT
  * @link		https://github.com/airyland/nodeprint
  * @version	0.0.5
  */
@@ -24,59 +24,59 @@ header("Content-type:text/html;charset=utf-8");
 
 class Api extends CI_Controller {
     /*
-     * 用户API允许行为
+     * user api allow actions
      * @var array
      */
 
     private $allow_user_action = array('send_pm_message', 'change_pwd');
 
     /**
-     * 帖子API允许行为
+     * topic api allow actions
      * @var array
      */
     private $allow_topic_action = array();
 
     /**
-     * 评论允许行为
+     * comment api allow actions
      * @var array
      */
     private $allow_comment_action = array();
 
     /**
-     * 用户允许行为
+     * mmeber api allow actions
      * @var array
      */
     private $allow_member_action = array();
 
     /**
-     * 节点允许行为
+     * node api allow actions
      * @var array
      */
     private $allow_node_action = array();
 
     /**
-     * 是否为ajax请求
+     * if the request is ajax
      */
     private $is_ajax = FALSE;
 
     /**
-     * 请求来源
+     * request referrer
      */
     public $from;
 	
 	/**
-	* 当前用户
+	* current user
 	*/
 	private $current_user;
 	
 	/**
-	* 是否登录
+	* if user has signined
 	*/
 	private $is_login;
 
     /**
-     * API构造
-     * 检测是否是AJAX请求 
+     * API constructor
+     *
      */
     function __construct() {
         parent::__construct();
@@ -89,9 +89,11 @@ class Api extends CI_Controller {
     }
 
     /**
-     * 用户API
-     * @param string $username 用户名
-     * @param string $action 行为
+     * user API
+     *
+     * 1.
+     * @param string $username
+     * @param string $action
      * @API 
      */
     function user($username = '', $action = '') {
@@ -99,7 +101,7 @@ class Api extends CI_Controller {
         $user = $this->auth->get_user();
         switch ($action) {
             /**
-             * 发送私信
+             * send private message
              * @url /api/user/send_pm_message
              * @redirect /messages
              */
@@ -118,9 +120,9 @@ class Api extends CI_Controller {
                 break;
 
             /**
-             * 更改密码
+             * change password
              * @url /api/user/change_pwd
-             * @redirct /settings#change_pwd
+             * @redirect /settings#change_pwd
              */
             case 'change_pwd':
                 $this->auth->check_login();
@@ -216,7 +218,7 @@ class Api extends CI_Controller {
                     json_output(-1,'wrong params');
                 }
                 $this->load->library('form_validation');
-                echo $this->form_validation->is_unique($user_email,'user.user_email')?1:0;
+                echo $this->form_validation->is_unique($user_email,'user.user_email')?'true':'false';
                 break;
 
             /**
@@ -234,9 +236,9 @@ class Api extends CI_Controller {
                 $register = $this->user->register_user($username, $useremail, $userpwd);
                 print_r($register);
                 if ($register['error'] == 0) {
-                    redirect($this->from);
+                    //redirect($this->from);
                 } else {
-                    redirect('/signup?error='.$register['error']);
+                    //redirect('/signup?error='.$register['error']+'&msg='+$register['msg']);
                 }
                 break;
             /**
@@ -250,7 +252,7 @@ class Api extends CI_Controller {
                 $is_ajax = $this->input->is_ajax_request();
                 list($error, $msg, $user_id, $user_name) = $this->user->login_user($useremail, $userpwd);
                 if ($error == 0) {
-                    setcookie('vx_auth', authcode($user_id . "\t" . $user_name, 'ENCODE'), time() + 365 * 24 * 3600, '/');
+                    setcookie('NP_auth', authcode($user_id . "\t" . $user_name, 'ENCODE'), time() + 365 * 24 * 3600, '/');
                     if (!$is_ajax) {
                        if(strpos($this->from,'signin')){
                            redirect(base_url());
@@ -274,7 +276,7 @@ class Api extends CI_Controller {
              * @rediect 原来地址
              */
             case 'logout':
-                setcookie('vx_auth', '', time() - 365 * 24 * 3600, '/');
+                setcookie('NP_auth', '', time() - 365 * 24 * 3600, '/');
                 if (is_ajax())
                     die('{"code":0}');
                 redirect();
@@ -321,7 +323,7 @@ class Api extends CI_Controller {
                 break;
             /**
              * get messages
-             * @url api/user/$username/message
+             * @url api/user/0/message
              * @ return json
              */
             case 'message':
@@ -329,11 +331,11 @@ class Api extends CI_Controller {
                 $this->load->model('message');
                 $type = $this->input->get('type');
                 $count = $this->input->get('count');
-                $start_time = $this->input->get('start_time')?date('Y-m-d H:i:s',$this->input->get('start_time')):null;
+                $start_time = $this->input->get('start_time')?date('Y-m-d H:i:s',intval($this->input->get('start_time')/1000)):null;
                 $message = $this->message->list_message($user['user_name'], 'm_to_username', $type, 1, 20, $count,0,$start_time);
 
                 if ($count) {
-                    echo json_encode(array('error' => 0, 'count' => $message));
+                    echo json_encode(array('error' => 0, 'count' => $message[0],'new_no'=>$message[1],'start_time'=>$message[2]));
                 } else {
                     echo json_encode(array('error' => 0, 'message' => $message));
                 }
@@ -418,8 +420,9 @@ class Api extends CI_Controller {
                         $this->auth->check_login();
                         $this->load->model('follow');
                         $this->load->model('user');
-                        $error = 1;
+                        $error = 0;
                         $user = get_user();
+                        $msg = '关注成功';
                         if ($user['user_name'] == $username) {
                             $error = -1;
                             $msg = '亲,不要这么自恋行么';
@@ -814,11 +817,10 @@ class Api extends CI_Controller {
 
 
             break;
-
             /**
-             * 是否过后可以修改？
-             * 可修改时间为300s
-             * @todo 文字处理未完成，所以还不好做更新
+             * update topic
+             *
+             * users can edit their topic within 10 minutes, beyond that time, only admin can edit the topic
              */
             case 'update':
                 //when update, do not send message to mentioned people by @
@@ -849,8 +851,6 @@ class Api extends CI_Controller {
                         json_output(array('error' => 1, 'msg' => 'no specified search key'));
                         exit;
                     }
-                    //$page = $this->input->get('page');
-                    // $no = $this->input->get('no');
                     $this->load->model('post');
                     $post = $this->post->search_post($key, 1, 10);
                     json_output(0, 'posts', $post);
@@ -865,17 +865,20 @@ class Api extends CI_Controller {
                 $user = get_user();
                 switch ($do) {
                     /**
-                     * 删除帖子
-                     * @todo json输出操作结果
+                     * delete a topic
+                     *
                      */
                     case 'delete':
                         $this->auth->check_admin();
                         $this->post->delete_post($post_id);
+                        if($this->is_ajax){
+                            json_output(0);
+                        }
                         redirect($this->from);
                         break;
 
                     /**
-                     * 收藏帖子
+                     * fav a topic
                      * 
                      */
                     case 'fav':
@@ -1152,12 +1155,6 @@ class Api extends CI_Controller {
         }
     }
 
-    function fetch() {
-        $this->load->library('FetchAvatar');
-        $url = 'http://qzapp.qlogo.cn/qzapp/100343915/09A4CE4BEE02C91D86B76BE2B0AD37BF/100';
-        $this->fetchavatar->fetch($url,73,TRUE);
-        //$this->fetchavatar->fetch_gravatar('airyland@qq.com',73);
-    }
 
     /**
      * admin api
@@ -1170,9 +1167,9 @@ class Api extends CI_Controller {
         $this->load->model('admins');
         switch ($action) {
             /**
-             * 添加管理员
+             * add an admin
              * 
-             * error 为-1时表示参数缺失，0 时表示无错误，1时用户不存在，2时已是管理员，msg为错误说明
+             * error code : -1=>param missing，0 =>success，1=>user does exist，2=>the user has already been an admin
              * @param string $user_name
              * @return array
              */
@@ -1180,14 +1177,12 @@ class Api extends CI_Controller {
                 $user_name = $this->input->post('user_name');
                 if (!$user_name) {
                     json_output(-1);
-                    die('没有指定用户名');
                 }
                 $rs = $this->admins->add_admin($user_name);
                 if ($this->is_ajax) {
                     json_output($rs['error'], 'msg', $rs['msg']);
                 } else {
-                    print_r($rs);
-                    //redirect('/admin/settings?error=' . $rs['error'] . '&msg=' . $rs['msg']);
+                    redirect('/admin/settings?error=' . $rs['error'] . '&msg=' . $rs['msg']);
                 }
                 break;
 

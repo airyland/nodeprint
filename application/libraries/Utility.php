@@ -50,7 +50,7 @@ class Utility {
 
         $this->_CI =& get_instance();
 		
-		log_message('debug', 'STBlog: Utility class initialized.');
+		log_message('debug', 'NodePrint: Utility class initialized.');
     }
     
 	/**

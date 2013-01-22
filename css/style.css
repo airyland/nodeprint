@@ -526,7 +526,7 @@ a.message-notice {
           -webkit-transition: none; }
         #header ul > li.icon-item > ul a {
           width: 120px;
-          display: block;
+          display: inline-block;
           line-height: 30px; }
     #header ul > li > a {
       display: block;
@@ -587,6 +587,16 @@ input[type='search'] {
     .site-nav li a:hover {
       color: #ccc;
       text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.2); }
+.site-nav .msg-count {
+  display: none;
+  color: #fff;
+  margin-left: 5px;
+  padding: 0 5px;
+  line-height: 17px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  background: #e82a73; }
 
 /* ==footer 
 -----------------------------------------------------------------------------------*/
@@ -776,6 +786,29 @@ input:focus:-moz-placeholder {
 input:focus:-ms-input-placeholder {
   color: #ececec; }
 
+.message-form label {
+  width: 24px;
+  font-size: 12px;
+  color: #666; }
+.message-form textarea {
+  height: 100px; }
+
+.form .small-button {
+  width: 80px;
+  margin-right: 20px; }
+
+.cancel {
+  padding-right: 15px; }
+
+.aui_content .m-list p {
+  padding-right: 0; }
+
+.aui_content .m-list p span.time {
+  color: #aaa; }
+
+.aui_close:hover {
+  -webkit-transform: rotate(180deg); }
+
 /**
 * style.css
 * @author airyland <i@mao.li>
@@ -786,7 +819,7 @@ body {
   font-size: 13px;
   background-color: #e1dad0;
   font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti;
-  #background-image: url("../img/bg/tea.jpg");
+  background-image: url(http://img02.taobaocdn.com/tps/i2/T1BsZZXhVfXXXgtLTf-1648-1165.png);
   color: #999;
   padding-top: 40px;
   -webkit-backface-visibility: hidden; }
@@ -828,10 +861,10 @@ span.more {
 .site-tab {
   border-bottom: 1px solid #ececec;
   padding: 10px 10px 10px 15px;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
   .site-tab ul {
-    overflow: hidden;
-    float: left; }
+    overflow: hidden; }
     .site-tab ul li {
       float: left;
       background: #fff;
@@ -850,8 +883,28 @@ span.more {
         .site-tab ul li a:hover {
           text-decoration: underline; }
 
+.site-sub-tab {
+  position: relative;
+  border: 1px solid #ececec;
+  clear: both;
+  margin-top: 10px;
+  padding: 5px 0 5px 5px;
+  background: #ececec;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px; }
+  .site-sub-tab a {
+    padding-right: 5px; }
+  .site-sub-tab .triangle {
+    position: absolute;
+    color: #ececec;
+    top: -10px;
+    left: 70px; }
+
 #add-topic {
-  float: right; }
+  position: absolute;
+  right: 10px;
+  top: 15px; }
 
 .wrap {
   width: 1000px;
@@ -887,7 +940,8 @@ span.more {
   .box hr {
     color: #ececec;
     background: #ececec;
-    border: none; }
+    border: none;
+    margin: 13px 0 0 0; }
 
 .block-box {
   display: block; }
@@ -1051,8 +1105,8 @@ p.node-create-button {
       position: absolute;
       right: 20px;
       top: -25px; }
-    .post-info header img {
-      border-radius: 5px; }
+      .post-info header a.post_author img {
+        border-radius: 5px; }
 
 .topic-footer {
   width: 100%;
@@ -1256,25 +1310,38 @@ a.unfav-link {
 
 /* == message list
 -----------------------------------------------------------------------------------------*/
-.m-list li {
-  padding: 10px 10px;
-  border-bottom: 1px solid #ececec;
-  position: relative; }
-  .m-list li:last-child {
-    border: none; }
-  .m-list li img {
-    max-width: 80%;
-    display: table-cell; }
-.m-list p {
-  line-height: 25px;
-  padding-right: 35px;
-  word-wrap: break-word; }
-  .m-list p.time {
+.m-list {
+  color: #333;
+  font-size: 14px; }
+  .m-list a {
+    padding: 0 5px; }
+  .m-list li {
+    padding: 10px 10px;
+    border-bottom: 1px solid #ececec;
+    position: relative; }
+    .m-list li:last-child {
+      border: none; }
+    .m-list li img {
+      max-width: 80%;
+      display: table-cell; }
+  .m-list p {
+    line-height: 25px;
+    padding-right: 35px;
+    word-wrap: break-word; }
+    .m-list p span.time {
+      padding: 0 5px; }
+  .m-list .delete-link {
     position: absolute;
-    right: 15px;
-    bottom: 10px; }
-.m-list .delete-link {
-  color: #e82a73; }
+    color: #e82a73;
+    right: 5px;
+    top: 15px; }
+
+.aui_content .m-list {
+  font-size: 12px; }
+  .aui_content .m-list li {
+    padding: 5px 0; }
+  .aui_content .m-list p {
+    padding: 0; }
 
 .send-message {
   position: absolute;
@@ -1314,6 +1381,19 @@ p.reply-message {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px; }
 
+.node li.no-favnode {
+  border: none;
+  margin: 0 0 5px 0; }
+  .node li.no-favnode a {
+    font-size: 12px;
+    margin: 0 5px;
+    padding: 2px 5px;
+    background: #e82a73;
+    color: #fff;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px; }
+
 .following li a, .node li a {
   font-size: 14px; }
 
@@ -1329,6 +1409,11 @@ p.reply-message {
 -------------------------------------------------------*/
 .admin-nav a.current {
   color: #e82a73; }
+
+.tools {
+  padding-left: 10px; }
+  .tools li {
+    padding: 5px; }
 
 .admin-sidebar {
   float: left;
@@ -1424,6 +1509,16 @@ p.reply-message {
     margin: 0 auto;
     overflow: hidden;
     float: none; }
+
+  .post_author img {
+    display: none; }
+
+  .post-footer-bar > li:first-child {
+    display: none; }
+
+  #cm-box {
+    width: 100%!important;
+    margin: 0 15px; }
 
   a.post-title {
     font-size: 14px;
@@ -1529,6 +1624,10 @@ input.vivid-button:hover, .vivid-button:hover {
   font-weight: bold;
   margin: 0 3px; }
 
+input.left-button {
+  float: left;
+  margin-right: 15px; }
+
 /* == pagination
 -------------------------------------------------------------------*/
 .pagination-wrap {
@@ -1581,10 +1680,21 @@ input.vivid-button:hover, .vivid-button:hover {
 #loading {
   position: absolute;
   left: 50%;
-  top: 50%;
-  margin-left: -21px;
-  margin-top: -21px;
+  top: -2px;
+  z-index: 9999;
+  margin-left: -50px;
+  width: 100px;
+  height: 35px;
+  background: #e82a73;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
   display: none; }
+  #loading span {
+    line-height: 35px; }
 
 /* == Blog
 --------------------------------------------------------*/
@@ -1848,6 +1958,9 @@ td strong {
 .topic-list li p.cm-content {
   font-size: 14px;
   color: #000; }
+
+#desktop-notification {
+  display: none; }
 
 #at-view {
   position: absolute;

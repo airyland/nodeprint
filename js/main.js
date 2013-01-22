@@ -267,10 +267,9 @@ var topic = {
     id:0,
     target:$('#do-fav'),
     listen:function () {
-        $('#do-fav').click(function (e) {
+        $(document).on('click','#do-fav',function (e) {
             e.preventDefault();
             topic.fav($(this).attr('href'));
-
         });
     },
 
@@ -291,48 +290,7 @@ var topic = {
     }
 }
 
-var message = {
 
-    checkTag:function () {
-        return $('#unread-count').length > 0 ? true : false;
-    },
-    /**
-     * @todo 使用pagevisibility来检测，当不在当面页面上提示
-     */
-    fetch:function () {
-        if (this.checkTag()) {
-            $.get('api/user/0/message', {
-                type:1,
-                count:1
-            }, function (res) {
-                var no = res.count;
-                $('#unread-count').addClass('vivid-notice').hide().text(no).fadeIn();
-                var title = document.title;
-                if (parseInt(no) > 0) {
-                    if (window.localStorage && window.webkitNotifications) {
-                        if (localStorage.getItem('enableNotification') === '1') {
-                            var notice = window.webkitNotifications.createNotification('', '提醒', '您收到新的站内消息');
-                            notice.show();
-                            setTimeout(function () {
-                                notice.close();
-                            }, 2000);
-                        }
-                    }
-                    setInterval(function () {
-                        document.title = '(' + no + ')条新消息-' + title;
-                        setTimeout(function () {
-                            document.title = '(  )条新消息-' + title;
-                        }, 1000);
-                    }, 2000);
-                }
-            }, 'json');
-
-        }
-
-    },
-    setRead:function () {
-    }
-}
 
 var post = {
     tipsy:function () {
@@ -393,9 +351,7 @@ function time_ago(time) {
 
 $(function () {
     comment.init();
-    message.fetch();
     topic.init();
-    //setTimeout('message.fetch()',2000);
     post.init();
     $("a[rel='external']").attr('target', '_blank');
     //alert($.queryString['order']);
@@ -444,7 +400,9 @@ $(function () {
 
     var $body = $('body'),
         signinDialog;
+       
     $('#signin-btn,a[href="/signin"]').click(function (e) {
+        var  history=new NPHistory();
         e.preventDefault();
         signinDialog = $.dialog({
             title:'Sign In',
@@ -459,9 +417,11 @@ $(function () {
                     $('#user-name').val(store.get('lastLoginName'));
                     $('#user-pwd').focus();
                 }
+            history.pushState(null,'signin','/signin');
             },
             close:function () {
                 $body.toggleClass('modal');
+            history.restoreState();
             }
 
         });
@@ -652,35 +612,6 @@ $(function () {
             $(this).addClass('current');
         }
     });
-
-    /*notification*/
-    if (window.webkitNotifications) {
-        var enableNotification = localStorage.getItem('enableNotification') === '1';
-        if (enableNotification) {
-            $('#enable-notification').attr('checked', 'checked');
-        } else {
-            localStorage.setItem('enableNotification', 0);
-        }
-
-        $('#enable-notification').length > 0 && document.querySelector('#enable-notification').addEventListener('click', function () {
-            if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
-                if ($(this).prop('checked')) {
-                    var text = '您已启用桌面消息提醒';
-                    localStorage.setItem('enableNotification', 1);
-                } else {
-                    var text = '您已取消桌面消息提醒';
-                    localStorage.setItem('enableNotification', 0);
-                }
-                var notification = window.webkitNotifications.createNotification('', '提示', text);
-                notification.show();
-                setTimeout(function () {
-                    notification.close();
-                }, 3000)
-            } else {
-                window.webkitNotifications.requestPermission();
-            }
-        }, false);
-    }
 
     //tips
     //@todo 在窗口缩小时应检测右边是否有可用宽度智能定位

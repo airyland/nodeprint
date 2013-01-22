@@ -16,7 +16,7 @@ class Settings extends CI_Controller {
             'gravatar' => 'http://www.gravatar.com/avatar/'.md5(strtolower(trim($user_info['user_email']))),
             'timestamp' => time()
         ));
-        $this->s->display('user_settings.html');
+        $this->s->display('user/user_settings.html');
     }
 
 }

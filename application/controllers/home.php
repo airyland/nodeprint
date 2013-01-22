@@ -1,63 +1,125 @@
 <?php
 
 !defined('BASEPATH') && exit('No direct script access allowed');
-/**
- * NodePrint
- *
- * 轻论坛程序
- * 
- * NodePrint is a lightweight BBS built on Ci.
- *
- * @package            NodePrint
- * @author		airyland <i@mao.li>
- * @copyright	        Copyright (c) 2012 , mao.li.
- * @license		MIT
- * @link		http://github.com/airyland/nodeprint
- * @version	0.0.5
- */
 
 /**
- * 首页 Controller
+ * Home Controller
  * 
  * @subpackage  Controller
  */
 class Home extends CI_Controller {
-
-    public $tab;
-    private $available_tab=array('following-node','following-member');
-    public $topics;
+    /**
+     * current tab 
+     * @var string
+     */
+    private $tab;
+    
+    /**
+     * available tabs
+     * @var array
+     */
+    private $available_tab=array('all','following-node','following-member');
+    
+    /** 
+     * topics of current tab
+     * @var array
+     */
+    private $topics;
+    
+    /**
+     * current user
+     * @var mixed
+     */
     private $curr_user;
-    public $limit;
-    public $count;
+    
+    /**
+     * topic limit
+     * @var int
+     */
+    private $limit;
+    
+    /**
+     * sidebar::new nodes display no
+     * @var int
+     */
     private $new_nodes_item_no;
+    
+    /**sidebar::hot nodes display no
+     * @var int
+     */
     private $hot_nodes_item_no;
+    
+    /**
+     * if show status
+     * @var bool
+     */
+    private $show_status;
+
+	/**
+	* if is ajax request
+	* @var bool
+	*/
+    private $is_ajax;
 
     /**
-     * 构造器
+     * Home constructor
      * 
-     * 初始化,获取内容分类
+     * initialize, get topics of current tab
      */
     function __construct() {
         parent::__construct();
-        $this->load->library('s');
-        $this->load->model('post');
-        $this->load->model('nodes');
-        $this->load->model('site');
+        $this->tab = $this->input->get('tab');
+        // check if the tab is available
+        if($this->tab){
+            if(!in_array($this->tab,$this->available_tab)){
+                show_404();
+            }
+        }
         $this->config->load('site');
-        $this->load->model('user');
+        $this->load->library('s');
+        $this->load->model(array('post','nodes','site','user'));
+        
         $this->limit = $this->configs->get_config_item('topic_no');
         $this->hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
         $this->new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
+        $this->show_status=$this->configs->get_config_item('show_status');
+		$this->is_ajax=$this->input->is_ajax_request();
         $this->curr_user = $this->auth->get_user();
-        $this->tab = $this->input->get('tab');
     }
 
+
     /**
-    * query topics
-    *
+     * Home Controller
+     */
+    public function index() {
+        global $lang;
+        if (!$this->s->isCached("index.html")) {
+            $this->s->assign(array(
+                'title' => $lang['index'],          
+                'post' => $this->get_topic(),
+                'nodes' => $this->nodes->get_all_nodes(TRUE),
+                'show_status'=>$this->show_status,
+                'status' => $this->site->get_site_status(),
+                'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $this->new_nodes_item_no),
+                'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $this->new_nodes_item_no),
+                'ad' => ''
+                    )
+            );
+        }
+        if($this->is_ajax){
+	        $this->s->display('home/main.html');
+	        exit;
+        }
+        $this->s->display('home/index.html');
+    }
+
+
+    /**
+    * query topics of the tab
+    * @access public
     */
     public function get_topic(){
-        if($this->tab&&in_array($this->tab,$this->available_tab)&&$this->tab!=='all'){
+        if($this->tab&&$this->tab!=='all'){
             switch($this->tab){
                 case 'following-member':
                     $this->load->model('follow');
@@ -66,9 +128,9 @@ class Home extends CI_Controller {
 
                 case 'following-node':
                 $this->load->model('nodes');
-               // $node = $this->user->get_user_fav_node($this->curr_user['user_id']);
+                $following_nodes = $this->user->get_user_fav_node($this->curr_user['user_id']);
                 $this->topics = $this->nodes->get_user_fav_node_post($this->curr_user['user_id'], 1, $this->limit, false, 'post_last_comment');
-                //$count_post = $this->nodes->get_user_fav_node_post($this->curr_user['user_id'], 0, 0, true);
+                $this->s->assign('links',$following_nodes);
                 break;
             }
         }else{
@@ -76,29 +138,6 @@ class Home extends CI_Controller {
             $this->topics=$this->post->query_post($query_string);
         }
         return $this->topics;
-    }
-
-    /**
-     * 首页默认页面 Controller
-     */
-    public function index() {
-        $lang = load_lang();
-        $show_status=$this->configs->get_config_item('show_status');
-        if (!$this->s->isCached("index.html")) {
-            $nodes = $this->nodes->get_all_nodes();
-            $this->s->assign(array(
-                'title' => $lang['index'],          
-                'post' => $this->get_topic(),
-                'nodes' => $nodes,
-                'show_status'=>$show_status,
-                'status' => $this->site->get_site_status(),
-                'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $this->new_nodes_item_no),
-                'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $this->new_nodes_item_no),
-                'ad' => ''
-                    )
-            );
-        }
-        $this->s->display('index.html');
     }
 
 }

@@ -48,7 +48,8 @@ class Message extends CI_Model {
             'm_to_username' => $toname,
             'm_from_username' => $fromname,
             'm_subject' => json_encode($subject),
-            'm_read' => 1
+            'm_read' => 1,
+            'm_time' => current_time()
         );
         $this->db->insert(self::MSG_TABLE, $data);
     }
@@ -85,15 +86,18 @@ class Message extends CI_Model {
         if($user_type=='m_to_username'&&$read!=-1){
             $this->db->where('m_read', $read);
         }
-
-        //if $start_time given, then get the messaged received after the $start_time
-        if($start_time){
-            $this->db->where('m_time>',$start_time);
-        }
-        
+       
        //count only
         if ($count){
-            return $this->db->from(self::MSG_TABLE)->count_all_results();
+         $new=0;
+        $all=$this->db->from(self::MSG_TABLE)->count_all_results();
+       //if $start_time given, then get the messages received after the $start_time
+        if($start_time){
+            $this->db->where('m_time >=',$start_time);
+            $new =$this->db->from(self::MSG_TABLE)->count_all_results();
+             return array($all,$new,$start_time);
+        }
+          return $all; 
         }
 
         $this->db->order_by('m_id', 'DESC')->limit($no, count_offset($page, $no));

@@ -12,6 +12,7 @@ class Cron extends CI_Controller {
      * @var int
      */
     public $backup_time=1;
+    private $dropbox_token_file ='./application/config/dropbox.php';
     function __construct(){
         parent::__construct();
         $this->load->model(array('configs','admins'));
@@ -31,4 +32,8 @@ class Cron extends CI_Controller {
         header("HTTP/1.0 204 No Content");
     }
 
+    function backup2Dropbox(){
+        global $lang;
+        print_r($lang);
+        }
 }

@@ -40,9 +40,8 @@ class Member extends CI_Controller {
         if (!$this->page){
 	        show_404();
         }
-
-        $this->load->model('configs');
-        $this->load->library('dpagination');
+        $this->load->model(array('configs','user','post'));
+        $this->load->library(array('dpagination','s'));
     }
 
     /**
@@ -54,13 +53,8 @@ class Member extends CI_Controller {
     }
 
     function the_member($slug, $action = '') {
-
         $limit = $this->configs->get_config_item('topic_no');
         $slug = urldecode($slug);
-        $this->load->model('user');
-        $this->load->model('post');
-        $this->load->library('s');
-
         $user = $this->auth->get_user();
         $field = (is_numeric($slug)) ? 'user_id' : 'user_name';
         $u = $this->user->get_user_profile($slug, $field);
@@ -86,7 +80,7 @@ class Member extends CI_Controller {
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
-                $this->s->display('user_topic.html');
+                $this->s->display('user/user_topic.html');
                 break;
 
             /**
@@ -107,11 +101,10 @@ class Member extends CI_Controller {
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
-                $this->s->display('user_favtopic.html');
+                $this->s->display('user/user_favtopic.html');
                 break;
 
-            case 'favnode':          
-                $this->load->model('user');
+            case 'favnode':
                 $this->load->model('nodes');
                 $node = $this->user->get_user_fav_node($user['user_id']);
                 $post = $this->nodes->get_user_fav_node_post($user['user_id'], $this->page, $limit, false);
@@ -127,11 +120,10 @@ class Member extends CI_Controller {
                 $this->s->assign('post', $post);
                 $this->s->assign('page_bar', $this->dpagination->getOutput());
                 $this->s->assign('show_page_bar', $count_post > 0);
-                $this->s->display('user_favnode.html');
+                $this->s->display('user/user_favnode.html');
                 break;
 
             case 'following':
-                $this->load->model('user');
                 $this->load->model('follow');
                 $fo = $this->user->get_user_following_member($user['user_id']);
                 $stream = $this->follow->get_following_user_stream($user['user_id'], false, $this->page, $limit);
@@ -147,12 +139,12 @@ class Member extends CI_Controller {
                 $this->s->assign('fo', $fo);
                 $this->s->assign('show', $if_show_page_bar);
                 $this->s->assign('page_bar', $this->dpagination->getOutput());
-                $this->s->display('user_following.html');
+                $this->s->display('user/user_following.html');
                 break;
 
             case 'send_message':
                 $this->s->assign('title', '发送私信');
-                $this->s->display('user_send_message.html');
+                $this->s->display('user/user_send_message.html');
                 break;
 
 
@@ -170,7 +162,7 @@ class Member extends CI_Controller {
                 $this->s->assign('blog', $blog);
                 $this->s->assign('show', $if_show_page_bar);
                 $this->s->assign('page_bar', $this->dpagination->getOutput());
-                $this->s->display('user_blog.html');
+                $this->s->display('user/user_blog.html');
                 break;
 
             case 'replies':
@@ -188,7 +180,7 @@ class Member extends CI_Controller {
                             'page_bar' => $this->dpagination->getOutput()
                         )
                 );
-                $this->s->display('user_replies.html');
+                $this->s->display('user/user_replies.html');
 
                 break;
 
@@ -208,7 +200,7 @@ class Member extends CI_Controller {
                     'hiscomment' => $this->post->list_user_comment_post($slug, $filed,  1, $limit),
                     'is_follow' => $is_follow
                 ));
-                $this->s->display('member.html');
+                $this->s->display('user/member.html');
                 break;
         }
     }

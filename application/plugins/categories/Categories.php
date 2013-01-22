@@ -22,7 +22,9 @@ class Categories
 	
 	public function show_categories($format='')
 	{
+		file_put_contents('application/aa.txt','hello');
 		return 'hello world';
+		
 		
 		/*
 		if(empty($format)) return;
