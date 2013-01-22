@@ -29,28 +29,28 @@
 class Account extends CI_Controller
 {
 
-    private $is_login;
+    protected $is_login;
 
     function __construct()
     {
         parent::__construct();
         $this->is_login = is_login();
         $this->load->library('s');
+        $this->load->model('user');
     }
 
     function index($action = '')
     {
         global $lang;
+        if(in_array($action,array('signin','signup','reset_password','forget_password','email_auth_confirm'))){
+            if ($this->is_login)  redirect(base_url());
+        }
         switch ($action) {
 
             /**
              * Sign in page
              */
             case 'signin':
-                if ($this->is_login) {
-                    redirect(base_url());
-                }
-                $this->load->model('user');
                 $this->s->assign(array(
                     'title' => $lang['signin'],
                     'lang' => $lang,
@@ -62,9 +62,6 @@ class Account extends CI_Controller
              * Sign up page
              */
             case 'signup':
-                if ($this->is_login) {
-                    redirect(base_url());
-                }
                 session_start();
                 $this->load->helper('captcha');
                 $random = get_random_strings(5);
@@ -78,7 +75,6 @@ class Account extends CI_Controller
                     'img_height' => 45,
                     'expiration' => 2
                 );
-                $this->load->model('user');
                 $this->s->assign(array(
                     'title' => $lang['signup'],
                     'lang' => $lang,
@@ -92,7 +88,6 @@ class Account extends CI_Controller
              * email activation
              */
             case 'email_auth_confirm':
-                $this->load->model('user');
                 $auth = $this->input->get('auth');
                 $check = $this->user->email_confirm($auth);
                 if ($check){
@@ -104,6 +99,8 @@ class Account extends CI_Controller
              * reset password
              */
             case 'reset_password':
+                $this->s->assign('title', $lang['reset password']);
+                $this->s->display('account/reset_password.html');
                 break;
 
             /**
@@ -111,7 +108,7 @@ class Account extends CI_Controller
              */
             case 'forget_password':
                 $this->s->assign('title', $lang['find password']);
-                $this->s->display('forget_password.html');
+                $this->s->display('account/forget_password.html');
                 break;
 
             /**

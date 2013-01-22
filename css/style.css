@@ -633,6 +633,9 @@ input[type='search'] {
       #footer li a:hover {
         text-decoration: underline; }
 
+.center-txt {
+  text-align: center; }
+
 /* == login box
 ----------------------------------------------------*/
 .login-box {
@@ -839,6 +842,9 @@ h3 {
   line-height: 35px;
   padding-left: 10px;
   border-bottom: 1px solid #ccc; }
+
+.hidden {
+  display: none; }
 
 .up-arrow {
   font-family: Arial;
