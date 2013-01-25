@@ -17,10 +17,11 @@ class Site extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->load->driver('cache', array('adapter' => 'file'));
+        $this->config->load('site');
     }
 
     /**
-     * NodePrint's version string
+     * NodePrint's current version
      */
     const VERSION = '0.9';
 
@@ -44,7 +45,7 @@ class Site extends CI_Model {
         $status['post_no'] = $this->db->from('vx_post')->count_all_results();
         $status['comment_no'] = $this->db->from('vx_comment')->count_all_results();
         $status['node_no'] = $this->db->from('vx_node')->where('node_type', 2)->count_all_results();
-        $status['on_time']= timespan(strtotime('2012-04-01 00:00:00'));
+        $status['on_time']= timespan(strtotime($this->config->item('site_start_date')));
         return $status;
     }
 

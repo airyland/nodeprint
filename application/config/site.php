@@ -1,4 +1,7 @@
 <?php
+//the time your site opened
+$config['site_start_date']='2012-04-01 00:00:00';
+
 //feed post no
 $config['feed_post_no']=15;
 //feed cache expire time
