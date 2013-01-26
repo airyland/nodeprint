@@ -35,7 +35,8 @@ h3 {
   color: #999;
   line-height: 35px;
   padding-left: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ececec;
+  background:url(../img/box_title_bg.png) repeat-x;
 }
 
 .hidden {
@@ -67,15 +68,14 @@ span.more {
 /* ==site tab
 ---------------------------------------------------*/
 .site-tab {
-  border-bottom: 1px solid #ececec;
-  padding: 10px 10px 10px 15px;
+  background:url(../img/box_title_bg.png);
+  padding: 8px 10px 10px 15px;
   overflow:hidden;
   position:relative;
   ul {
     overflow: hidden;
     li {
       float: left;
-      background:#fff;
       padding: 3px;
       margin-right:0px;
       @include radius(2px);
@@ -97,11 +97,12 @@ span.more {
 }
 
 .site-sub-tab {
+  width:100%;
   position:relative;
   border:1px solid #ececec;
   clear:both;
-  margin-top:10px;
-  padding:5px 0 5px 5px;
+  margin-top:5px;
+  padding:5px;
   background:#ececec;
   @include radius(3px);
   a{
@@ -111,14 +112,14 @@ span.more {
     position:absolute;
     color:#ececec;
     top:-10px;
-    left:70px;
+    left:80px;
   }
 }
 
 #add-topic {
   position:absolute;
   right:10px;
-  top:15px;
+  top:12px;
 }
 
 
@@ -788,8 +789,8 @@ p.reply-message {
   }
 }
 
-.admin-box-footer {
-  padding: 5px 0 0 30px;
+.box .admin-box-footer {
+  padding: 10px 0 0 30px;
 }
 
 .admin-content {
@@ -801,9 +802,9 @@ p.reply-message {
 
 .status {
   strong {
-    font-size: 40px;
+    font-size: 50px;
     font-weight: normal;
-    font-family: "Century Gothic";
+    font-family: arial;
     color: $vivid;
     display: block;
   }
