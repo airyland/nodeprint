@@ -1,5 +1,3 @@
-{include file="header.html"}
-<div class="content">
     <section class="box">
         <h2><span class="title">收藏的节点</span></h2>	
         <ul class="node">
@@ -21,14 +19,6 @@
         <h2><span class="title">收藏节点最新文章</span></h2>
         {include file="topic_list.html"}
     </section>
-    {if $show_page_bar}
     <nav class="box">
         <div class="pagination-wrap">{$page_bar}</div>
-    </nav>
-    {/if}
-</div>
-
-<div class="sidebar">
-    {include file="profile_box.html"}
-</div>
-{include file="footer.html"}
+    </nav>  

@@ -1,5 +1,4 @@
-{include file="header.html"}
-<div class="content">
+
 	<section class="box">
 		<h2><span class="title">关注的用户</span></h2>
 		<ul class="following">
@@ -19,15 +18,7 @@
 	<section class="box">
 	<h2><span class="title">关注用户创建的帖子</span></h2>
 	{include file="topic_list.html"}
-	</section>	
-	{if $show eq true}
-<nav class="box">
-	<div class="pagination-wrap">{$page_bar}</div>
-</nav>
-{/if}
-</div>
-
-<div class="sidebar">
-	{include file="profile_box.html"}
-</div>
-{include file="footer.html"}
+	</section>
+	<nav class="box">
+    <div class="pagination-wrap">{$page_bar}</div>
+	</nav>	

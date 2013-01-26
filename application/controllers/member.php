@@ -34,12 +34,26 @@ class Member extends CI_Controller {
     */
     private $is_ajax;
 
-    function __construct() {
+	/**
+	* topic limit
+	* @var int
+	*/
+    private $limit;
+
+	/**
+	* user slug
+	* @var string
+	*/
+    private $slug;
+
+    public function __construct() {
         parent::__construct();
         $this->page = $this->input->get_page();
         if (!$this->page){
 	        show_404();
         }
+        $this->limit = $this->configs->get_config_item('topic_no');
+        $this->is_ajax=$this->input->is_ajax_request();
         $this->load->model(array('configs','user','post'));
         $this->load->library(array('dpagination','s'));
     }
@@ -48,12 +62,50 @@ class Member extends CI_Controller {
      * member list
      * @todo members list page
      */
-    function index() {
+    public function index() {
         show_404();
     }
 
+    private function getPagination($count){
+	     $this->dpagination->items($count);
+         $this->dpagination->limit($this->limit);
+         $this->dpagination->currentPage($this->page);
+         $this->dpagination->target('/member/' . $this->slug .'/'.$this->action);
+         $this->dpagination->adjacents(8);
+         return $this->dpagination->getOutput();
+    }
+
+	/**
+	* display page
+	* @param array $data
+	*/
+    public function display($data){
+	    $count_topic = $this->post->query_post($data['count_query_string']);
+               
+                $this->s->assign(
+                        array(
+                            'title' => $this->slug . $data['title'],
+                            'post' => $this->post->query_post($data['post_query_string']),
+                            'page_bar' => $this->getPagination($count_topic,$data['target']),
+                            'box_title'=>$data['title'],
+                            'template'=>$data['template']
+                        )
+                );
+
+			$this->smart_display($data['template']); 
+    }
+
+    private function smart_display($template,$wrap_template='user_wrap'){
+	    if($this->is_ajax){
+		    $this->s->display('user/'.$template.'.html');
+	    }else{
+		    $this->s->display('user/'.$wrap_template.'.html');
+	    }
+    }
+
     function the_member($slug, $action = '') {
-        $limit = $this->configs->get_config_item('topic_no');
+        $this->slug=$slug;
+        $this->action=$action;
         $slug = urldecode($slug);
         $user = $this->auth->get_user();
         $field = (is_numeric($slug)) ? 'user_id' : 'user_name';
@@ -67,20 +119,14 @@ class Member extends CI_Controller {
              * 
              */
             case 'topic':
-                $count_topic = $this->post->query_post("user_id={$slug}&user_type=user_name&count=true");
-                $this->dpagination->items($count_topic);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($this->page);
-                $this->dpagination->target('/member/' . $slug . '/topic');
-                $this->dpagination->adjacents(8);
-                $this->s->assign(
-                        array(
-                            'title' => $slug . '的帖子',
-                            'post' => $this->post->query_post('user_id=' . $slug . '&user_type=user_name&page=' . $this->page . 'no=' . $limit),
-                            'page_bar' => $this->dpagination->getOutput()
-                        )
-                );
-                $this->s->display('user/user_topic.html');
+            	$data=array(
+				    'count_query_string'=>"user_id={$slug}&user_type=user_name&count=true",
+				    'target'=>'/topic',
+				    'title'=>'创建的帖子',
+				    'post_query_string'=>'user_id=' . $this->slug . '&user_type=user_name&page=' . $this->page . 'no=' . $this->limit,
+				    'template'=>'user_topic'
+            	);
+            	$this->display($data);
                 break;
 
             /**
@@ -89,57 +135,46 @@ class Member extends CI_Controller {
             case 'favtopic':
                 $this->load->model('follow');
                 $count_topic = $this->follow->count_fav($slug, 1);
-                $this->dpagination->items($count_topic);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($this->page);
-                $this->dpagination->target('/member/' . $slug . '/favtopic');
-                $this->dpagination->adjacents(8);
                 $this->s->assign(
                         array(
                             'title' => $slug . '收藏的帖子',
-                            'post' => $this->follow->list_follow($slug, 'user_name', 1, $this->page, $limit),
-                            'page_bar' => $this->dpagination->getOutput()
+                            'post' => $this->follow->list_follow($slug, 'user_name', 1, $this->page, $this->limit),
+                            'page_bar' => $this->getPagination($count_topic),
+                            'box_title'=>'收藏的帖子',
+                            'template'=>'user_favtopic'
                         )
                 );
-                $this->s->display('user/user_favtopic.html');
+               $this->smart_display('user_topic');
                 break;
 
             case 'favnode':
                 $this->load->model('nodes');
                 $node = $this->user->get_user_fav_node($user['user_id']);
-                $post = $this->nodes->get_user_fav_node_post($user['user_id'], $this->page, $limit, false);
+                $post = $this->nodes->get_user_fav_node_post($user['user_id'], $this->page, $this->limit, false);
                 $count_post = $this->nodes->get_user_fav_node_post($user['user_id'], 0, 0, true);
-                $this->dpagination->items($count_post);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($this->page);
-                $this->dpagination->target('/member/' . $slug . '/favnode');
-                $this->dpagination->adjacents(8);
 
                 $this->s->assign('title', '收藏的节点');
                 $this->s->assign('node', $node);
                 $this->s->assign('post', $post);
-                $this->s->assign('page_bar', $this->dpagination->getOutput());
+                $this->s->assign('page_bar', $this->getPagination($count_post,'favnode'));
                 $this->s->assign('show_page_bar', $count_post > 0);
-                $this->s->display('user/user_favnode.html');
+                $this->s->assign('box_title','收藏的节点');
+                $this->s->assign('template','user_favnode');
+                $this->smart_display('user_favnode');
                 break;
 
             case 'following':
                 $this->load->model('follow');
                 $fo = $this->user->get_user_following_member($user['user_id']);
-                $stream = $this->follow->get_following_user_stream($user['user_id'], false, $this->page, $limit);
+                $stream = $this->follow->get_following_user_stream($user['user_id'], false, $this->page, $this->limit);
                 $count_post = $this->follow->get_following_user_stream($user['user_id'], true);
-                $this->dpagination->items($count_post);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($this->page);
-                $this->dpagination->target('/member/' . $slug . '/following');
-                $this->dpagination->adjacents(8);
-                $if_show_page_bar = ($count_post > 0) ? TRUE : FALSE;
                 $this->s->assign('title', '关注的用户');
                 $this->s->assign('post', $stream);
                 $this->s->assign('fo', $fo);
-                $this->s->assign('show', $if_show_page_bar);
-                $this->s->assign('page_bar', $this->dpagination->getOutput());
-                $this->s->display('user/user_following.html');
+                $this->s->assign('page_bar', $this->getPagination($count_post));
+                $this->s->assign('box_title','关注的用户');
+                $this->s->assign('template','user_following');
+                $this->smart_display('user_following');
                 break;
 
             case 'send_message':
@@ -147,60 +182,36 @@ class Member extends CI_Controller {
                 $this->s->display('user/user_send_message.html');
                 break;
 
-
-            case 'blog':
-                $blog = $this->post->query_post("user_id={$user['user_id']}&node_id=blog&node_type=node_name&no={$limit}");
-                $count_blog = $this->post->query_post("user_id={$user['user_id']}&node_id=blog&node_type=node_name&count=" . TRUE);
-                $if_show_page_bar = ($count_blog > $limit) ? TRUE : FALSE;
-                $this->load->library('dpagination');
-                $this->dpagination->items($count_blog);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($page);
-                $this->dpagination->target('/member/' . $slug . '/blog');
-                $this->dpagination->adjacents(8);
-                $this->s->assign('title', $u['user_name'] . '的blog');
-                $this->s->assign('blog', $blog);
-                $this->s->assign('show', $if_show_page_bar);
-                $this->s->assign('page_bar', $this->dpagination->getOutput());
-                $this->s->display('user/user_blog.html');
-                break;
-
             case 'replies':
                 $this->load->model('follow');
-                $count_topic = $this->post->list_user_comment_post($slug, 'user_name', $page = 1, $limit, TRUE);
-                $this->dpagination->items($count_topic);
-                $this->dpagination->limit($limit);
-                $this->dpagination->currentPage($this->page);
-                $this->dpagination->target('/member/' . $slug . '/replies');
-                $this->dpagination->adjacents(8);
+                $count_topic = $this->post->list_user_comment_post($slug, 'user_name', $page = 1, $this->limit, TRUE);
                 $this->s->assign(
                         array(
                             'title' => $slug . '回复的帖子',
-                            'post' => $this->post->list_user_comment_post($slug, 'user_name', $this->page, $limit),
-                            'page_bar' => $this->dpagination->getOutput()
+                            'post' => $this->post->list_user_comment_post($slug, 'user_name', $this->page, $this->limit),
+                            'page_bar' => $this->getPagination($count_topic),
+                            'box_title'=>'回复的帖子',
+                            'template'=>'user_replies'
                         )
                 );
-                $this->s->display('user/user_replies.html');
-
+                $this->smart_display('user_replies');
                 break;
 
             /**
              * member info
              */
             default:
-                $this->load->library('github');
                 $this->load->model(array('post','follow'));
                 $is_follow = $this->follow->check_follow($user['user_id'], $u['user_name'], 'f_keyname', $type = 3);
                 $filed = (is_numeric($slug)) ? 'user_id' : 'user_name';
                 $this->s->assign(array(
                     'title' => $u['user_name'],
                     'latest_blog' => '',
-                    'github' => ($u['other']['github']) ? $this->github->fetch($u['other']['github']) : '',
-                    'post'=>$this->post->query_post("user_id={$slug}&user_type={$field}&order=post_last_comment&page={$this->page}&no={$limit}"),
-                    'hiscomment' => $this->post->list_user_comment_post($slug, $filed,  1, $limit),
+                    'post'=>$this->post->query_post("user_id={$slug}&user_type={$field}&order=post_last_comment&page={$this->page}&no={$this->limit}"),
+                    'hiscomment' => $this->post->list_user_comment_post($slug, $filed,  1, $this->limit),
                     'is_follow' => $is_follow
                 ));
-                $this->s->display('user/member.html');
+                $this->smart_display('member_main','member');
                 break;
         }
     }
