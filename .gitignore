@@ -21,11 +21,13 @@ img/captcha/*.jpg
 *.db
 /other
 /np-content/cache/*.txt
-/application/backup/*.zip
-/application/backup/*.sql
+/np-content/backup/*.zip
+/np-content/backup/*.sql
 /np-content/upload/*.png
 /np-content/upload/*.jpg
 /css/source/.sass-cache
 /wiki
 /oauth
 /application/config/oauth.php
+/application/controllers/test.php
+/img/fm/
