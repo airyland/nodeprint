@@ -1063,14 +1063,15 @@ class Api extends CI_Controller {
         }
     }
 
-    function site($action = '') {
-        $this->auth->check_admin();
+    function site($action = '',$id='') {
+        
         switch ($action) {
             case 'status':
 
                 break;
 
             case 'update_config':
+                $this->auth->check_admin();
                 $this->load->model('configs');
                 $config = $this->input->post('config');
                 $this->configs->save_config_item($config);
@@ -1082,16 +1083,41 @@ class Api extends CI_Controller {
                 break;
 
             case 'widgets':
-                $this->load->library('s');
-                $this->config->load('site');
-                $hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
-                $new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
-                $this->load->model(array('nodes'));
-                $this->s->assign(array(
-                     'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $new_nodes_item_no),
-                     'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
-                    ));
-                $this->s->display('widgets.html');
+                if($id){
+                    switch($id){
+                        case 'home':
+                            $this->load->library('s');
+                            $this->config->load('site');
+                            $hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
+                            $new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
+                            $this->load->model(array('nodes'));
+                            $this->s->assign(array(
+                                         'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $new_nodes_item_no),
+                                         'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
+                                        ));
+                            $this->s->display('widget/home.html');
+                        break;
+                        case 'node':
+                            echo file_get_contents(APPPATH.'templates/widget/ad/node.html');
+                        break;
+
+                        case 'member':
+                             echo file_get_contents(APPPATH.'templates/widget/ad/node.html');
+                        break;
+
+                        case 'topic':
+                             echo file_get_contents(APPPATH.'templates/widget/ad/topic.html');
+                        break;
+
+                        case 'create_topic':
+                            echo file_get_contents(APPPATH.'templates/widget/create_topic.html');
+                        break;
+
+                        default:
+                        break;
+                    }
+                }
+                
                 break;
 
             default:
