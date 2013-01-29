@@ -1,4 +1,7 @@
-<?php !defined('BASEPATH') && exit('No direct script access allowed');
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
+
 /**
  * NodePrint
  *
@@ -14,6 +17,7 @@
  * @version	0.0.5
  */
 class Site extends CI_Model {
+
     function __construct() {
         parent::__construct();
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -23,9 +27,10 @@ class Site extends CI_Model {
     /**
      * NodePrint's current version
      */
+
     const VERSION = '0.9';
 
-    function server_info(){
+    function server_info() {
         
     }
 
@@ -36,30 +41,29 @@ class Site extends CI_Model {
     function get_version() {
         return self::VERSION;
     }
-    
-    
+
     function site_status() {
         $this->load->helper('date');
         $status = array();
-        $status['user_no'] = $this->db->from('vx_user')->count_all_results();
-        $status['post_no'] = $this->db->from('vx_post')->count_all_results();
-        $status['comment_no'] = $this->db->from('vx_comment')->count_all_results();
-        $status['node_no'] = $this->db->from('vx_node')->where('node_type', 2)->count_all_results();
-        $status['on_time']= timespan(strtotime($this->config->item('site_start_date')));
+        $status['user_no'] = $this->db->count_all('user');
+        $status['post_no'] = $this->db->count_all('post');
+        $status['comment_no'] = $this->db->count_all('comment');
+        $status['node_no'] = $this->db->from('node')->where('node_type', 2)->count_all_results();
+        $status['on_time'] = timespan(strtotime($this->config->item('site_start_date')));
+        $status['hit_no'] = $this->db->select_sum('post_hit')->get('post')->row()->post_hit;
         return $status;
     }
 
-    function save_status_cache(){
-
-
+    function save_status_cache() {
+        
     }
 
-    function get_site_status(){
-        if ( ! $status = $this->cache->get('status')){
-            $status=$this->site_status();
-            $this->cache->save('status',json_encode($status,600));
-        }else{
-            $status=json_decode($status,TRUE);
+    function get_site_status() {
+        if (!$status = $this->cache->get('status')) {
+            $status = $this->site_status();
+            $this->cache->save('status', json_encode($status, 600));
+        } else {
+            $status = json_decode($status, TRUE);
         }
         return $status;
     }
