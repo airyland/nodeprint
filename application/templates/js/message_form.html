@@ -1,18 +1,19 @@
-     <script type="text/NP-template" id="send-message-template">
-            <form class="form  message-form" action="/api/user/0/send_pm_message" method="post">
-                <ul>
-                    <li>
-                    <label for="send_to">发给</label>
-                    <input type="text" id="send_to" name="touser" placeholder="用户名" required/> 
-                    </li>
-                    <li>
-                        <label for="pm_content">内容</label>
-                        <textarea name="content" placeholer="消息" required></textarea>
-                    </li>
-                    <li style="text-align:right;">
-                        <span class="cancel-send">取消</span>
-                        <input type="submit" class="vivid-button small-button" id="do-send" value="发送"/>
-                    </li>
-                </ul>
-            </form>
-    </script>
+<script type="text/NP-template" id="send-message-template">
+<form class="form  message-form" action="/api/user/0/send_pm_message" method="post">
+    <ul>
+        <li>
+        <label for="send_to">发给</label>
+        <input type="text" id="send_to" name="touser" placeholder="用户名" required/> 
+        </li>
+        <li>
+            <label for="pm_content">内容</label>
+            <textarea name="content" placeholer="消息" id="pm_content" required></textarea>
+        </li>
+        <li style="text-align:right;">
+            <span class="form-error msg-error">请填写完整信息</span>
+            <span class="cancel-send">取消</span>
+            <input type="submit" class="vivid-button small-button" id="do-send" value="发送"/>
+        </li>
+    </ul>
+</form>
+</script>
