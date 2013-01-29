@@ -2,13 +2,12 @@
 
 !defined('BASEPATH') && exit('No direct script access allowed');
 
-
 /**
  * Topic pages Controller
  * @author airyland <i@mao.li>
  */
-class T extends CI_Controller
-{
+class T extends CI_Controller {
+
     /**
      * topic author
      * @var mixed
@@ -33,33 +32,30 @@ class T extends CI_Controller
      */
     private $limit;
 
-	/**
-	* if the request is ajax
-	* @var bool
-	*/
+    /**
+     * if the request is ajax
+     * @var bool
+     */
     private $is_ajax;
 
-    function __construct()
-    {
+    function __construct() {
         parent::__construct();
         $this->load->model('configs');
         $this->load->library('s');
         $this->author = $this->auth->get_user();
         $this->is_login = $this->auth->is_login();
         $this->page = $this->input->get_page();
-        $this->is_ajax=$this->input->is_ajax_request();
+        $this->is_ajax = $this->input->is_ajax_request();
     }
 
     /**
      * redirect /t to /t/recent
      */
-    function index()
-    {
+    function index() {
         redirect('/t/recent');
     }
 
-    function the_post($id, $action = '')
-    {
+    function the_post($id, $action = '') {
         $this->load->model(array('post', 'comment'));
         if (!$action) {
             if (!$this->page) {
@@ -96,18 +92,18 @@ class T extends CI_Controller
             $this->post->add_post_hit($id);
 
             $this->s->assign(array(
-                    'title' => $topic['post_title'],
-                    't' => $topic,
-                    'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
-                    'fav' => $fav,
-                    'local_upload' => $local_upload,
-                    'page_bar' => $page_bar
-                )
+                'title' => $topic['post_title'],
+                't' => $topic,
+                'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
+                'fav' => $fav,
+                'local_upload' => $local_upload,
+                'page_bar' => $page_bar
+                    )
             );
-			if($this->is_ajax){
-				$this->s->display('topic/single_topic_main.html');
-				exit;
-			}
+            if ($this->is_ajax) {
+                $this->s->display('topic/single_topic_main.html');
+                exit;
+            }
             $this->s->display('topic/single_topic.html');
         } else if ($action === 'edit') {
             $this->auth->check_login();
@@ -139,8 +135,7 @@ class T extends CI_Controller
         }
     }
 
-    function the_list($cat, $key = '')
-    {
+    function the_list($cat, $key = '') {
         //get topic no
         $this->limit = $this->configs->item('topic_no');
 
@@ -161,7 +156,7 @@ class T extends CI_Controller
                 $count_post = $this->post->query_post("count=true");
                 $title = '最新主题';
                 $this->dpagination->target('/t/recent');
-                $template = 'topic_recent.html';
+                $template = $this->is_ajax ? 'topic/recent_topic_main.html' : 'topic/recent_topic.html';
                 break;
             /**
              * Recent changed topics
@@ -172,7 +167,7 @@ class T extends CI_Controller
                 $count_post = $this->post->query_list("count=true");
                 $title = '最新更改';
                 $this->dpagination->target('/t/changes');
-                $template = 'topic_recent.html';
+                $template = $this->is_ajax ? 'topic/recent_topic_main.html' : 'topic/recent_topic.html';
                 break;
             /**
              * Search results
@@ -184,7 +179,7 @@ class T extends CI_Controller
                 $this->dpagination->target('/t/search/' . $key);
                 $post = $this->post->search_post($key, $this->page, $this->limit);
                 $title = $key . '-帖子搜索';
-                $template = 'search_result.html';
+                $template = $this->is_ajax ? 'topic/search_main.html' : 'topic/search.html';
                 break;
         }
 
@@ -195,13 +190,13 @@ class T extends CI_Controller
         $page_bar = $this->dpagination->getOutput();
 
         $this->s->assign(array(
-                'title' => $title . ' ' . $this->page . '/' . intval($count_post / $this->limit + 1),
-                'key' => $key,
-                'post' => $post,
-                'page_bar' => $page_bar,
-                'count' => $count_post,
-                'show_pagebar' => $count_post > 0 ? TRUE : FALSE
-            )
+            'title' => $title . ' ' . $this->page . '/' . intval($count_post / $this->limit + 1),
+            'key' => $key,
+            'post' => $post,
+            'page_bar' => $page_bar,
+            'count' => $count_post,
+            'show_pagebar' => $count_post > 0 ? TRUE : FALSE
+                )
         );
         $this->s->display($template);
     }

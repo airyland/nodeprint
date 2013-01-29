@@ -1,0 +1,24 @@
+function track(track,event){
+/**
+  console.log('track::'+track);
+  _gaq.push(['_setAccount', 'UA-33401773-1']);
+  if(event&&event===true){
+    track=track.split(' ');
+    console.log(track);
+    _gaq.push(['_trackEvent', track[0], track[1],track[2]?track[2]:'']);
+    
+  }
+**/
+  _gaq.push(['_setAccount', 'UA-408843-11']);
+  if(event&&event===true){
+track=track.split(' ');
+    console.log(track);
+    _gaq.push(['_trackEvent', track[0], track[1],track[2]?track[2]:'']);
+    
+  }
+
+
+ 
+}
+
+setInterval(function(){track('首页 打开 链接',true);},1000);
