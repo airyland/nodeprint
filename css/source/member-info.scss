@@ -2,15 +2,15 @@
 -----------------------------------------------------------------------------------*/
 
 .member-info {
+  padding-bottom:10px ;
   h2 {
     margin-bottom: 10px;
   }
   img {
     float: left;
     margin-right: 15px;
-    border-radius: 5px;
     margin-left: 10px;
-    border-radius: 36px;
+    @include radius(36px);
     -webkit-transition: all 1s ease-out;
     transition: all 1s ease-out;
     &:hover {

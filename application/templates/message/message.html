@@ -1,7 +1,7 @@
 {include file="header.html"}
 <div class="content">
     <section class="box">
-        <span class="send-message"><a href="/messages/send" class="vivid-button">发送私信</a></span>
+        <span class="send-message"><a href="/messages/send" id="JS_send_message" class="vivid-button">发送私信</a></span>
         <dl class="ui-tab">
             <dt class="ui-tab-trigger clearfix">  
             <a href="/messages/?type=unread" class="ui-tab-trigger-item {if isset($smarty.get.type)&&($smarty.get.type=='' or $smarty.get.type=='unread')||!isset($smarty.get.type)}ui-tab-trigger-item-current{/if}">未读消息(<span class="vivid-notice">{$unread_count}</span>)</a> 
@@ -18,5 +18,6 @@
 <div class="sidebar">
     {include file="profile_box.html"}
 </div>
+{include file="js/message_form.html"}
 {include file="footer.html"}
 

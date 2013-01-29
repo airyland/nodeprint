@@ -1,15 +1,11 @@
 {include file="header.html"}
         <div class="content" id="content">
             {include file="home/main.html"}
-            {include file="node_list.html"}
         </div>
 
         <div class="sidebar" id="sidebar">
-            {if $is_login}
-            {*include file="add_post_link.html"*}
-            {/if}
             {include file="profile_box.html"}
-
+            {include file="ad/home.html"}
             <section class="node-list">
                 <h3>{$lang.hotnodes}</h3>
                 <span><a href="">{if $ad}{$ad}{/if}</a></span>

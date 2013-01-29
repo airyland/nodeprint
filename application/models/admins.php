@@ -23,6 +23,16 @@
  */
 class Admins extends CI_Model {
 
+    /**
+    * backup file dir
+    */
+    const BACKUP_DES='./np-content/backup/';
+
+    /**
+    * backup log file
+    */
+    const BACKUP_LOG='./np-content/backup/log.php';
+
     function __construct() {
         parent::__construct();
         $this->auth->check_admin();
@@ -63,14 +73,23 @@ class Admins extends CI_Model {
      * 每天备份一次，在管理员后台可关闭
      */
     public function backup() {
-        if ($this->configs->get_config_item('auto_backup')) {
-            if (!file_exists(APPPATH . 'backup/' . date('Y-m-d', time()) . '.zip')) {
+        $today=date('Y-m-d-H-i-s', time());
+        $filename=$today . '-' .get_random_string(20).'.zip';
+        $log= $this->get_last_backup_file();
+        $has_backup_today=$log.strpos($log,$today);
+        if (!$has_backup_today&&$this->configs->item('auto_backup')) {
                 $this->load->dbutil();
                 $backup = & $this->dbutil->backup();
                 $this->load->helper('file');
-                write_file(APPPATH . 'backup/' . date('Y-m-d', time()) . '.zip', $backup);
-            }
+                write_file(self::BACKUP_DES . $filename, $backup);
+                write_file(self::BACKUP_LOG,'<?php $file="'.$filename.'";');
         }
+    }
+
+    public function get_last_backup_file(){
+        $file='';
+        include(self::BACKUP_LOG);
+        return $file;
     }
 }
 

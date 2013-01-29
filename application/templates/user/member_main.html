@@ -4,7 +4,7 @@
         <div class="member-info-wrap">
         <p>
             <span class="user-name">{$u.user_name}</span>
-            <small>{#siteName#} 第  {$u.user_id}  号会员，加入于 {$u.user_register_time}</small>
+            <small>{#siteName#} 第  {$u.user_id}  号会员，加入于 {time_ago time=$u.user_register_time}</small>
         </p>
         <ul>
             {if isset($u.other.douban) && $u.other.douban}<li>豆瓣:<a href="{$u.other.douban}/">{$u.other.douban}</a></li>{/if}
@@ -17,7 +17,7 @@
         {if $me.user_id neq $u.user_id}
             <p class="follow-user">
                 <a href="/api/user/{$u.user_name}?do={if $is_follow eq false}fo{else}unfo{/if}" class="vivid-button" id="JS_follow_action">{if $is_follow eq false}关注TA{else}取消关注{/if}</a>
-                <a id="JS_send_message" href="messages/send?to={$u.user_name}">发送私信</a>
+                <a id="JS_send_message" href="messages/send?to={$u.user_name}" data-sendto="{$u.user_name}">发送私信</a>
             </p>{/if}
     </section>
     <div id="topic-list" class="box">
@@ -45,3 +45,4 @@
         </ul>
         <span class="box-footer"><a href="/member/{$u.user_name}/replies">&nbsp;&nbsp;查看更多回复</a></span>
     </div>
+    {include file="js/message_form.html"}

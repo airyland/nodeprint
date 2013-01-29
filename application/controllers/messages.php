@@ -13,7 +13,7 @@ class Messages extends CI_Controller {
         $this->auth->check_login();
         $this->load->model('message');
         $this->page = $this->input->get_page();
-        $this->no=$this->input->get('no')?$this->input->get('no'):5;
+        $this->no=$this->input->get('no')?$this->input->get('no'):20;
     }
 
     /**
@@ -56,8 +56,12 @@ class Messages extends CI_Controller {
              $this->s->display('message/message_list.html');
              return;
         }else{
-            if ($type == 'unread' || !$type)
+            //if ($type == 'unread' || !$type)
             //$this->message->set_read(0, 'setallread');
+            //set messages of current page read 
+            foreach($message as $m){
+                $this->message->set_read($m['m_id'],'message');
+            }
             $this->s->display('message/message.html');
         }
 
@@ -73,7 +77,7 @@ class Messages extends CI_Controller {
         $this->load->library('s');
         $this->s->assign('title', '发送私信');
         $this->s->assign('to', $to);
-        $this->s->display('user_send_message.html');
+        $this->s->display('user/user_send_message.html');
     }
 
 }

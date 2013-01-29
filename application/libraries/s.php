@@ -11,6 +11,7 @@ class S extends Smarty {
         $this->config_dir = SMARTY_CONFIG_DIR;
         $this->_ci = &get_instance();
         $this->_ci->load->model('user');
+        $this->_ci->load->model('configs');
         global $lang;
         global $config;
         $current_user = get_user();
@@ -29,6 +30,7 @@ class S extends Smarty {
         $this->assign('is_admin', $this->_ci->auth->is_admin());
         $this->assign('site', $config);
         $this->assign('me', $this->_ci->user->get_user_profile($current_user['user_id'], 'user_id'));
+        $this->assign('ga',$this->_ci->configs->item('ga'));
         $this->assign('lang', $lang);
         $this->assign('_', lang($config['lang']));
     }

@@ -1,4 +1,4 @@
-<a id="home" href="#">返回顶部</a>
+<a id="home" href="#" data-router="false">返回顶部</a>
 </div>
 <footer class="footer-wrap">
     <div id="footer">
@@ -24,11 +24,14 @@
     <span>Loading...</span>
 </div>
 <script type="text/javascript">
-    var USER={
+    var NPUSER={
         isLogin:{if $is_login}true{else}false{/if},
         userId:{if $me.user_id}{$me.user_id}{else}0{/if},
         userName:"{$me.user_name}"
-            }
+            },
+        NPINFO={
+            ga:"{$ga}"
+        }
         </script>
         <script type="text/javascript" src="js/LAB.min.js"></script>
         <script type="text/javascript">
@@ -47,12 +50,14 @@
     .script("{$site.url}js/msg.js")
     //.script("{$site.url}js/tool.js")
     .script("{$site.url}js/plugin/mustache.js").wait()
-    {if $is_admin}.script("{$site.url}js/plugin/jquery.jeditable.mini.js")
-    .script("{$site.url}js/admin.js")
-    {/if}
 {if isset($js) && is_array($js)}{foreach $js as $src}.script("{$site.url}js/{$src}")
     {/foreach}{/if}
+    {if isset($admin_js) && is_array($admin_js)}{if $is_admin}{foreach $admin_js as $src}.script("{$site.url}js/{$src}")
+    {/foreach}{/if}{/if}
 .script("{$site.url}js/main.js") 
+    {if $is_admin}
+    .script("{$site.url}js/admin.js")
+    {/if}
     .script("{$site.url}js/cron.js");
 </script>
 {include file="footer_analytics.html"}
@@ -70,26 +75,27 @@
     </li>
     {{/post}}
 </script>
-<script type="text/tempalte" id="signin-template">
+{/literal}  
+<script type="text/tempalte" id="signin-template" data-title="{$_['signin']}">
     <form action="/api/user/signin" method="post" class="register-form" id="js-signin-form">
         <ul>
             <li>
-                <label for="user-name">Username</label>
-                <input type="text" name="user-name" id="user-name" required="">
-                <small>username or email</small>
+                <label for="user-name">{$_['username']}</label>
+                <input type="text" name="user-name" id="user-name" required>
+                <small>{$_['loginUsernameTip']}</small>
             </li>
             <li>
-                <label for="user-pwd">Password</label>
-                <input type="password" name="user-pwd" id="user-pwd" required="">
-                <span class="error"></span>                </li>
+                <label for="user-pwd">{$_['pwd']}</label>
+                <input type="password" name="user-pwd" id="user-pwd" required>
+                <span class="error"></span>                
+            </li>
             <li>
-                <input type="submit" class="button vivid-button" id="do-signin-btn" value="Sign In"><span id="signin-tip"></span>
+                <input type="submit" class="button vivid-button" id="do-signin-btn" value="{$_['signin']}"><span id="signin-tip"></span>
             </li>
         </ul>
     </form>
 </script>
 
 <script type="text/template" id="upload-template"></script>
-{/literal}  
 </body>
 </html>

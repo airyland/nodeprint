@@ -119,18 +119,19 @@ $(function() {
 	var href = document.location.href,
 		isTopicAdd = /node\/(.*?)\/add/.test(href),
 		isTopicEdit = /t\/\d+\/edit/.test(href);
-	if(isTopicAdd || isTopicEdit) {
-		var $previewBtn = $('#preview-topic'),
-			$form = $('#topic-add-form');
+	//if(isTopicAdd || isTopicEdit) {
+		
 		$(document).on('click', '#preview-topic',function(e) {
 			e.preventDefault();
+			var $previewBtn = $(this),
+			$form = $('#topic-add-form');
 			var oriAction = $form.attr('action'),
 				preAction = '/api/post/0/preview';
 			$form.attr('action', preAction).attr('target', '_blank');
 			$form.submit();
 			$form.attr('action', oriAction).removeAttr('target');
 		});
-	}
+	//}
 
 	
 	$(document).on('click','#do-fav', function(e) {

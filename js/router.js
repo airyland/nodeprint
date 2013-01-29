@@ -1,6 +1,14 @@
 /**
  * Router core
  */
+
+ var doc=document,
+    optionalParam = /\((.*?)\)/g,
+    namedParam = /(\(\?)?:\w+/g,
+    splatParam = /\*\w+/g,
+    escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+
+
 var NPRouter = function(options) {
         options || (options = {});
         if(options.routes) this.routes = options.routes;
@@ -9,10 +17,7 @@ var NPRouter = function(options) {
         this.initialize.apply(this, arguments);
     };
 
-var optionalParam = /\((.*?)\)/g,
-    namedParam = /(\(\?)?:\w+/g,
-    splatParam = /\*\w+/g,
-    escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+
 
 NPRouter.prototype = {
     initialize: function(options) {
@@ -20,13 +25,24 @@ NPRouter.prototype = {
         var _this = this;
         this.history = new NPHistory();
         $(document).on('click', 'a[data-router!=false]', function(e) {
-            e.preventDefault();
+            
+                    if(_this.options.exclude){
+            if(_.find(_this.options.exclude,function(one){
+                return doc.location.pathname.indexOf(one)!==-1;
+            })){
+                console.log('excluded');
+                return;
+            }else{
+                e.preventDefault();
+            }
+        }
+
             _this.options['init'] && _this.options['init']();
             var $this = $(this),
                 use_router = !$this.data('router') || $this.data('router') !== 'false';
             if(use_router) {
                 var href = $(this).attr('href'),
-                    title = $(this).text();
+                    title = $this.attr('title')?$this.attr('title'):$this.text();
                 _this.match(href, title);
             } else {
                 console.log('不使用router哦');
@@ -92,6 +108,8 @@ NPRouter.prototype = {
             // this.options[this.routes[key]].apply(this, args);
             var matchCallback = this.options[this.routes[key]];
 
+            console.log(matchCallback);
+
             if(_this.leaveCallbackFunc) {
                 console.log(_this.history.url);
                 console.log(_this.leaveCallbackFunc.url);
@@ -103,28 +121,7 @@ NPRouter.prototype = {
                 //_this.history._saveState();
             }
 
-
-
-            if('enter' in matchCallback) {
-                this.options[this.routes[key]]['enter'].apply(this, args);
-            }
-
-            this.fetch(url, function(data) {
-
-                if(_this.options[_this.routes[key]]['leave']) {
-                    _this.setLeaveCallback(url, _this.options[_this.routes[key]]['leave'], args);
-                }
-
-
-                //console.log(data)
-                $('.content').empty().prepend(data);
-                _this.hideLoading();
-                _this.history.pushState({
-                    data: data
-                }, title + '-' + _this.options['siteName'], url);
-                _this.history._saveState();
-            });
-
+            this.getPage(url, title,true,matchCallback,args);
 
             var endTime = +new Date();
             console.log('elapse time:' + (endTime - startTime));
@@ -135,34 +132,65 @@ NPRouter.prototype = {
             document.location.href = url;
         }
     },
+    getPage: function(url, title, useLoading, matchCallback,args) {
+        var _this = this,
+            useLoading=typeof useLoading!=='undefined'&&useLoading===true?true:false;
+        useLoading&&_this.showLoading();
+        this.fetch(url, function(data) {
+            //console.log(data)
+            $('.content').empty().prepend(data);
+            _this.hideLoading();
+            _this.history.pushState({
+                data: data
+            }, title + '-' + _this.options['siteName'], url);
+            _this.history._saveState();
+            useLoading&&_this.hideLoading();
+
+             if(matchCallback){
+                  if('enter' in matchCallback) {
+                matchCallback['enter'].apply(this, args);
+            }
+
+            if('leave' in matchCallback) {
+                _this.setLeaveCallback(url, matchCallback['leave'], args);
+            }
+
+             }
+            
+            _this.options['finish'] && _this.options['finish'](url);
+        });
+
+
+    },
     showLoading: function() {
         this.loading.slideDown();
     },
     hideLoading: function(callback) {
-        this.loading.slideUp('fast',function(){
-            callback&&callback.call(this);
+        this.loading.slideUp('fast', function() {
+            callback && callback.call(this);
         });
     },
-    showError:function(error){
-        var _this=this,
-            $span=_this.loading.find('span').eq(0),
-            text=$span.text();
-            $span.text(error);
-        setTimeout(function(){
-            _this.hideLoading(function(){
+    showError: function(error) {
+        track('/view/404');
+        var _this = this,
+            $span = _this.loading.find('span').eq(0),
+            text = $span.text();
+        $span.text(error);
+        setTimeout(function() {
+            _this.hideLoading(function() {
                 $span.text(text);
             });
-            
-        },3000);
+
+        }, 3000);
     },
     fetch: function(url, callback) {
-        var _this=this;
+        var _this = this;
         $.ajax({
             url: url,
             success: function(data) {
                 callback && callback.call(this, data);
             },
-            error:function(){
+            error: function() {
                 console.log('页面不存在哦');
                 _this.showError('页面不存在哦');
             }
@@ -176,22 +204,35 @@ var options = {
     init: function() {
         $('#node-tip').hide();
     },
+    finish:function(url){
+       $('html, body').animate({scrollTop:0}, 'fast');
+       $('#tip').hide();
+       track('/view/ajax')
+    },
     routes: {
         '/#home': 'getHomeTab',
         '/?tab=:tab': 'getHomeTab',
         '/t/:id': 'singleTopic',
-        '/member/:name': 'singleMember',
+        '/member/:name(/:category)(/?page=:page)': 'singleMember',
         '/page/:id/:page': 'singlePage',
         '/topic/:id': 'singleTopic',
         '/node(?for=:dofor)': 'chooseNode',
         '/node/:slug/add': 'addTopic',
         '/node/:slug': 'singleNode'
     },
-    getHomeTab: function(url, tab) {
-
+    exclude:[document.location.pathname+'/admin'],
+    getHomeTab: {
+        enter:function(){
+            _gaq.push(['_setAccount', 'UA-31226733-1']);
+            _gaq.push(['_trackEvent', 'Home', 'click','back']);
+        }
     },
-    singleTopic: function(url, id) {
 
+    singleTopic: {
+        enter:function(){
+            track('/view/ajax/topic');
+        }
+        
     },
     addTopic: {
         enter: function(url, slug) {
@@ -200,7 +241,8 @@ var options = {
         },
         leave: function() {
             console.log('退出回调执行');
-        }
+        },
+        cache:true
     },
     singleMember: function() {
 
@@ -211,7 +253,19 @@ var options = {
     chooseNode: function(url, dofor) {
 
     },
-    singleNode: function() {}
+    singleNode: {
+        enter:function(){
+            track('/view/ajax/node')
+            console.log('enter node');
+             $LAB.script('/js/plugin/jquery.jeditable.mini.js')
+             .wait()
+             .script('/js/admin.js',function(){
+                console.log('scripts loaded');
+             });
+        }
+       
+
+    }
 
 }
 
@@ -240,4 +294,11 @@ NPHistory.prototype = {
 
 $(function() {
     var app = new NPRouter(options);
+    $('.search').submit(function(e){
+        e.preventDefault();
+        var key=encodeURI($('#search').val()),
+            url='/t/search/'+key;
+        app.getPage(url,key+'-search',true);
+        track('topic search input',true);
+    });
 });

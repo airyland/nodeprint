@@ -1,4 +1,4 @@
-@charset "GBK";
+@charset "GB2312";
 /* ==settings
 --------------------------------------------------*/
 ::-webkit-scrollbar-thumb:vertical {
@@ -368,36 +368,39 @@ a.reply {
 
 /* ==member info
 -----------------------------------------------------------------------------------*/
-.member-info h2 {
-  margin-bottom: 10px; }
-.member-info img {
-  float: left;
-  margin-right: 15px;
-  border-radius: 5px;
-  margin-left: 10px;
-  border-radius: 36px;
-  -webkit-transition: all 1s ease-out;
-  transition: all 1s ease-out; }
-  .member-info img:hover {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); }
-.member-info span.user-name {
-  font-size: 22px;
-  font-weight: bold;
-  color: #000; }
-.member-info small {
-  display: block;
-  color: #ccc;
-  margin-top: 10px; }
-.member-info ul {
-  overflow: hidden; }
-.member-info ul li {
-  width: 250px;
-  float: left;
-  padding: 5px 5px 5px 0; }
-.member-info .member-info-wrap {
-  overflow: hidden;
-  margin-bottom: 10px; }
+.member-info {
+  padding-bottom: 10px; }
+  .member-info h2 {
+    margin-bottom: 10px; }
+  .member-info img {
+    float: left;
+    margin-right: 15px;
+    margin-left: 10px;
+    border-radius: 36px;
+    -moz-border-radius: 36px;
+    -webkit-border-radius: 36px;
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out; }
+    .member-info img:hover {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg); }
+  .member-info span.user-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000; }
+  .member-info small {
+    display: block;
+    color: #ccc;
+    margin-top: 10px; }
+  .member-info ul {
+    overflow: hidden; }
+  .member-info ul li {
+    width: 250px;
+    float: left;
+    padding: 5px 5px 5px 0; }
+  .member-info .member-info-wrap {
+    overflow: hidden;
+    margin-bottom: 10px; }
 
 .follow-user {
   position: absolute;
@@ -1456,7 +1459,8 @@ p.reply-message {
   display: block; }
 .status li {
   float: left;
-  width: 100px;
+  width: auto;
+  padding: 0 20px;
   text-align: center;
   padding-bottom: 10px; }
 

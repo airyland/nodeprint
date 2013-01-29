@@ -4,7 +4,6 @@
  */
 
 $(function () {
-
     //节点介绍信息编辑
     var $doc = $(document),
         $nodeEditable = $('.node-editable'),
@@ -27,7 +26,8 @@ $(function () {
             submit:'确定',
             cancel:'取消',
             cssclass:"editable",
-            tooltip:'点击编辑'
+            tooltip:'点击编辑',
+            onblur:'submit'
         });
     }
 

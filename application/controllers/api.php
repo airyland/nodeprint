@@ -234,11 +234,10 @@ class Api extends CI_Controller {
                 $useremail = $this->input->post('user-email');
                 $userpwd = $this->input->post('user-pwd');
                 $register = $this->user->register_user($username, $useremail, $userpwd);
-                print_r($register);
                 if ($register['error'] == 0) {
-                    //redirect($this->from);
+                    redirect($this->from);
                 } else {
-                    //redirect('/signup?error='.$register['error']+'&msg='+$register['msg']);
+                    redirect('/signup?error='.$register['error']+'&msg='+$register['msg']);
                 }
                 break;
             /**
@@ -914,16 +913,21 @@ class Api extends CI_Controller {
                         break;
 
                     case 'up':
-                        $this->load->model('post');
+                        $this->auth->check_admin();
                         $this->post->rate_post($post_id, $rate = 'up', $user['user_id']);
                         redirect('/t/' . $post_id);
                         break;
 
                     case 'down':
-                        $this->load->model('post');
+                        $this->auth->check_admin();
                         $this->post->rate_post($post_id, $rate = 'down', $user['user_id']);
                         redirect('/t/' . $post_id);
                         break;
+
+                    case 'hit':
+                        $this->post->add_hit($post_id);
+                        output_1px_img();
+                    break;
 
                     default:
                         $post = $this->post->post_info($post_id);
@@ -1077,6 +1081,19 @@ class Api extends CI_Controller {
                 }
                 break;
 
+            case 'widgets':
+                $this->load->library('s');
+                $this->config->load('site');
+                $hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
+                $new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
+                $this->load->model(array('nodes'));
+                $this->s->assign(array(
+                     'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $new_nodes_item_no),
+                     'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
+                    ));
+                $this->s->display('widgets.html');
+                break;
+
             default:
 
                 break;
@@ -1190,6 +1207,13 @@ class Api extends CI_Controller {
                 show_404();
                 break;
         }
+    }
+
+/**
+* track views
+*/
+    function track($category,$id){
+
     }
 
 }

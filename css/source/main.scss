@@ -810,7 +810,8 @@ p.reply-message {
   }
   li {
     float: left;
-    width: 100px;
+    width: auto;
+    padding:0 20px;
     text-align: center;
     padding-bottom: 10px;
   }

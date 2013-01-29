@@ -7,33 +7,21 @@
  * @todo add cron support
  */
 class Cron extends CI_Controller {
-    /**
-     * 备份间隔
-     * @var int
-     */
-    public $backup_time=1;
-    private $dropbox_token_file ='./application/config/dropbox.php';
+
+    
     function __construct(){
         parent::__construct();
         $this->load->model(array('configs','admins'));
     }
     
     function index() {
-        
+        show_404();
     }
-/**
- * 备份数据
- * 
- * 备份方式为用js定时发送请求,备份由用户来触发，因为备份时间不定。
- */
+
     function backup() {
         $this->load->model('admins');
         $this->admins->backup();
         header("HTTP/1.0 204 No Content");
     }
 
-    function backup2Dropbox(){
-        global $lang;
-        print_r($lang);
-        }
 }

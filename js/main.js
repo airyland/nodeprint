@@ -404,9 +404,10 @@ $(function () {
     $('#signin-btn,a[href="/signin"]').click(function (e) {
         var  history=new NPHistory();
         e.preventDefault();
+        var $content=$('#signin-template');
         signinDialog = $.dialog({
-            title:'Sign In',
-            content:$('#signin-template').html(),
+            title:$content.data('title'),
+            content:$content.html(),
             lock:true,
             fixed:true,
             opacity:0.1,
@@ -858,4 +859,33 @@ $(function () {
     });
 
 
+});
+
+
+function track(track,event){
+  console.log('track::'+track);
+  _gaq.push(['_setAccount', 'UA-31226733-1']);
+  if(event&&event===true){
+    track=track.split(' ');
+    console.log(track);
+    _gaq.push(['_trackEvent', track[0], track[1],track[2]?track[2]:'']);
+    return;
+  }
+  track?_gaq.push(['_trackPageview',track]):_gaq.push(['_trackPageview']);
+}
+
+
+var trackMap={
+    '#do-fav':'topic fav a',
+    '.track-sidebar-add-topic':'topic linkClick sidebar',
+    '.track-home-add-topic':'topic linkClick home'
+};
+
+
+$(function(){
+    for(var i in trackMap){
+        $(document).on('click',i,function(){
+            track(trackMap[i],true);
+        })
+    }
 });

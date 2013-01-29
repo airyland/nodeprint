@@ -3,6 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+define('STATIC_DOMAIN','');
 /*
   |--------------------------------------------------------------------------
   | File and Directory Modes

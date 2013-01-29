@@ -18,7 +18,7 @@
                     <td>{$u.user_name}</td>
                     <td>{$u.user_email}</td>
                     <td>{$u.user_register_time}</td>
-                    <td>{$u.user_last_login}</td>
+                    <td>{time_ago time=$u.user_last_login}</td>
                 </tr>
                 {/foreach}
             </tbody>

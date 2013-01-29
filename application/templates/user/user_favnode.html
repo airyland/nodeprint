@@ -6,7 +6,7 @@
             <li>
                 <a href="/node/{$n.node_slug}">{$n.node_name}</a>
                 <span class="post-count">{$n.node_post_no}</span>
-                <span><a class="unfav-node" href="/api/node/{$n.node_slug}?do=unfav" title="取消收藏">x</a></span>
+                <span><a class="unfav-node" href="/api/node/{$n.node_slug}?do=unfav" data-router="false" title="取消收藏">x</a></span>
             </li>
             {/foreach}
             {else}

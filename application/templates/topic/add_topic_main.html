@@ -2,7 +2,7 @@
     <nav class="breadcrumb">
         <a href="/#home" title="{$site.name}">{$site.name}</a>
         <a href="/node/{$node.node_slug}" title="">{$node.node_name}</a>
-        <a href="" title="创建新主题">创建新主题</a>
+        <a href="/node/{$node.node_slug}/add" title="创建新主题">创建新主题</a>
     </nav>
     <div>
         <form action="/api/post/add" method="post" class="post-form" id="topic-add-form">

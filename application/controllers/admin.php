@@ -28,7 +28,8 @@ class Admin extends CI_Controller {
             'admins'=>$admins,
             'lang' => $lang,
             'title' => 'Dashboard',
-            'config' => $config
+            'config' => $config,
+            'last_backup_file'=>$this->admins->get_last_backup_file()
         ));
         $this->s->display('admin/admin_index.html');
     }
@@ -86,12 +87,14 @@ class Admin extends CI_Controller {
                 if ($id == '') {
                     $node = $this->nodes->list_node(0, 0, 'node_id', 'DESC', 1, 0);
                     $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 0);
+                    $nodes=$this->nodes->get_all_nodes();
                     $this->s->assign(array(
                         'title' => '节点管理-网站设置',
                         'p_node' => $parent_node,
                         'lang' => $lang,
                         'user' => $user,
-                        'node' => $node
+                        'node' => $node,
+                        'nodes'=>$nodes
                     ));
                     $this->s->display('admin/admin_nodes.html');
                 } else {
@@ -172,10 +175,6 @@ class Admin extends CI_Controller {
                           $files[$key]['time'] = filemtime($directory.$val);    
                       }
                       unset($all_files);
-                      function time_ago($paras) {
-            return friendlyDate($paras['time']);
-        }
-        $this->s->registerPlugin('function', 'time_ago', 'time_ago');
                 if ($id == '') {                 
                     $this->s->assign(array(
                         'title' => '页面管理',

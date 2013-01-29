@@ -1,0 +1,22 @@
+{include file="ad/home.html"}
+{include file="ad/node.html"}
+{include file="ad/topic.html"}
+{include file="ad/member.html"}
+
+<section class="node-list">
+    <h3>{$lang.hotnodes}</h3>
+    <span><a href=""></a></span>
+    <ul>
+        {foreach from=$hot_nodes item=n}<li><a href="/node/{$n.node_slug}" title="{$n.node_name}">{$n.node_name}</a></li>
+        {/foreach}  
+    </ul>
+</section>
+
+<section class="node-list">
+    <h3>{$lang.newnodes}</h3>
+    <span><a href=""></a></span>
+    <ul>
+        {foreach from=$lates_nodes item=n}<li><a href="/node/{$n.node_slug}" title="{$n.node_name}">{$n.node_name}</a></li>
+        {/foreach} 
+    </ul>
+</section>

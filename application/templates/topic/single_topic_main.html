@@ -12,7 +12,12 @@
             <div class="post-content">{$t.post_content}</div>
             <footer class="topic-footer">
                 <ul class="post-footer-bar">
-					{if $t.post_fav_no_cache > 0}<li>已有 <span id="topic-fav-count">{$t.post_fav_no_cache}</span> 人收藏此主题</li>{/if}
+                    {if $is_admin}
+                    <li><a href="/t/{$t.post_id}/edit">修改</a></li>
+                    <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete">删除</a></li>
+                    <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer"  data-router="false">移动帖子</a></li>
+                    {/if}
+					{if $t.post_fav_no_cache > 0}<li><span id="topic-fav-count">{$t.post_fav_no_cache}</span> 人收藏</li>{/if}
                     {if $is_login}<li><a title="{if $fav eq true}{$_.clickToUnfav}{else}click to fav{/if}" class="{if $fav eq true}fav-link{else}unfav-link{/if}" id="do-fav" data-router="false" href="api/post/{$t.post_id}/?do={if $fav eq true}unfav{else}fav{/if}">{$_.favTopic}</a></li>{/if}
                     <li><a class="share" title="分享到Twitter" href="https://twitter.com/share?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&related=nodeprint&hashtags={$t.node_slug}&text={$t.post_title}">Tweet</a></li>
                     <li><a class="share" title="分享到豆瓣" href=" http://www.douban.com/recommend/?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&title={$t.post_title}">Douban</a></li>
