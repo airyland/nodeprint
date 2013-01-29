@@ -18,8 +18,14 @@ class Home extends CI_Controller {
      * available tabs
      * @var array
      */
-    private $available_tab=array('all','following-node','following-member');
+    private $available_tab=array('all','following-node','following-member','hot');
     
+    /**
+     * tabs require signin
+     * @var array
+     */
+    private $private_tab=array('following-node','following-member');
+
     /** 
      * topics of current tab
      * @var array
@@ -74,6 +80,10 @@ class Home extends CI_Controller {
             if(!in_array($this->tab,$this->available_tab)){
                 show_404();
             }
+
+            if(in_array($this->tab,$this->private_tab)&&!$this->auth->is_login()){
+                redirect('/signin');
+            }
         }
         $this->config->load('site');
         $this->load->library('s');
@@ -127,10 +137,15 @@ class Home extends CI_Controller {
                 break;
 
                 case 'following-node':
-                $this->load->model('nodes');
-                $following_nodes = $this->user->get_user_fav_node($this->curr_user['user_id']);
-                $this->topics = $this->nodes->get_user_fav_node_post($this->curr_user['user_id'], 1, $this->limit, false, 'post_last_comment');
-                $this->s->assign('links',$following_nodes);
+                    $this->load->model('nodes');
+                    $following_nodes = $this->user->get_user_fav_node($this->curr_user['user_id']);
+                    $this->topics = $this->nodes->get_user_fav_node_post($this->curr_user['user_id'], 1, $this->limit, false, 'post_last_comment');
+                    $this->s->assign('links',$following_nodes);
+                break;
+
+                case 'hot':
+                     $query_string="order_by=post_comment_no&no={$this->limit}&all=0";
+                     $this->topics=$this->post->query_post($query_string);
                 break;
             }
         }else{
