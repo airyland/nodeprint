@@ -23,6 +23,7 @@
 class Node extends CI_Controller {
 
     public $slug;
+
     /**
      * current page
      * @var number
@@ -45,9 +46,9 @@ class Node extends CI_Controller {
         parent::__construct();
         $this->load->library('s');
         $this->load->model('nodes');
-        $this->is_login=$this->auth->is_login();
+        $this->is_login = $this->auth->is_login();
         $this->is_ajax = $this->input->is_ajax_request();
-        $this->page=$this->input->get_page();
+        $this->page = $this->input->get_page();
     }
 
     /**
@@ -59,7 +60,7 @@ class Node extends CI_Controller {
             'title' => 'Nodes',
             'nodes' => $this->nodes->get_all_nodes()
         ));
-        if($this->is_ajax){
+        if ($this->is_ajax) {
             $this->s->display('node_list.html');
             exit;
         }
@@ -72,17 +73,17 @@ class Node extends CI_Controller {
      * @param string $slug
      */
     function the_node($slug) {
-        $action=$this->uri->segment(3);
-        if($action==='feed'){
+        $action = $this->uri->segment(3);
+        if ($action === 'feed') {
             $this->load->model('feeds');
             $this->feeds->node_feed($slug);
             exit();
         }
-        if ($this->page===0)
+        if ($this->page === 0)
             show_404();
 
-        $this->load->model(array('post','follow','configs'));
-        $limit=$this->configs->item('topic_no');
+        $this->load->model(array('post', 'follow', 'configs'));
+        $limit = $this->configs->item('topic_no');
         $user = get_user();
 
         $node = $this->nodes->get_node($slug);
@@ -97,21 +98,22 @@ class Node extends CI_Controller {
         $this->dpagination->adjacents(8);
         $pagebar = $this->dpagination->getOutput();
 
-        if($this->is_login){
-             $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
-             $this->s->assign('fav',$fav);
+        if ($this->is_login) {
+            $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
+            $this->s->assign('fav', $fav);
         }
-       
+
         $this->s->assign(array(
             'title' => $node['node_name'] . ' ' . $this->page . '/' . intval($node['node_post_count'] / $limit + 1) . ' ',
             'node' => $node,
-            'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no='.$limit),
+            'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no=' . $limit),
             'showPageBar' => $node['node_post_count'] > 0 ? true : false,
-            'page_bar' => $pagebar
+            'page_bar' => $pagebar,
+            'admin_js' => array('plugin/jquery.jeditable.mini.js', 'admin.js')
         ));
-        if($this->is_ajax){
-	        $this->s->display('node/single_node_main.html');
-	        exit;
+        if ($this->is_ajax) {
+            $this->s->display('node/single_node_main.html');
+            exit;
         }
         $this->s->display('node/single_node.html');
     }
@@ -125,9 +127,9 @@ class Node extends CI_Controller {
         $this->auth->check_login();
         $this->s->assign('title', '创建帖子');
         $this->s->assign('node', $this->nodes->get_node($slug));
-        if($this->is_ajax){
-	         $this->s->display('topic/add_topic_main.html');
-	         exit;
+        if ($this->is_ajax) {
+            $this->s->display('topic/add_topic_main.html');
+            exit;
         }
         $this->s->display('topic/add_topic.html');
     }
