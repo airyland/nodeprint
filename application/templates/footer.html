@@ -36,6 +36,8 @@
         <script type="text/javascript" src="js/LAB.min.js"></script>
         <script type="text/javascript">
      $LAB
+    .script("{$site.url}js/plugin/underscore-min.js")
+    .script("{$site.url}js/router.js")
     .script("{$site.url}js/plugin/dialog/dialog.js?skin=twitter")
     .script("{$site.url}js/plugin/store.min.js")
     .script("{$site.url}js/plugin/jquery.tipsy.js")
@@ -43,8 +45,11 @@
     .script("{$site.url}js/plugin/jquery.hotkeys.js")
     .script("{$site.url}js/plugin/jquery.filedrop.js")
     .script("{$site.url}js/plugin/autoTextarea.js")    
-    .script("{$site.url}js/plugin/underscore-min.js")
-    .script("{$site.url}js/router.js")
+    
+
+    .wait(function(){
+        console.log('router load');
+    })
     .script("{$site.url}js/topic.js")
     .script("{$site.url}js/plugin/jquery.pagination.js")
     .script("{$site.url}js/msg.js")

@@ -18,7 +18,7 @@
                     <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer"  data-router="false">移动帖子</a></li>
                     {/if}
 					{if $t.post_fav_no_cache > 0}<li><span id="topic-fav-count">{$t.post_fav_no_cache}</span> 人收藏</li>{/if}
-                    {if $is_login}<li><a title="{if $fav eq true}{$_.clickToUnfav}{else}click to fav{/if}" class="{if $fav eq true}fav-link{else}unfav-link{/if}" id="do-fav" data-router="false" href="api/post/{$t.post_id}/?do={if $fav eq true}unfav{else}fav{/if}">{$_.favTopic}</a></li>{/if}
+                    {if $is_login}<li><a title="{if $fav eq true}{$_.clickToUnfav}{else}click to fav{/if}" class="{if $fav eq true}fav-link{else}unfav-link{/if}" id="do-fav" data-router="false" href="/api/post/{$t.post_id}/?do={if $fav eq true}unfav{else}fav{/if}">{$_.favTopic}</a></li>{/if}
                     <li><a class="share" title="分享到Twitter" href="https://twitter.com/share?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&related=nodeprint&hashtags={$t.node_slug}&text={$t.post_title}">Tweet</a></li>
                     <li><a class="share" title="分享到豆瓣" href=" http://www.douban.com/recommend/?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&title={$t.post_title}">Douban</a></li>
                     <li><a class="share" title="分享到微博" href="http://service.weibo.com/share/share.php?url={$smarty.server.SERVER_NAME}{$smarty.server.REQUEST_URI}&title={$t.post_title}">Weibo</a></li>
@@ -40,7 +40,7 @@
                 <p><a class="user-name" href="/member/{$cm[cm].user_id}">{$cm[cm].user_name}</a><span class="time-ago" data-time="{$cm[cm].cm_time}">{time_ago time=$cm[cm].cm_time}</span></p>
                 <p class="comment-content">{$cm[cm].cm_content}</p>
                 <span class="floor">{*#*}{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$smarty.section.cm.total-$smarty.section.cm.index}{else}{$smarty.section.cm.index+1}{/if}</span> 
-                    <a class="reply" title="{$_.reply}" href="" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$_.reply}</a>
+                    <a class="reply" title="{$_.reply}" href="#" data-router="false" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$_.reply}</a>
             </li>
             {/section}
             {else}
@@ -55,7 +55,7 @@
             <img class="l-avatar" src="/avatar/{{data.user_id}}/48" alt="" width="48" height="48"/>{/literal}
             {literal}<p><a class="user-name" href="/member/{{data.user_id}}">{{data.user_name}}</a><span class="time-ago" data-time="{{data.cm_time}}">{/literal}{$_.justNow}</span></p>
            {literal}<p class="comment-content">{{{data.cm_content}}}</p>{/literal}             
-                {literal}<a class="reply" href="" data-id="{{data.cm_id}}" data-username="{{data.user_name}}">{/literal}{$_.reply}</a>
+                {literal}<a class="reply" href="#" data-id="{{data.cm_id}}" data-router="false" data-username="{{data.user_name}}">{/literal}{$_.reply}</a>
            
              <span class="floor"></span>
             </script>

@@ -5,8 +5,8 @@
                     {/if}{if $m.m_type eq 1}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>回复了你{/if}{if $m.m_type eq 2}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>时提到了你{/if}{if $m.m_type eq 3}<a href="t/{$m.sub.id}{if isset($m.sub.cm_id)}#comment-{$m.sub.cm_id}{/if}">{$m.sub.title}</a>时提到了你{/if} 
                     <span class="time"> {time_ago time=$m.sub.time}</span></p>
                 <p {if $is_dialog}style="display:none;"{/if}>{$m.sub.content}</p>
-                {if !$is_dialog}{if $m.m_type eq 4}<p class="reply-message"><a href="/messages/send?to={$m.m_from_username}">回复</a></p>{/if}
-                {if isset($smarty.get.type)&&$smarty.get.type!=='pm'} <a href="/api/message/{$m.m_id}/delete?m_id={$m.m_id}" class="delete-link">删除</a>{/if}{/if}
+                {if !$is_dialog}<p class="reply-message">{if $m.m_type eq 4}<a href="/messages/send?to={$m.m_from_username}">回复</a>{/if}
+                {if isset($smarty.get.type)&&$smarty.get.type!=='pm'} <a href="/api/message/{$m.m_id}/delete?m_id={$m.m_id}" class="delete-link">删除</a>{/if}</p>{/if}
             </li>
             {/foreach}
             {else}
