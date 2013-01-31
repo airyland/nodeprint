@@ -1,4 +1,4 @@
-@charset "GB2312";
+@charset "GBK";
 /* ==settings
 --------------------------------------------------*/
 ::-webkit-scrollbar-thumb:vertical {
@@ -31,6 +31,15 @@
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px; }
+
+.label {
+  background: #e82a73;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  color: #fff;
+  text-shadow: none;
+  padding: 0 1px; }
 
 @font-face {
   font-family: icon;
@@ -815,6 +824,17 @@ input:focus:-ms-input-placeholder {
 .aui_close:hover {
   -webkit-transform: rotate(180deg); }
 
+.cancel-send {
+  cursor: pointer; }
+
+.form-error {
+  color: #e82a73; }
+
+.msg-error {
+  float: left;
+  margin-left: 38px;
+  display: none; }
+
 /**
 * style.css
 * @author airyland <i@mao.li>
@@ -871,6 +891,9 @@ span.more {
 .site-tab {
   background: url(../img/box_title_bg.png);
   padding: 8px 10px 10px 15px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
   overflow: hidden;
   position: relative; }
   .site-tab ul {
@@ -886,8 +909,10 @@ span.more {
         background: #e82a73;
         color: #fff; }
         .site-tab ul li.current a {
+          text-shadow: none;
           color: #fff; }
       .site-tab ul li a {
+        text-shadow: 0 1px 0 #fefefe;
         padding: 5px 5px; }
         .site-tab ul li a:hover {
           text-decoration: underline; }
@@ -1341,10 +1366,7 @@ a.unfav-link {
     .m-list p span.time {
       padding: 0 5px; }
   .m-list .delete-link {
-    position: absolute;
-    color: #e82a73;
-    right: 5px;
-    top: 15px; }
+    color: #e82a73; }
 
 .aui_content .m-list {
   font-size: 12px; }
@@ -1360,8 +1382,9 @@ a.unfav-link {
 
 p.reply-message {
   position: absolute;
-  top: 35px;
-  right: 15px; }
+  top: 10px;
+  right: 15px;
+  padding-right: 0; }
   p.reply-message a {
     color: #ccc; }
 
@@ -1391,10 +1414,10 @@ p.reply-message {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px; }
 
-.node li.no-favnode {
+.node li.no-favnode, .following li.no-following {
   border: none;
   margin: 0 0 5px 0; }
-  .node li.no-favnode a {
+  .node li.no-favnode a, .following li.no-following a {
     font-size: 12px;
     margin: 0 5px;
     padding: 2px 5px;
@@ -1434,6 +1457,9 @@ p.reply-message {
     border-bottom: 1px solid #ececec; }
     .admin-sidebar li:last-child {
       border: none; }
+    .admin-sidebar li a {
+      font-size: 14px;
+      padding: 15px 5px; }
 
 .delete-node {
   background: none;
@@ -1615,7 +1641,9 @@ p.reply-message {
   width: 200px; }
 
 input[type="search"] {
-  width: 200px; }
+  width: 200px;
+  background: #4b494a;
+  border: 1px solid #333; }
 
 input.vivid-button, .vivid-button {
   background: #ed4e8b;

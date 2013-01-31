@@ -223,3 +223,16 @@ input:focus {
 .aui_close:hover{
 	-webkit-transform:rotate(180deg);
 }
+
+.cancel-send {
+  cursor:pointer;
+}
+
+.form-error{
+  color:$vivid;
+}
+.msg-error{
+  float:left;
+  margin-left:38px;
+  display:none;
+}

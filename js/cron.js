@@ -13,7 +13,7 @@ $(function () {
             return year + '-' + month + '-' + day;
         },
         today = formatDate(new Date),
-        log = true;
+        log = false;
     $.log = function ($string) {
         log && window.console && console.log($string);
     }

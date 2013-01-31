@@ -10,8 +10,8 @@
         return b;
     })(window.location.search.substr(1).split('&'));
 
-    if (USER.userName) {
-        store.set('lastLoginName', USER.userName);
+    if (NPUSER.userName) {
+        store.set('lastLoginName', NPUSER.userName);
     }
 
     if (store.get('lastLoginName') && $('#user-name').length > 0) {
@@ -154,20 +154,6 @@ var comment = {
     // auto write @username 
     smartAt:function () {
         var that = this;
-        $('body').on('click', '.reply', function (e) {
-            e.preventDefault();
-            var content = $('#cm-box').val();
-            var username = $(this).data('username');
-            var replyTo = $(this).data('id');
-
-            $('#cm-reply-to').val(replyTo);
-            $('#cm-reply-name').val(username);
-            if (content.indexOf(username) != -1) {
-                //alert('重复at不行哦');
-                return;
-            }
-            $(that.commentBox).focus().val(content + ' @' + $(this).data('username') + ' ');
-        });
 
     },
     //get order of the comment list
@@ -302,7 +288,7 @@ var post = {
         });
     },
     share:function () {
-        $('.share').click(function (e) {
+        $(document).on('click','.share',function (e) {
             e.preventDefault();
             window.open($(this).attr('href'), '_blank', 'width=550,height=370');
         });
@@ -332,12 +318,12 @@ function get_time_difference(earlierDate, laterDate) {
 // Function Usage
 
 function time_ago(time) {
-    dateCurrent = new Date();
-    oldDate = new Date(time);
-    oDiff = get_time_difference(oldDate, dateCurrent);
-    days = (oDiff.days != 0) ? oDiff.days + ' days ' : '';
-    hours = (oDiff.hours != 0) ? oDiff.hours + ' hours ' : '';
-    minutes = (oDiff.minutes != 0) ? oDiff.minutes + ' minutes ' : '';
+    var dateCurrent = new Date(),
+    oldDate = new Date(time),
+    oDiff = get_time_difference(oldDate, dateCurrent),
+    days = (oDiff.days != 0) ? oDiff.days + ' days ' : '',
+    hours = (oDiff.hours != 0) ? oDiff.hours + ' hours ' : '',
+    minutes = (oDiff.minutes != 0) ? oDiff.minutes + ' minutes ' : '',
     seconds = (oDiff.seconds != 0) ? oDiff.seconds + ' seconds ' : '';
     //如果是天数级别，返回天数
     if (oDiff.days > 0) return oDiff.days + ' days';
@@ -577,10 +563,11 @@ $(function () {
                 title:'操作提示',
                 content:sendingTitle
             });
+            var data='';
             if (form !== '') {
-                var data = $(form).serialize();
+                data = $(form).serialize();
             } else {
-                var data = $this.parent('form').serialize();
+                data = $this.parent('form').serialize();
             }
 
             $.post('api/' + url, data, function (data) {
@@ -639,7 +626,7 @@ $(function () {
         },
         hideTip = function () {
             $('#node-tip').hide();
-        }
+        };
 
 
     $doc.on({
@@ -692,7 +679,7 @@ $(function () {
         //this.ctrl = createThrobber(img); 这个只有firefox支持
         var xhr = new XMLHttpRequest();
         this.xhr = xhr;
-        console.log(xhr);
+        //console.log(xhr);
         var self = this;
         this.xhr.upload.addEventListener("progress", function (e) {
             //维护进度条
@@ -714,7 +701,7 @@ $(function () {
                 if (self.xhr.status === 200) {
                     var data = JSON.parse(self.xhr.responseText),
                         commentText = $commentBox.val();
-                    console.log(data);
+                    //console.log(data);
                     if (data.error === 0) {
                         $li.find('#finish').css('opacity', 1);
                         //插入输入框
@@ -863,11 +850,14 @@ $(function () {
 
 
 function track(track,event){
-  console.log('track::'+track);
-  _gaq.push(['_setAccount', 'UA-31226733-1']);
+  //console.log('track::'+track);
+  if(!NPINFO.ga){
+    return;
+  }
+  _gaq.push(['_setAccount', NPINFO.ga]);
   if(event&&event===true){
     track=track.split(' ');
-    console.log(track);
+    //console.log(track);
     _gaq.push(['_trackEvent', track[0], track[1],track[2]?track[2]:'']);
     return;
   }
@@ -877,15 +867,46 @@ function track(track,event){
 
 var trackMap={
     '#do-fav':'topic fav a',
-    '.track-sidebar-add-topic':'topic linkClick sidebar',
-    '.track-home-add-topic':'topic linkClick home'
+    '.track-sidebar-add-topic':'创建帖子 点击 侧边栏',
+    '.track-home-add-topic':'创建帖子 点击 首页导航',
+    '#home':'全站功能 返回顶部',
+    '#logo':'全站功能 返回首页 Logo',
+    '.nav-home':'全站功能 返回首页 右侧导航',
+    '.home-ad a':'广告统计 点击 首页',
+    '.node-ad a':'广告统计 点击 节点页',
+    '.topic-ad a':'广告统计 点击 帖子页',
+    '.user-ad a':'广告统计 点击 用户信息页'
+    
 };
 
 
-$(function(){
-    for(var i in trackMap){
-        $(document).on('click',i,function(){
-            track(trackMap[i],true);
-        })
+$(function() {
+    for(var i in trackMap) {
+        (function() {
+            var temp=i;
+            $(document).on('click', temp, function(e) {
+                e.preventDefault();
+                track(trackMap[temp], true);
+            })
+        })()
     }
+});
+
+$(function() {
+    $(document).on('click', '.reply', function(e) {
+        e.preventDefault();
+        console.log('reply click');
+        var content = $('#cm-box').val(),
+        username = $(this).data('username'),
+        replyTo = $(this).data('id');
+
+        $('#cm-reply-to').val(replyTo);
+        $('#cm-reply-name').val(username);
+        if(content.indexOf(username) != -1) {
+            //alert('重复at不行哦');
+            return;
+        }
+        $('#cm-box').focus().val(content + ' @' + $(this).data('username') + ' ');
+    });
+
 });

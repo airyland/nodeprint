@@ -6,7 +6,6 @@
 var NPMessage = {
     isSupportNotification :!! window.webkitNotifications,
     lastMessageFetch:function(){
-        console.log(new Date(store.get('lastMsgFetchTime')));
         return store.get('lastMsgFetchTime');
     },
     fetch:function () {
@@ -60,11 +59,11 @@ $(function(){
     },2000);
 
     
-    $('#JS_msg').on('click',function(e){
+/*    $('#JS_msg').on('click',function(e){
         e.preventDefault();
         var history=new NPHistory();
         msgDialog=$.dialog({
-            title:'我的消息',
+            title:'我的未读消息',
             content:'努力获取中...',
             init:function(){
                 history.pushState(null, '消息', '/messages');
@@ -80,7 +79,7 @@ $(function(){
             msgDialog.content(data);                     
         });   
   
-    });
+    });*/
 	
     $(document).on('click','.aui_content .pagination>li>a',function(e){
         e.preventDefault();
@@ -99,22 +98,52 @@ $(function(){
     
     $(document).on('click','#JS_send_message',function(e){
         e.preventDefault();
-        $.dialog({
+        var username=$(this).data('sendto'),
+            dialog=$.dialog({
             title:'发送私信',
             content:$('#send-message-template').html(),
             init:function(){
+                $('#send_to').val(username);
                 var data=['a','b','c'];
                 $LAB.script("/js/plugin/at.js")
                 .wait(function(){
                     $('#send_to').atWho('@',{
-                        'data':data,
+                        'data':'/api/username',
                         'tpl':"<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
                     });
-                })
-               
+
+                });
+
+                $('#do-send').click(function(e){
+                    e.preventDefault();
+                    if(!$('#send_to').val()||!$('#pm_content').val()){
+                        $('.msg-error').show();
+                        dialog.shake();
+                        return;
+                    }
+                    var $form=$(this).closest('form'),
+                        data=$form.serialize(),
+                        api=$form.attr('action');
+                    $.post(api,data,function(data){
+                        if(data.error===0){
+                            dialog.content('发送成功');
+                        }
+                        setTimeout(function(){
+                            dialog.close();
+                        },1000)
+                    },'json')
+                });
             }
         });
     });
+
+                   $(document).on('click','.cancel-send',function(e){
+                    e.preventDefault();
+                   var list = art.dialog.list;
+for (var i in list) {
+    list[i].close();
+};
+               })
     
      
     /*notification*/

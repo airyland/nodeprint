@@ -2,7 +2,8 @@
  * Router core
  */
 
- var doc=document,
+var doc = document,
+    host = document.location.host,
     optionalParam = /\((.*?)\)/g,
     namedParam = /(\(\?)?:\w+/g,
     splatParam = /\*\w+/g,
@@ -13,6 +14,7 @@ var NPRouter = function(options) {
         options || (options = {});
         if(options.routes) this.routes = options.routes;
         this.options = options;
+        this.options['bootstrap'] && this.options['bootstrap']();
         this.loading = $(this.options['loading']);
         this.initialize.apply(this, arguments);
     };
@@ -26,33 +28,51 @@ NPRouter.prototype = {
         this.history = new NPHistory();
         $(document).on('click', 'a[data-router!=false]', function(e) {
             
-                    if(_this.options.exclude){
-            if(_.find(_this.options.exclude,function(one){
-                return doc.location.pathname.indexOf(one)!==-1;
-            })){
-                console.log('excluded');
+            var href = this.href;
+            //console.log(href);
+            if(host !== this.host) {
+                this.target='_blank';
                 return;
-            }else{
-                e.preventDefault();
             }
-        }
+            if(_this.options.exclude) {
+                if(_.find(_this.options.exclude, function(one) {
+                    return doc.location.href.indexOf(one) !== -1;
+                })) {
+                    return;
+                } else {
+                    e.preventDefault();
+                }
+            }
+
+            if(_this.options.block) {
+                if(_.find(_this.options.block, function(one) {
+                    return href.indexOf(one) !== -1;
+                })) {
+                    console.log('block');
+                    return;
+                } else {
+                    e.preventDefault();
+                }
+            }
+
+
 
             _this.options['init'] && _this.options['init']();
             var $this = $(this),
                 use_router = !$this.data('router') || $this.data('router') !== 'false';
             if(use_router) {
                 var href = $(this).attr('href'),
-                    title = $this.attr('title')?$this.attr('title'):$this.text();
+                    title = $this.data('title') ? $this.data('title') : $this.attr('title') ? $this.attr('title') : $this.text();
                 _this.match(href, title);
             } else {
-                console.log('不使用router哦');
+                //do nothing
             }
         });
-        // @todo if finish walking, attach key info to node
-        //linkList.click();
+
         this.regList = this._getRegList();
         window.addEventListener('popstate', function(e) {
-            if(e.state && e.state.data) {
+            console.log(e);
+            if($('.content').length > 0 && e.state && e.state.data) {
                 $('.content').empty().append(e.state.data);
             }
         });
@@ -108,57 +128,57 @@ NPRouter.prototype = {
             // this.options[this.routes[key]].apply(this, args);
             var matchCallback = this.options[this.routes[key]];
 
-            console.log(matchCallback);
-
+            //console.log(matchCallback);
             if(_this.leaveCallbackFunc) {
-                console.log(_this.history.url);
-                console.log(_this.leaveCallbackFunc.url);
+                //console.log(_this.history.url);
+                //console.log(_this.leaveCallbackFunc.url);
             }
 
             if(_this.leaveCallbackFunc && _this.history.pathname === _this.leaveCallbackFunc.url) {
-                console.log('history: ' + _this.history.url + '和' + _this.leaveCallbackFunc.url + '不一样哦');
+                //console.log('history: ' + _this.history.url + '和' + _this.leaveCallbackFunc.url + '不一样哦');
                 _this.triggerLeaveCallback();
                 //_this.history._saveState();
             }
 
-            this.getPage(url, title,true,matchCallback,args);
+            this.getPage(url, title, true, matchCallback, args);
 
             var endTime = +new Date();
-            console.log('elapse time:' + (endTime - startTime));
-
+            //console.log('elapse time:' + (endTime - startTime));
         } else {
-            console.log('no match');
+            //console.log('no match');
             //no match, redirect to the location
             document.location.href = url;
         }
     },
-    getPage: function(url, title, useLoading, matchCallback,args) {
+    getPage: function(url, title, useLoading, matchCallback, args) {
         var _this = this,
-            useLoading=typeof useLoading!=='undefined'&&useLoading===true?true:false;
-        useLoading&&_this.showLoading();
+            useLoading = typeof useLoading !== 'undefined' && useLoading === true ? true : false;
+        useLoading && _this.showLoading();
+
         this.fetch(url, function(data) {
-            //console.log(data)
+            ////console.log(data)
+            ////console.log(matchCallback);
             $('.content').empty().prepend(data);
             _this.hideLoading();
             _this.history.pushState({
                 data: data
             }, title + '-' + _this.options['siteName'], url);
             _this.history._saveState();
-            useLoading&&_this.hideLoading();
+            useLoading && _this.hideLoading();
 
-             if(matchCallback){
-                  if('enter' in matchCallback) {
-                matchCallback['enter'].apply(this, args);
+            if(matchCallback) {
+                if('enter' in matchCallback) {
+                    matchCallback['enter'].apply(this, args);
+                }
+
+                if('leave' in matchCallback) {
+                    _this.setLeaveCallback(url, matchCallback['leave'], args);
+                }
+
             }
 
-            if('leave' in matchCallback) {
-                _this.setLeaveCallback(url, matchCallback['leave'], args);
-            }
-
-             }
-            
             _this.options['finish'] && _this.options['finish'](url);
-        });
+        }, matchCallback);
 
 
     },
@@ -183,31 +203,63 @@ NPRouter.prototype = {
 
         }, 3000);
     },
-    fetch: function(url, callback) {
-        var _this = this;
+    fetch: function(url, callback, matchCallback) {
+        var _this = this,
+            useCache = false;
+
+        if(matchCallback) {
+            useCache = matchCallback['cache'];
+            if(useCache) {
+                var data = store.get('page::' + url);
+                if(data) {
+                    callback.call(this, data);
+                    return;
+                }
+            }
+        }
+
         $.ajax({
             url: url,
             success: function(data) {
+                if(useCache) {
+                    store.set('page::' + url, data);
+                }
                 callback && callback.call(this, data);
             },
             error: function() {
-                console.log('页面不存在哦');
+                //console.log('页面不存在哦');
                 _this.showError('页面不存在哦');
             }
         });
     }
 };
 
+
+
 var options = {
     loading: '#loading',
     siteName: 'NodePrint',
+    bootstrap:function(){
+        // if(!store.get('widgets')){
+           // $.get('/api/site/widgets',function(data){
+                //console.log(data)
+                // store.set('widgets',data);
+                //NPWidget.parseWidgets(data);
+                //$(data).hide().appendTo('.sidebar');
+           // })
+       // }
+    },
     init: function() {
         $('#node-tip').hide();
+       
     },
-    finish:function(url){
-       $('html, body').animate({scrollTop:0}, 'fast');
-       $('#tip').hide();
-       track('/view/ajax')
+    finish: function(url) {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 'fast');
+        $('#node-tip').hide();
+        track('/view/ajax');
+        $('#home').attr('href', url + '#body');
     },
     routes: {
         '/#home': 'getHomeTab',
@@ -218,53 +270,57 @@ var options = {
         '/topic/:id': 'singleTopic',
         '/node(?for=:dofor)': 'chooseNode',
         '/node/:slug/add': 'addTopic',
-        '/node/:slug': 'singleNode'
+        '/node/:slug': 'singleNode',
+        '/t/search/:key(?page=:page)': 'search'
     },
-    exclude:[document.location.pathname+'/admin'],
+    exclude: [document.location.host + '/admin'],
+    block: [],
     getHomeTab: {
-        enter:function(){
-            _gaq.push(['_setAccount', 'UA-31226733-1']);
-            _gaq.push(['_trackEvent', 'Home', 'click','back']);
+        enter: function() {
+            //console.log('enter home');
+            NPWidget.fetch('home');
+            $('.post-guide').hide();
+        },
+        leave:function(){
+            console.log('leave home');
         }
     },
 
     singleTopic: {
-        enter:function(){
+        enter: function() {
             track('/view/ajax/topic');
         }
-        
     },
     addTopic: {
         enter: function(url, slug) {
-            //$('.content').addClass('box');
-            console.log('进入回调执行');
+            NPWidget.fetch('create_topic',true);
         },
         leave: function() {
-            console.log('退出回调执行');
         },
-        cache:true
+        cache: true
     },
-    singleMember: function() {
+    singleMember: {
+        enter:function(){
+            NPWidget.fetch('member');
+        }
 
     },
     singlePage: function(id, page) {
-
+        cache: true
     },
-    chooseNode: function(url, dofor) {
-
+    chooseNode: {
+        cache: true
     },
     singleNode: {
-        enter:function(){
-            track('/view/ajax/node')
-            console.log('enter node');
-             $LAB.script('/js/plugin/jquery.jeditable.mini.js')
-             .wait()
-             .script('/js/admin.js',function(){
-                console.log('scripts loaded');
-             });
-        }
-       
-
+        enter: function() {
+            NPWidget.fetch('node');
+            //track('/view/ajax/node');
+            //console.log('enter node');
+            $LAB.script('/js/plugin/jquery.jeditable.mini.js').wait().script('/js/admin.js', function() {
+                //console.log('scripts loaded');
+            });
+        },
+        cache: false
     }
 
 }
@@ -283,10 +339,39 @@ NPHistory.prototype = {
         this.title = document.title;
         this.url = document.location.href;
         this.pathname = document.location.pathname;
-        console.log('initialize history' + 'url:' + this.url);
+        //console.log('initialize history' + 'url:' + this.url);
     },
     restoreState: function() {
         this.pushState(null, this.title, this.url);
+    }
+}
+
+var NPWidget={
+    use:function(widgets){
+        var selector=widgets.join(',');
+        $(selector,'.sidebar').show().siblings().hide();
+    },
+    fetch:function(page,cache){
+        cache=cache?cache:false;
+        if(cache){
+            var data=store.get('widget:'+page);
+            if(data){
+                NPWidget.parseWidgets(data);
+                return;
+            }
+        }
+        $.get('/api/site/widgets/'+page,function(data){
+            NPWidget.parseWidgets(data);
+            cache&&store.set('widget:'+page,data)
+        });
+    },
+    parseWidgets:function(data){
+        $('.sidebar').children().eq(0).siblings().remove();
+        $('.sidebar').append(data);
+        /*var $data=$(data),
+            $widgets=$data.children();
+            console.log($data)
+            console.log($widgets.length)*/
     }
 }
 
@@ -294,11 +379,12 @@ NPHistory.prototype = {
 
 $(function() {
     var app = new NPRouter(options);
-    $('.search').submit(function(e){
+    console.log(app);
+    $('.search').submit(function(e) {
         e.preventDefault();
-        var key=encodeURI($('#search').val()),
-            url='/t/search/'+key;
-        app.getPage(url,key+'-search',true);
-        track('topic search input',true);
+        var key = encodeURI($('#search').val().replace(/</g, '').replace(/>/g, '').replace(/\//g, '').replace(/\\/g, '')),
+            url = '/t/search/' + key;
+        app.getPage(url, key + '-search', true);
+        track('topic search input', true);
     });
 });

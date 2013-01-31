@@ -27,3 +27,13 @@
 		@include radius(3px);
 	}
 }
+
+.label {
+  background: #e82a73;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  color: #fff;
+  text-shadow: none;
+  padding: 0 1px;
+}

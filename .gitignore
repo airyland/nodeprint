@@ -31,3 +31,4 @@ img/captcha/*.jpg
 /application/config/oauth.php
 /application/controllers/test.php
 /img/fm/
+/img/seedit/

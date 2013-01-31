@@ -70,6 +70,7 @@ span.more {
 .site-tab {
   background:url(../img/box_title_bg.png);
   padding: 8px 10px 10px 15px;
+  @include radius(3px);
   overflow:hidden;
   position:relative;
   ul {
@@ -83,10 +84,12 @@ span.more {
         background: $vivid;
         color: #fff;
         a {
+          text-shadow:none;
           color: #fff;
         }
       }
       a {
+        text-shadow: 0 1px 0 #fefefe;
         padding: 5px 5px;
         &:hover {
             text-decoration: underline;
@@ -656,10 +659,7 @@ a {
     }
   }
   .delete-link {
-    position:absolute;
     color: $vivid;
-    right:5px;
-    top:15px;
   }
 }
 
@@ -684,8 +684,9 @@ a {
 
 p.reply-message {
   position: absolute;
-  top: 35px;
+  top: 10px;
   right: 15px;
+  padding-right:0;
   a {
     color: #ccc;
   }
@@ -724,7 +725,7 @@ p.reply-message {
   @include radius(3px);
 }
 
-.node  li.no-favnode{
+.node li.no-favnode, .following li.no-following{
   border:none;
   margin:0 0 5px 0;
   a {
@@ -775,6 +776,10 @@ p.reply-message {
     border-bottom: 1px solid #ececec;
     &:last-child {
       border: none;
+    }
+    a{
+      font-size:14px;
+      padding:15px 5px;
     }
   }
 }
@@ -990,6 +995,8 @@ p.reply-message {
 
 input[type="search"] {
   width: 200px;
+  background:#4b494a;
+  border:1px solid #333;
 }
 
 input.vivid-button, .vivid-button {
