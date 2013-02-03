@@ -27,7 +27,6 @@ class Mail extends CI_Model {
         $this->load->model('user');
         include(APPPATH . 'config/email.php');
         $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
     }
 
     /**
@@ -39,7 +38,9 @@ class Mail extends CI_Model {
             'smtp_host' => $host,
             'smtp_user' => $user,
             'smtp_pass' => $pwd,
-            'smtp_port' => $port
+            'smtp_port' => $port,
+            'protocol' => 'smtp',
+            'newline' => "\r\n"
         );
         file_put_contents(APPPATH . 'config/email.php', '<?php $config=' . var_export($config, true));
     }

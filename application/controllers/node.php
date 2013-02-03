@@ -109,7 +109,7 @@ class Node extends CI_Controller {
             'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no=' . $limit),
             'showPageBar' => $node['node_post_count'] > 0 ? true : false,
             'page_bar' => $pagebar,
-            'admin_js' => array('plugin/jquery.jeditable.mini.js', 'admin.js')
+            'admin_js' => array('plugin/jquery.jeditable.mini.js', 'np_admin.js')
         ));
         if ($this->is_ajax) {
             $this->s->display('node/single_node_main.html');

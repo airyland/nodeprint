@@ -110,8 +110,11 @@ NPRouter.prototype = {
     },
     triggerLeaveCallback: function() {
         var callback = this.leaveCallbackFunc;
-        callback && callback['func'].apply(this.args);
-        this.emptyLeaveCallback();
+        if(callback){
+           var returnValue = callback['func'].apply(this.args);
+        }
+
+        return returnValue;
     },
     match: function(url, title) {
         var _this = this;
@@ -136,7 +139,11 @@ NPRouter.prototype = {
 
             if(_this.leaveCallbackFunc && _this.history.pathname === _this.leaveCallbackFunc.url) {
                 //console.log('history: ' + _this.history.url + '和' + _this.leaveCallbackFunc.url + '不一样哦');
-                _this.triggerLeaveCallback();
+                if(_this.triggerLeaveCallback()===false){
+                    return;
+                }else{        
+                    this.emptyLeaveCallback();
+                }
                 //_this.history._saveState();
             }
 
@@ -155,16 +162,6 @@ NPRouter.prototype = {
             useLoading = typeof useLoading !== 'undefined' && useLoading === true ? true : false;
         useLoading && _this.showLoading();
 
-        this.fetch(url, function(data) {
-            ////console.log(data)
-            ////console.log(matchCallback);
-            $('.content').empty().prepend(data);
-            _this.hideLoading();
-            _this.history.pushState({
-                data: data
-            }, title + '-' + _this.options['siteName'], url);
-            _this.history._saveState();
-            useLoading && _this.hideLoading();
 
             if(matchCallback) {
                 if('enter' in matchCallback) {
@@ -177,13 +174,26 @@ NPRouter.prototype = {
 
             }
 
+
+        this.fetch(url, function(data) {
+            ////console.log(data)
+            ////console.log(matchCallback);
+            $('.content').empty().prepend(data);
+            _this.hideLoading();
+            _this.history.pushState({
+                data: data
+            }, title + '-' + _this.options['siteName'], url);
+            _this.history._saveState();
+            useLoading && _this.hideLoading();
+
+
             _this.options['finish'] && _this.options['finish'](url);
         }, matchCallback);
 
 
     },
     showLoading: function() {
-        this.loading.slideDown();
+        //this.loading.slideDown();
     },
     hideLoading: function(callback) {
         this.loading.slideUp('fast', function() {
@@ -274,7 +284,7 @@ var options = {
         '/t/search/:key(?page=:page)': 'search'
     },
     exclude: [document.location.host + '/admin'],
-    block: [],
+    block: ['/messages/send'],
     getHomeTab: {
         enter: function() {
             //console.log('enter home');
@@ -288,14 +298,39 @@ var options = {
 
     singleTopic: {
         enter: function() {
-            track('/view/ajax/topic');
-        }
+       NP.use(['js/np_comment.js', 'js/plugin/at.js'], function() {
+           var data = ['admin'],
+               $userNameNode = $('.cm-list>li>p>a.user-name');
+           authorName = $('.post-info .post_author>img').attr('alt');
+           data.push(authorName);
+           $.unique($.merge(data, $.unique($.map($userNameNode, function(val, key) {
+               return $(val).text();
+           }))));
+           $('#cm-box').atWho('@', {
+               'data': data,
+               'tpl': "<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
+           });
+       });
+       NPWidget.fetch('topic');
+       track('/view/ajax/topic');
+   },
+   leave: function() {
+       if($.trim($('#cm-box').val() !== '')) {
+           if(!confirm('您确认要放弃已经输入的回复吗？')) {
+               return false;
+           }
+           return true;
+       }
+   }
     },
     addTopic: {
         enter: function(url, slug) {
+            //
             NPWidget.fetch('create_topic',true);
+            $('#profile-box').hide();
         },
         leave: function() {
+            $('#profile-box').show();
         },
         cache: true
     },
@@ -366,7 +401,10 @@ var NPWidget={
         });
     },
     parseWidgets:function(data){
-        $('.sidebar').children().eq(0).siblings().remove();
+        if($('#profile-box').length>0){
+            $('.sidebar').find('#profile-box').siblings().remove();
+        }
+       
         $('.sidebar').append(data);
         /*var $data=$(data),
             $widgets=$data.children();

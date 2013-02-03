@@ -33,11 +33,12 @@
             ga:"{$ga}"
         }
         </script>
+        <script type="text/javascript" src="js/np_loader.js"></script>
         <script type="text/javascript" src="js/LAB.min.js"></script>
         <script type="text/javascript">
      $LAB
     .script("{$site.url}js/plugin/underscore-min.js")
-    .script("{$site.url}js/router.js")
+    .script("{$site.url}js/np_router.js")
     .script("{$site.url}js/plugin/dialog/dialog.js?skin=twitter")
     .script("{$site.url}js/plugin/store.min.js")
     .script("{$site.url}js/plugin/jquery.tipsy.js")
@@ -45,25 +46,20 @@
     .script("{$site.url}js/plugin/jquery.hotkeys.js")
     .script("{$site.url}js/plugin/jquery.filedrop.js")
     .script("{$site.url}js/plugin/autoTextarea.js")    
-    
-
-    .wait(function(){
-        console.log('router load');
-    })
-    .script("{$site.url}js/topic.js")
+    .script("{$site.url}js/np_topic.js")
     .script("{$site.url}js/plugin/jquery.pagination.js")
-    .script("{$site.url}js/msg.js")
+    .script("{$site.url}js/np_msg.js")
     //.script("{$site.url}js/tool.js")
     .script("{$site.url}js/plugin/mustache.js").wait()
 {if isset($js) && is_array($js)}{foreach $js as $src}.script("{$site.url}js/{$src}")
     {/foreach}{/if}
     {if isset($admin_js) && is_array($admin_js)}{if $is_admin}{foreach $admin_js as $src}.script("{$site.url}js/{$src}")
     {/foreach}{/if}{/if}
-.script("{$site.url}js/main.js") 
+.script("{$site.url}js/np_app.js") 
     {if $is_admin}
-    .script("{$site.url}js/admin.js")
+    .script("{$site.url}js/np_admin.js")
     {/if}
-    .script("{$site.url}js/cron.js");
+    .script("{$site.url}js/np_cron.js");
 </script>
 {include file="footer_analytics.html"}
 {literal}  

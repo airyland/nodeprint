@@ -32,15 +32,6 @@ $(function () {
     }
 
 
-    //帖子编辑
-    if (isTopicPage) {
-        $topic.editable('/api/topic', {
-            type:'textarea',
-            height:'300px',
-            submit:'更新',
-            cancel:'取消'
-        });
-    }
 
 
     //帖子移动到其他节点
@@ -89,7 +80,8 @@ $(function () {
 if(isAdminPage){
     var messageMap={
         'clearCompiledTemplate_success':'清除Smarty编译缓存成功!',
-        'clearAllCache_success':'清除Smarty静态缓存成功!'
+        'clearAllCache_success':'清除Smarty静态缓存成功!',
+        'manualBackup_success':'手动备份数据库成功'
     },
     closeTip ='两秒后自动关闭';
     hash = document.location.hash.replace('#','');

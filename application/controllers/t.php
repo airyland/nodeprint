@@ -97,7 +97,8 @@ class T extends CI_Controller {
                 'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
                 'fav' => $fav,
                 'local_upload' => $local_upload,
-                'page_bar' => $page_bar
+                'page_bar' => $page_bar,
+                'js' => array('np_comment.js')
                     )
             );
             if ($this->is_ajax) {

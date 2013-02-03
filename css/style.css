@@ -579,8 +579,7 @@ input[type='search'] {
   input[type='search']:hover {
     background: #ececec; }
   input[type='search']:focus {
-    background: #F1F4F2;
-    width: 280px; }
+    background: #F1F4F2; }
 
 #search-button {
   display: none; }
@@ -858,7 +857,7 @@ a {
   a:hover {
     color: #385F8A; }
 
-h3 {
+h3, h2 .title {
   font-weight: normal;
   font-size: 12px;
   color: #999;
@@ -866,6 +865,9 @@ h3 {
   padding-left: 10px;
   border-bottom: 1px solid #ececec;
   background: url(../img/box_title_bg.png) repeat-x; }
+
+h2 .title {
+  color: #666; }
 
 .hidden {
   display: none; }
@@ -901,10 +903,12 @@ span.more {
     .site-tab ul li {
       float: left;
       padding: 3px;
-      margin-right: 0px;
+      margin-right: 5px;
       border-radius: 2px;
       -moz-border-radius: 2px;
       -webkit-border-radius: 2px; }
+      .site-tab ul li:hover {
+        background: #ececec; }
       .site-tab ul li.current {
         background: #e82a73;
         color: #fff; }
