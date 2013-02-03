@@ -39,7 +39,7 @@ class Admins extends CI_Model {
     }
 
     /**
-     * 添加管理员
+     * add an admin
      * 
      * @access public
      * @param string $user_name
@@ -61,34 +61,66 @@ class Admins extends CI_Model {
     }
 
     /**
-     * 获取所有管理员
+     * get all admins
      *
      * @return array
      */
     public function get_admin() {
-        return $this->db->select('user_id,user_name')->where(array('user_flag' => 9))->get('vx_user')->result_array();
+        return $this->db->select('user_id,user_name')
+                        ->where(array('user_flag' => 9))
+                        ->get('user')
+                        ->result_array();
     }
 
     /**
-     * 每天备份一次，在管理员后台可关闭
+     * auto backup database
+     * can be shut down on admin dashboard
      */
-    public function backup() {
-        $today=date('Y-m-d-H-i-s', time());
-        $filename=$today . '-' .get_random_string(20).'.zip';
+    public function auto_backup() {
+        $filename=$this->get_filename();
         $log= $this->get_last_backup_file();
-        $has_backup_today=$log.strpos($log,$today);
+        $has_backup_today=strpos($log,date('Y-m-d',time()))===0;
         if (!$has_backup_today&&$this->configs->item('auto_backup')) {
-                $this->load->dbutil();
-                $backup = & $this->dbutil->backup();
-                $this->load->helper('file');
-                write_file(self::BACKUP_DES . $filename, $backup);
-                write_file(self::BACKUP_LOG,'<?php $file="'.$filename.'";');
+            $this->backup($filename);
         }
     }
 
+    /**
+    * manual backup database
+    */
+    public function manual_backup(){
+        $filename=$this->get_filename();
+        $this->backup($filename);
+    }
+
+    /**
+    * get backup file name
+    */
+    private function get_filename(){
+        $today=date('Y-m-d-H-i-s', time());
+        return $today . '-' .get_random_string(20).'.zip';
+    }
+
+
+    /**
+    * do the backup job
+    */
+    private function backup($filename){
+         $this->load->dbutil();
+         $backup = & $this->dbutil->backup();
+         $this->load->helper('file');
+         write_file(self::BACKUP_DES . $filename, $backup);
+         write_file(self::BACKUP_LOG,'<?php $file="'.$filename.'";');
+    }
+
+    /**
+    * get latest backup time
+    */
     public function get_last_backup_file(){
         $file='';
-        include(self::BACKUP_LOG);
+        if(file_exists(self::BACKUP_LOG)){
+            include(self::BACKUP_LOG);
+        }
         return $file;
     }
 }

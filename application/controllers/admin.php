@@ -235,6 +235,12 @@ class Admin extends CI_Controller {
                         $this->s->clearAllCache();
                         redirect('/admin/tools#clearAllCache_success');
                         break;
+
+                    case 'manualBackup':
+                        $this->load->model('admins');
+                        $this->admins->manual_backup();
+                        redirect('/admin/tools#manualBackup_success');
+                    break;
                 }
                 break;
         }
