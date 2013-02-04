@@ -14,6 +14,7 @@ class S extends Smarty {
         $this->_ci->load->model('configs');
         global $lang;
         global $config;
+        global $is_mobile;
         $current_user = get_user();
         //模块编译改动检查，开发时请设为TRUE,线上时设为FALSE;
         $this->compile_check=TRUE;
@@ -32,6 +33,7 @@ class S extends Smarty {
         $this->assign('me', $this->_ci->user->get_user_profile($current_user['user_id'], 'user_id'));
         $this->assign('ga',$this->_ci->configs->item('ga'));
         $this->assign('lang', $lang);
+        $this->assign('is_mobile',$is_mobile);
         $this->assign('_', lang($config['lang']));
     }
 }
