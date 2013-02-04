@@ -61,5 +61,7 @@ if (is_dir($application_folder)) {
 include(APPPATH.'cache/site/config_cache.php');
 //load language
 include(APPPATH.'helpers/lang_helper.php');
+include(APPPATH.'helpers/bootstrap_helper.php');
 $lang = lang($config['lang']);
+$is_mobile = is_mobile();
 require_once BASEPATH . 'core/CodeIgniter.php';
