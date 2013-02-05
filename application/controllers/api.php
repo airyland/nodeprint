@@ -1092,7 +1092,7 @@ class Api extends CI_Controller {
                             $new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
                             $this->load->model(array('nodes'));
                             $this->s->assign(array(
-                                         'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $new_nodes_item_no),
+                                         'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $hot_nodes_item_no),
                                          'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
                                         ));
                             $this->s->display('widget/home.html');
