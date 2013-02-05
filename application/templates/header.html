@@ -26,7 +26,7 @@
             </script>
         <![endif]-->      
     </head>
-    <body id="body">
+    <body id="body" {if $is_mobile}class="mobile"{/if}>
         <header id="header">
             <div class="header-wrap">
                 <h1><a id="logo" href="{$site.url}#home" title="{$site.name}-首页">{$_['index']}</a></h1>
@@ -35,11 +35,15 @@
                     <input type="submit" value="search" id="search-button"/>
                 </form>
                 <nav class="site-nav" id="site-nav" role="navigation">
-                    <ul>{nocache}
-                        <li><a href="{$site.url}#home">{$lang.index}</a></li>{if $is_login} 
+                    <ul>
+                    {if $is_mobile}
+                        {include file="mobile/header.html"}
+                    {else}
+                        {nocache}
+                        <li><a href="{$site.url}#home" class="home">{$lang.index}</a></li>{if $is_login} 
                         <li><a href="/member/{$me.user_name}">{$me.user_name}</a></li>
                         <li><a href="/messages" id="JS_msg" data-router="false">{$lang.message}<span class="msg-count">0</span></a></li>
-                        {if $is_admin}<li><a href="/admin">{$lang.admin}</a></li>{/if}
+                        {if $is_admin}<li><a href="/admin" class="admin">{$lang.admin}</a></li>{/if}
                         <li class="icon-item"><span class="icon">&#9871;</span>
                             <ul>
                                <li><a href="/settings">{$lang.settings}</a></li>
@@ -50,6 +54,7 @@
                         <li><a href="/signin" id="signin-btn" title="{$lang.signin}" data-router="false">{$lang.signin}</a></li>
                        {/if}
                     {/nocache}
+                    {/if}
                     </ul>
                 </nav>
             </div>

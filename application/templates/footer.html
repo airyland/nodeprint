@@ -30,7 +30,8 @@
         userName:"{$me.user_name}"
             },
         NPINFO={
-            ga:"{$ga}"
+            ga:"{$ga}",
+            isMobile:{if $is_mobile}true{else}false{/if}
         }
         </script>
         <script type="text/javascript" src="js/np_loader.js"></script>
@@ -49,7 +50,7 @@
     .script("{$site.url}js/np_topic.js")
     .script("{$site.url}js/plugin/jquery.pagination.js")
     .script("{$site.url}js/np_msg.js")
-    //.script("{$site.url}js/tool.js")
+    .script("{$site.url}js/np_tool.js")
     .script("{$site.url}js/plugin/mustache.js").wait()
 {if isset($js) && is_array($js)}{foreach $js as $src}.script("{$site.url}js/{$src}")
     {/foreach}{/if}

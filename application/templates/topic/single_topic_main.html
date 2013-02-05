@@ -12,7 +12,7 @@
             <div class="post-content">{$t.post_content}</div>
             <footer class="topic-footer">
                 <ul class="post-footer-bar">
-                    {if $is_admin}
+                    {if $is_admin and !$is_mobile}
                     <li><a href="/t/{$t.post_id}/edit">修改</a></li>
                     <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete">删除</a></li>
                     <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer"  data-router="false">移动帖子</a></li>
@@ -35,12 +35,15 @@
         <ul class="cm-list">
             {if $cm}
             {section name=cm loop=$cm start=0}<li id="comment-{{$cm[cm].cm_id}}" data-id="{$cm[cm].cm_id}" data-replyTo="{$cm[cm].cm_reply_to}">
-                <img class="l-avatar" src="/avatar/{$cm[cm].user_id}/48" width="48" height="48" alt="{$cm[cm].user_name}" />
-                {if $cm[cm].cm_reply_to!=0}<a class="s-avatar" href="/t/{$cm[cm].post_id}#comment-{$cm[cm].cm_reply_to}"><img src="/avatar/{$cm[cm].cm_reply_id}/20" width="20" height="20"/></a>{/if}
+                <img class="l-avatar" src="/avatar/{$cm[cm].user_id}/{if $is_mobile}20{else}48{/if}" width="{if $is_mobile}20{else}48{/if}" height="{if $is_mobile}20{else}48{/if}" alt="{$cm[cm].user_name}" />
+                {if $cm[cm].cm_reply_to!=0 and !$is_mobile}<a class="s-avatar" href="/t/{$cm[cm].post_id}#comment-{$cm[cm].cm_reply_to}"><img src="/avatar/{$cm[cm].cm_reply_id}/20" width="20" height="20"/></a>{/if}
+                <div class="bfc">
                 <p><a class="user-name" href="/member/{$cm[cm].user_id}">{$cm[cm].user_name}</a><span class="time-ago" data-time="{$cm[cm].cm_time}">{time_ago time=$cm[cm].cm_time}</span></p>
                 <p class="comment-content">{$cm[cm].cm_content}</p>
-                <span class="floor">{*#*}{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$smarty.section.cm.total-$smarty.section.cm.index}{else}{$smarty.section.cm.index+1}{/if}</span> 
+                </div>
+                 <span class="floor">{*#*}{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$smarty.section.cm.total-$smarty.section.cm.index}{else}{$smarty.section.cm.index+1}{/if}</span> 
                     <a class="reply" title="{$_.reply}" href="#" data-router="false" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$_.reply}</a>
+
             </li>
             {/section}
             {else}
@@ -51,10 +54,12 @@
     </div>
 
     <script type="text/template" id="comment-template">
-        {literal}<li style="display:none;" data-id="{{data.cm_id}}" data-replyTo="{{data.cm_reply_to}}">
-            <img class="l-avatar" src="/avatar/{{data.user_id}}/48" alt="" width="48" height="48"/>{/literal}
+        {literal}<li style="display:none;" data-id="{{data.cm_id}}" data-replyTo="{{data.cm_reply_to}}">{/literal}
+
+            <img class="l-avatar" src="/avatar/{literal}{{data.user_id}}{/literal}/{if $is_mobile}20{else}48{/if}" alt="" width="{if $is_mobile}20{else}48{/if}" height="{if $is_mobile}20{else}48{/if}"/>
+            <div class="bfc">
             {literal}<p><a class="user-name" href="/member/{{data.user_id}}">{{data.user_name}}</a><span class="time-ago" data-time="{{data.cm_time}}">{/literal}{$_.justNow}</span></p>
-           {literal}<p class="comment-content">{{{data.cm_content}}}</p>{/literal}             
+           {literal}<p class="comment-content">{{{data.cm_content}}}</p>{/literal}</div>             
                 {literal}<a class="reply" href="#" data-id="{{data.cm_id}}" data-router="false" data-username="{{data.user_name}}">{/literal}{$_.reply}</a>
            
              <span class="floor"></span>
@@ -64,6 +69,7 @@
                 <h4 class="title">{$_.addReply}</h4>
                 <a class="back-to-top" href="/t/{$t.post_id}#body" title="{$_.backToTop}" data-router="false"><span class="up-arrow">&uarr;</span>{$_.backToTop}</a>
                 {if $is_login}
+                {if !$is_mobile}
                  <div class="icon-list">
                         <ul>
                             {if $local_upload==='1'}<li><span class="icon" title="上传图片">&#128228;</span></li>{/if}
@@ -73,20 +79,19 @@
                         <input type="file" name="file" id="file-upload" accept="image/*" title="上传图片">
                         {/if}
                 </div>
+                {/if}
                 <form action="api/comment/add" method="post" id="cm-form">
                     <input type="hidden" name="post-author" value="{$t.user_name}">
                     <input type="hidden" name="post-id" value="{$t.post_id}"/>
                     <input type="hidden" name="cm-reply-to" id="cm-reply-to" value="0"/>
                     <input type="hidden" name="cm-reply-name" id="cm-reply-name" value=""/>
-                    <textarea name="cm-content" id="cm-box"></textarea>                                      
+                    <textarea name="cm-content" id="cm-box"></textarea>
                     <input type="submit" value="{$_.send}" class="button" id="cm-button"/>
-                    <small>Ctrl+Enter</small>
-
                     <div id="preview">
                         <ul></ul>
                     </div>
 
-
+                    {if !$is_mobile}
                     <ul class="post-tip">
                         <li><p>不支持html标签，UBB代码</p></li>
                         <li><p>链接、图片请直接粘贴地址</p></li>
@@ -94,8 +99,8 @@
                         <li><p>支持@用户，提及管理员请@admin 或者 @airyland</p></li>
                         <!--<li><p>邮件地址会被自动替换@为#</p></li>-->
                     </ul>
-
                     <span class="box-footer">{$_.replyTip}</span>
+                     {/if}
                 </form>
                 {else}
                 {include file="login_box.html" showtitle=false}

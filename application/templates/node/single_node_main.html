@@ -10,7 +10,7 @@
                 {/if}
                 <a href="/node/{$node.node_slug}/feed">订阅节点更新</a>
         </p>
-        <p class="node-intro{if $is_admin} node-editable{/if}">{if !$node.node_intro}该节点暂时没有介绍哦~{else}{$node.node_intro}{/if}</p>
+        <p class="node-intro{if $is_admin and !$is_mobile} node-editable{/if}">{if !$node.node_intro}该节点暂时没有介绍哦~{else}{$node.node_intro}{/if}</p>
         {if $is_login}<p class="node-create-button"><a class="vivid-button" href="/node/{$node.node_slug}/add">创建新主题</a></p>{/if}
         <hr />
         {include file="topic_list.html"}
