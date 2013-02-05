@@ -959,7 +959,8 @@ class Api extends CI_Controller {
                 $this->load->model('message');
                 $user = $this->auth->get_user();
                 $this->load->library('user_agent');
-                $cm_other = json_encode(array('bs' => strtolower($this->agent->browser()) . '-' . intval($this->agent->version())));
+                $mobile=$this->agent->simple_mobile();
+                $cm_other = json_encode(array('bs' => strtolower($this->agent->browser()) . '-' . intval($this->agent->version()),'mb'=>$mobile?$mobile:''));
                 $post_id = $this->input->post('post-id');
                 $cm_reply_to = $this->input->post('cm-reply-to');
                 $cm_content = $this->input->post('cm-content');

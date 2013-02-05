@@ -542,6 +542,32 @@ class CI_User_agent {
 		return (in_array(strtolower($charset), $this->charsets(), TRUE));
 	}
 
+	// --------------------------------------------------------------------
+	/**
+	 * get mobile platform
+	 *
+	 * @access	public
+	 * @return	string
+	 */
+	public  function simple_mobile(){
+        $device = '';
+        if( stristr($this->agent,'ipad') ) {
+            $device = "iPad";
+        } else if( stristr($this->agent,'iphone') || strstr($this->agent,'iphone') ) {
+            $device = "iPhone";
+        } else if( stristr($this->agent,'blackberry') ) {
+            $device = "Blackberry";
+        } else if( stristr($this->agent,'android') ) {
+            $device = "Android";
+        }
+        if( $device ) {
+            return $device; 
+        } 
+        return false; 
+    }
+
+
+
 }
 
 

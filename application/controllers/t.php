@@ -57,6 +57,17 @@ class T extends CI_Controller {
 
     function the_post($id, $action = '') {
         $this->load->model(array('post', 'comment'));
+
+        // get mobile 
+        function mobile($paras) {
+            $info=json_decode($paras['info'],true);
+            if(isset($info['mb'])&&$info['mb']!==''){
+                return ' via '.$info['mb'];
+            }
+            return '';
+        }
+        $this->s->registerPlugin('function', 'mobile', 'mobile');
+
         if (!$action) {
             if (!$this->page) {
                 show_404();
@@ -98,7 +109,8 @@ class T extends CI_Controller {
                 'fav' => $fav,
                 'local_upload' => $local_upload,
                 'page_bar' => $page_bar,
-                'js' => array('np_comment.js')
+                'js' => array('np_comment.js'),
+                'plugin_topic_toolbar'=>$this->plugins->trigger('topic_toolbar',$id)
                     )
             );
             if ($this->is_ajax) {
