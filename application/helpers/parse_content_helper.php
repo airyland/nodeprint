@@ -136,6 +136,11 @@ if(strpos($url,'v.youku')||strpos($url,'tudou')||strpos($url,'jpg')||strpos($url
         $e='<a href="'.$url.'">'.$url.'</a>';
     }
 
+    if(strpos($url,'xiami')){
+        $id=substr($url,strrpos($url,'/')+1);
+        $e='<p class="music-info">歌曲地址：<a href="'.$url.'" rel="external">'.$url.'</a><p><embed src="http://www.xiami.com/widget/0_'.$id.'/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"></embed>';
+    }
+
     }
     return $e;
 }
