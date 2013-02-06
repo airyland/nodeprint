@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class MY_URI extends CI_URI
+class NP_URI extends CI_URI
 {
 	
 	/**
@@ -10,6 +10,7 @@ class MY_URI extends CI_URI
 	 * @param	string
 	 * @return	string
 	 */
+	
 	function _filter_uri($str)
 	{
 		if ($str != '' && $this->config->item('permitted_uri_chars') != '')

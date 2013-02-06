@@ -1,5 +1,5 @@
 <?php
-class MY_Input extends CI_Input
+class NP_Input extends CI_Input
 {
 
     function __construct()

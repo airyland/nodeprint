@@ -1,19 +1,4 @@
 <?php if (!defined('BASEPATH')) exit('No direct access allowed.');
-/**
- * STBlog Blogging System
- *
- * 基于Codeigniter的单用户多权限开源博客系统
- * 
- * STBlog is an open source multi-privilege blogging System built on the 
- * well-known PHP framework Codeigniter.
- *
- * @package		STBLOG
- * @author		Saturn <huyanggang@gmail.com>
- * @copyright	Copyright (c) 2009 - 2010, cnsaturn.com.
- * @license		GNU General Public License 2.0
- * @link		http://code.google.com/p/stblog/
- * @version		0.1.0
- */
  
 // ------------------------------------------------------------------------
 
@@ -30,7 +15,7 @@
  * @author		Saturn <huyanggang@gmail.com>
  * @link 		http://code.google.com/p/stblog/
  */
-class MY_Loader extends CI_Loader 
+class NP_Loader extends CI_Loader 
 {
 
 	/**
@@ -49,7 +34,7 @@ class MY_Loader extends CI_Loader
 	 */
     public function __construct() 
     {
-        parent::CI_Loader();
+        parent::__construct();
     }
 
 	 /**
