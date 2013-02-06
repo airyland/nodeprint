@@ -49,30 +49,15 @@ define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
   |
  */
 
+
 define('NP_PREFIX', APPPATH);
 define('SMARTY_TEMPLATE_DIR', NP_PREFIX . '/templates');
 define('SMARTY_COMPILE_DIR', NP_PREFIX . '/cache/smarty/compile');
 define('SMARTY_CACHE_DIR', NP_PREFIX . '/cache/smarty/cache');
 define('SMARTY_CONFIG_DIR', NP_PREFIX . '/config');
 
+define('NP_PLUGINS_DIR', 'application/plugins');
 
-define('ST_THEMES_DIR', 'themes');
-define('ST_PLUGINS_DIR', 'application/plugins');
-define('ST_DB_CACHE_DIR', 'dbcache');
-define('ST_NAME', 'STBlog');
-define('ST_SALT_LENGTH', 9);
-define('ST_VERSION', '0.1.2');
-define('ST_AUTHOR', 'Saturn');
-define('ST_AUTHOR_URL', 'http://nodeprint.com/');
-define('ST_CONTENT_BREAK', '[--break--]');
-/** 系统核心内部规定的插件钩子名称 */
-define('ST_CORE_HOOK_EDITOR', 'Core::Editor');
-define('ST_CORE_HOOK_EDITOR_INSERT_ATTACH', 'Core::Editor::Insert::Attach');
-define('ST_CORE_HOOK_EDITOR_INSERT_MORE', 'Core::Editor::Insert::More');
-define('ST_CORE_HOOK_COMMENT_PREPROCESS', 'Core::Comment::PreProcess'); //评论获取用户数据后的前期插件处理钩子
-define('ST_CORE_HOOK_TRACKBACK_PREPROCESS', 'Core::Trackback::PreProcess');
-define('RSS1', 'RSS 1.0');
-define('RSS2', 'RSS 2.0');
-define('ATOM', 'ATOM');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
