@@ -63,6 +63,11 @@
     .script("{$site.url}js/np_cron.js");
 </script>
 {include file="footer_analytics.html"}
+
+<!-- plugin hook::np_footer -->
+{if np_footer}{$np_footer}{/if}
+<!-- /plugin hook::np_footer -->
+
 {literal}  
 <script type="text/template" id="post-list-template">
     {{#post}}
@@ -97,7 +102,5 @@
         </ul>
     </form>
 </script>
-
-<script type="text/template" id="upload-template"></script>
 </body>
 </html>

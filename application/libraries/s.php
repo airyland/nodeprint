@@ -26,6 +26,7 @@ class S extends Smarty {
         function time_ago($paras) {
             return relative_time(strtotime($paras['time']));
         }
+
         $this->registerPlugin('function', 'time_ago', 'time_ago');
         $this->assign('is_login', is_login());
         $this->assign('is_admin', $this->_ci->auth->is_admin());
@@ -35,5 +36,7 @@ class S extends Smarty {
         $this->assign('lang', $lang);
         $this->assign('is_mobile',$is_mobile);
         $this->assign('_', lang($config['lang']));
+        //hook trigger::np_footer
+        $this->assign('np_footer',$this->_ci->plugins->trigger('footer::np_footer'));
     }
 }
