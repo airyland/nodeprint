@@ -27,11 +27,11 @@ NPRouter.prototype = {
         var _this = this;
         this.history = new NPHistory();
         $(document).on('click', 'a[data-router!=false]', function(e) {
-            
+
             var href = this.href;
             //console.log(href);
             if(host !== this.host) {
-                this.target='_blank';
+                this.target = '_blank';
                 return;
             }
             if(_this.options.exclude) {
@@ -48,14 +48,12 @@ NPRouter.prototype = {
                 if(_.find(_this.options.block, function(one) {
                     return href.indexOf(one) !== -1;
                 })) {
-                    console.log('block');
+                    //console.log('block');
                     return;
                 } else {
                     e.preventDefault();
                 }
             }
-
-
 
             _this.options['init'] && _this.options['init']();
             var $this = $(this),
@@ -71,7 +69,7 @@ NPRouter.prototype = {
 
         this.regList = this._getRegList();
         window.addEventListener('popstate', function(e) {
-            console.log(e);
+           // console.log(e);
             if($('.content').length > 0 && e.state && e.state.data) {
                 $('.content').empty().append(e.state.data);
             }
@@ -110,8 +108,8 @@ NPRouter.prototype = {
     },
     triggerLeaveCallback: function() {
         var callback = this.leaveCallbackFunc;
-        if(callback){
-           var returnValue = callback['func'].apply(this.args);
+        if(callback) {
+            var returnValue = callback['func'].apply(this.args);
         }
 
         return returnValue;
@@ -125,23 +123,16 @@ NPRouter.prototype = {
 
         if(match) {
             this.showLoading();
-            var index = _.indexOf(this.regList, match);
-            var key = this._getRouteList()[index];
-            var args = [url].concat(this._extractParameters(match, url));
-            // this.options[this.routes[key]].apply(this, args);
-            var matchCallback = this.options[this.routes[key]];
-
-            //console.log(matchCallback);
-            if(_this.leaveCallbackFunc) {
-                //console.log(_this.history.url);
-                //console.log(_this.leaveCallbackFunc.url);
-            }
+            var index = _.indexOf(this.regList, match),
+                key = this._getRouteList()[index],
+                args = [url].concat(this._extractParameters(match, url)),
+                matchCallback = this.options[this.routes[key]];
 
             if(_this.leaveCallbackFunc && _this.history.pathname === _this.leaveCallbackFunc.url) {
                 //console.log('history: ' + _this.history.url + '和' + _this.leaveCallbackFunc.url + '不一样哦');
-                if(_this.triggerLeaveCallback()===false){
+                if(_this.triggerLeaveCallback() === false) {
                     return;
-                }else{        
+                } else {
                     this.emptyLeaveCallback();
                 }
                 //_this.history._saveState();
@@ -163,30 +154,26 @@ NPRouter.prototype = {
         useLoading && _this.showLoading();
 
 
+        if(matchCallback) {
+            if('leave' in matchCallback) {
+                _this.setLeaveCallback(url, matchCallback['leave'], args);
+            }
+        }
+
+
+        this.fetch(url, function(data) {
+            $('.content').empty().prepend(data);
             if(matchCallback) {
                 if('enter' in matchCallback) {
                     matchCallback['enter'].apply(this, args);
                 }
-
-                if('leave' in matchCallback) {
-                    _this.setLeaveCallback(url, matchCallback['leave'], args);
-                }
-
             }
-
-
-        this.fetch(url, function(data) {
-            ////console.log(data)
-            ////console.log(matchCallback);
-            $('.content').empty().prepend(data);
             _this.hideLoading();
             _this.history.pushState({
                 data: data
             }, title + '-' + _this.options['siteName'], url);
             _this.history._saveState();
             useLoading && _this.hideLoading();
-
-
             _this.options['finish'] && _this.options['finish'](url);
         }, matchCallback);
 
@@ -249,19 +236,19 @@ NPRouter.prototype = {
 var options = {
     loading: '#loading',
     siteName: 'NodePrint',
-    bootstrap:function(){
+    bootstrap: function() {
         // if(!store.get('widgets')){
-           // $.get('/api/site/widgets',function(data){
-                //console.log(data)
-                // store.set('widgets',data);
-                //NPWidget.parseWidgets(data);
-                //$(data).hide().appendTo('.sidebar');
-           // })
-       // }
+        // $.get('/api/site/widgets',function(data){
+        //console.log(data)
+        // store.set('widgets',data);
+        //NPWidget.parseWidgets(data);
+        //$(data).hide().appendTo('.sidebar');
+        // })
+        // }
     },
     init: function() {
         $('#node-tip').hide();
-       
+
     },
     finish: function(url) {
         $('html, body').animate({
@@ -281,7 +268,8 @@ var options = {
         '/node(?for=:dofor)': 'chooseNode',
         '/node/:slug/add': 'addTopic',
         '/node/:slug': 'singleNode',
-        '/t/search/:key(?page=:page)': 'search'
+        '/t/search/:key(?page=:page)': 'search',
+        '/messages(/?type=:type)':'messages'
     },
     exclude: [document.location.host + '/admin'],
     block: ['/messages/send'],
@@ -291,14 +279,17 @@ var options = {
             NPWidget.fetch('home');
             $('.post-guide').hide();
         },
-        leave:function(){
-            console.log('leave home');
+        leave: function() {
+            //console.log('leave home');
         }
+    },
+    messages:function(){
+
     },
 
     singleTopic: {
         enter: function() {
-       NP.use(['js/np_comment.js', 'js/plugin/at.js'], function() {
+            NP.use(['js/np_comment.js', 'js/plugin/at.js'], function() {
            var data = ['admin'],
                $userNameNode = $('.cm-list>li>p>a.user-name');
            authorName = $('.post-info .post_author>img').attr('alt');
@@ -310,23 +301,24 @@ var options = {
                'data': data,
                'tpl': "<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
            });
-       });
-       NPWidget.fetch('topic');
-       track('/view/ajax/topic');
-   },
-   leave: function() {
-       if($.trim($('#cm-box').val() !== '')) {
-           if(!confirm('您确认要放弃已经输入的回复吗？')) {
-               return false;
-           }
-           return true;
        }
-   }
+            );
+            NPWidget.fetch('topic');
+            track('/view/ajax/topic');
+        },
+        leave: function() {
+            if($.trim($('#cm-box').val()) !== '') {
+                if(!confirm('您确认要放弃已经输入的回复吗？')) {
+                    return false;
+                }
+                return true;
+            }
+        }
     },
     addTopic: {
         enter: function(url, slug) {
             //
-            NPWidget.fetch('create_topic',true);
+            NPWidget.fetch('create_topic', true);
             $('#profile-box').hide();
         },
         leave: function() {
@@ -335,7 +327,7 @@ var options = {
         cache: true
     },
     singleMember: {
-        enter:function(){
+        enter: function() {
             NPWidget.fetch('member');
         }
 
@@ -351,9 +343,7 @@ var options = {
             NPWidget.fetch('node');
             //track('/view/ajax/node');
             //console.log('enter node');
-            $LAB.script('/js/plugin/jquery.jeditable.mini.js').wait().script('/js/admin.js', function() {
-                //console.log('scripts loaded');
-            });
+            NP.use(['/js/plugin/jquery.jeditable.mini.js', 'np_admin.js']);
         },
         cache: false
     }
@@ -381,30 +371,30 @@ NPHistory.prototype = {
     }
 }
 
-var NPWidget={
-    use:function(widgets){
-        var selector=widgets.join(',');
-        $(selector,'.sidebar').show().siblings().hide();
+var NPWidget = {
+    use: function(widgets) {
+        var selector = widgets.join(',');
+        $(selector, '.sidebar').show().siblings().hide();
     },
-    fetch:function(page,cache){
-        cache=cache?cache:false;
-        if(cache){
-            var data=store.get('widget:'+page);
-            if(data){
+    fetch: function(page, cache) {
+        cache = cache ? cache : false;
+        if(cache) {
+            var data = store.get('widget:' + page);
+            if(data) {
                 NPWidget.parseWidgets(data);
                 return;
             }
         }
-        $.get('/api/site/widgets/'+page,function(data){
+        $.get('/api/site/widgets/' + page, function(data) {
             NPWidget.parseWidgets(data);
-            cache&&store.set('widget:'+page,data)
+            cache && store.set('widget:' + page, data)
         });
     },
-    parseWidgets:function(data){
-        if($('#profile-box').length>0){
+    parseWidgets: function(data) {
+        if($('#profile-box').length > 0) {
             $('.sidebar').find('#profile-box').siblings().remove();
         }
-       
+
         $('.sidebar').append(data);
         /*var $data=$(data),
             $widgets=$data.children();
@@ -417,7 +407,7 @@ var NPWidget={
 
 $(function() {
     var app = new NPRouter(options);
-    console.log(app);
+    //console.log(app);
     $('.search').submit(function(e) {
         e.preventDefault();
         var key = encodeURI($('#search').val().replace(/</g, '').replace(/>/g, '').replace(/\//g, '').replace(/\\/g, '')),

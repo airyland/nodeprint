@@ -5,6 +5,7 @@
 class Messages extends CI_Controller {
     public $page;
     public $no;
+    private $is_ajax;
     /**
      * 构造器
      */
@@ -14,6 +15,7 @@ class Messages extends CI_Controller {
         $this->load->model('message');
         $this->page = $this->input->get_page();
         $this->no=$this->input->get('no')?$this->input->get('no'):20;
+        $this->is_ajax=$this->input->is_ajax_request();
     }
 
     /**
@@ -51,9 +53,9 @@ class Messages extends CI_Controller {
             'is_dialog' => FALSE
         ));
 
-        if($this->input->is_ajax_request()){
-             $this->s->assign('is_dialog',true);
-             $this->s->display('message/message_list.html');
+        if($this->is_ajax){
+             //$this->s->assign('is_dialog',true);
+             $this->s->display('message/message_main.html');
              return;
         }else{
             //if ($type == 'unread' || !$type)
