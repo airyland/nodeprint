@@ -276,7 +276,7 @@ class Api extends CI_Controller {
              */
             case 'logout':
                 setcookie('NP_auth', '', time() - 365 * 24 * 3600, '/');
-                if (is_ajax())
+                if ($this->is_ajax)
                     die('{"code":0}');
                 redirect();
                 break;
@@ -437,7 +437,7 @@ class Api extends CI_Controller {
                             }
                         }
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax()) {
+                        if ($this->is_ajax) {
                             echo json_encode(array('error' => $error, 'msg' => $msg));
                             exit;
                         }
@@ -453,7 +453,7 @@ class Api extends CI_Controller {
                                 ->where('f_type', 3)
                                 ->delete('vx_follow');
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax()) {
+                        if ($this->is_ajax) {
                             echo json_encode(array('error' => 0));
                             exit;
                         }
@@ -619,7 +619,7 @@ class Api extends CI_Controller {
                         $node = $this->nodes->get_node($slug, 'node_slug');
                         $this->follow->add_follow($user['user_id'], 2, $node['node_id'], $node['node_slug']);
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax())
+                        if ($this->is_ajax)
                             json_output(0);
                         redirect('/node/' . $slug);
                         break;
@@ -633,7 +633,7 @@ class Api extends CI_Controller {
                         $node = $this->nodes->get_node($slug, 'node_slug');
                         $this->follow->del_follow($user['user_id'], 2, $node['node_id']);
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax())
+                        if ($this->is_ajax)
                             json_output(0);
                         redirect('/node/' . $slug);
                         break;
@@ -766,7 +766,7 @@ class Api extends CI_Controller {
                         $this->message->send_message(3, $v, $user['user_name'], $post_content, $post_id);
                     }
                 }
-                if (is_ajax()) {
+                if ($this->is_ajax) {
                     json_output(0, 'post', array('post_id' => $add));
                 } else {
                     redirect('t/' . $add);
@@ -845,7 +845,7 @@ class Api extends CI_Controller {
 
             case 'search':
                 $key = $this->input->get('search-key');
-                if (is_ajax()) {
+                if ($this->is_ajax) {
                     if (!$key) {
                         json_output(array('error' => 1, 'msg' => 'no specified search key'));
                         exit;
@@ -886,7 +886,7 @@ class Api extends CI_Controller {
                         $this->load->model('user');
                         $this->follow->add_follow($user['user_id'], 1, $post_id, $keyname = '');
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax())
+                        if ($this->is_ajax)
                             json_output(0);
                         redirect('t/' . $post_id);
                         break;
@@ -897,7 +897,7 @@ class Api extends CI_Controller {
                         $this->load->model('user');
                         $this->follow->del_follow($user['user_id'], 1, $post_id);
                         $this->user->refresh_user_info($user['user_id']);
-                        if (is_ajax())
+                        if ($this->is_ajax)
                             json_output(0);
                         redirect('t/' . $post_id);
                         break;
@@ -981,9 +981,9 @@ class Api extends CI_Controller {
                 if ($author != $user['user_name'])
                     $this->message->send_message(1, $author, $user['user_name'], $cm_content, $post_id = $post_id,$do);
 
-                $cm = $this->db->where('cm_id', $do)->get('vx_comment')->row_array();
-
-                if (is_ajax()) {
+                $cm = $this->db->where('cm_id', $do)->get('comment')->row_array();
+                
+                if ($this->is_ajax) {
                     json_output(0, 'data', $cm);
                     exit;
                 }
