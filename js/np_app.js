@@ -1,3 +1,4 @@
+var href = document.location.href;
 (function ($) {
     $.queryString = (function (a) {
         if (a === "") return {};
@@ -54,9 +55,6 @@ artDialog.fn.shake = function () {
 
 
 !function () {
-    var href = document.location.href;
-    //不得已的解决方法，使用base后，锚点基本地址是网站首页。
-    document.getElementById('home').href = document.location.href + '#body';
     //帖子发表时间过久提示
     if (/\/t\/\d/.test(href)) {
         var time = $('.time-txt').eq(0).text(),
@@ -165,6 +163,8 @@ $(function () {
     topic.init();
     post.init();
     $("a[rel='external']").attr('target', '_blank');
+    //不得已的解决方法，使用base后，锚点基本地址是网站首页。
+    $('.mobile .top, #home').attr('href',href + '#body');
     //alert($.queryString['order']);
     //$("img").lazyload({event:"sporty",effect:"fadeIn"});
     //$(window).bind("load",function(){var timeout=setTimeout(function(){$("img").trigger("sporty")},500);});
@@ -428,64 +428,66 @@ $(function () {
 
     //tips
     //@todo 在窗口缩小时应检测右边是否有可用宽度智能定位
-    var $doc = $(document),
-        temp = '<p class="node-name">{{node_name}}[<b>{{node_post_no}}</b>]</p><p class="node-intro">{{node_intro}}</p>',
-        parseTemp = function (data) {
-            return temp.replace('{{node_name}}', data.node_name).replace('{{node_intro}}', (data.node_intro === "0" || data.node_intro === null) ? '该节点暂时没有介绍哦~' : data.node_intro).replace('{{node_post_no}}', data.node_post_no);
-        },
-        showTip = function (offset, data, height) {
-            var nodeTip = $('#node-tip');
-            height = height + 5;
-            if (nodeTip.length > 0) {
-                nodeTip.hide().css({
-                    left:offset.left,
-                    top:offset.top + height
-                }).find('#inner-content').html(parseTemp(data)).end().show();
-            } else {
-                $('<div class="node-tip" id="node-tip"><div class="tip-content"><span class="arrow1">◆</span><span class="arrow2">◆</span><div id="inner-content"></div></div><div>').appendTo('body').css({
-                    left:offset.left,
-                    top:offset.top + height
-                }).find('#inner-content').html(parseTemp(data)).end().show();
-            }
 
-        },
-        hideTip = function () {
-            $('#node-tip').hide();
-        };
-
-
-    $doc.on({
-        'mouseenter':function () {
-            var $this = $(this),
-                height = $this.outerHeight();
-            this.title = "";
-            this.tip = setTimeout(function () {
-                var offset = $this.offset(),
-                    href = $this.attr('href'),
-                    data;
-                //在缓存中找
-                if (store.get(href)) {
-                    data = store.get(href);
-                    showTip(offset, data, height);
+    if(!NPINFO.isMobile){
+        var $doc = $(document),
+            temp = '<p class="node-name">{{node_name}}[<b>{{node_post_no}}</b>]</p><p class="node-intro">{{node_intro}}</p>',
+            parseTemp = function (data) {
+                return temp.replace('{{node_name}}', data.node_name).replace('{{node_intro}}', (data.node_intro === "0" || data.node_intro === null) ? '该节点暂时没有介绍哦~' : data.node_intro).replace('{{node_post_no}}', data.node_post_no);
+            },
+            showTip = function (offset, data, height) {
+                var nodeTip = $('#node-tip');
+                height = height + 5;
+                if (nodeTip.length > 0) {
+                    nodeTip.hide().css({
+                        left:offset.left,
+                        top:offset.top + height
+                    }).find('#inner-content').html(parseTemp(data)).end().show();
                 } else {
-                    $.get('/api' + href, {}, function (e) {
-                        if (e.error === 0) {
-                            store.set(href, e.info);
-                            showTip(offset, e.info, height);
-                        }
-                    }, 'json');
+                    $('<div class="node-tip" id="node-tip"><div class="tip-content"><span class="arrow1">◆</span><span class="arrow2">◆</span><div id="inner-content"></div></div><div>').appendTo('body').css({
+                        left:offset.left,
+                        top:offset.top + height
+                    }).find('#inner-content').html(parseTemp(data)).end().show();
                 }
 
-            }, 200);
-        },
-        'mouseleave':function (e) {
-            clearTimeout(this.tip);
-            if (e.target.nodeName !== 'a') {
-                hideTip();
-            }
-        }
-    }, '.node-list a,.post-node,a[href^="/node/"]');
+            },
+            hideTip = function () {
+                $('#node-tip').hide();
+            };
 
+
+        $doc.on({
+            'mouseenter':function () {
+                var $this = $(this),
+                    height = $this.outerHeight();
+                this.title = "";
+                this.tip = setTimeout(function () {
+                    var offset = $this.offset(),
+                        href = $this.attr('href'),
+                        data;
+                    //在缓存中找
+                    if (store.get(href)) {
+                        data = store.get(href);
+                        showTip(offset, data, height);
+                    } else {
+                        $.get('/api' + href, {}, function (e) {
+                            if (e.error === 0) {
+                                store.set(href, e.info);
+                                showTip(offset, e.info, height);
+                            }
+                        }, 'json');
+                    }
+
+                }, 200);
+            },
+            'mouseleave':function (e) {
+                clearTimeout(this.tip);
+                if (e.target.nodeName !== 'a') {
+                    hideTip();
+                }
+            }
+        }, '.node-list a,.post-node,a[href^="/node/"]');
+    }
 
     $('.icon-list .icon,#file-upload,#preview li').tipsy({
         live:true,
@@ -675,14 +677,12 @@ $(function () {
 
 
 function track(track,event){
-  //console.log('track::'+track);
   if(!NPINFO.ga){
     return;
   }
   _gaq.push(['_setAccount', NPINFO.ga]);
   if(event&&event===true){
     track=track.split(' ');
-    //console.log(track);
     _gaq.push(['_trackEvent', track[0], track[1],track[2]?track[2]:'']);
     return;
   }
@@ -710,7 +710,7 @@ $(function() {
         (function() {
             var temp=i;
             $(document).on('click', temp, function(e) {
-                e.preventDefault();
+                $(this).attr('target','_blank');
                 track(trackMap[temp], true);
             })
         })()
@@ -720,11 +720,9 @@ $(function() {
 $(function() {
     $(document).on('click', '.reply', function(e) {
         e.preventDefault();
-        console.log('reply click');
         var content = $('#cm-box').val(),
         username = $(this).data('username'),
         replyTo = $(this).data('id');
-
         $('#cm-reply-to').val(replyTo);
         $('#cm-reply-name').val(username);
         if(content.indexOf(username) != -1) {

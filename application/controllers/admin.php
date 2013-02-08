@@ -41,36 +41,29 @@ class Admin extends CI_Controller {
         $this->s->assign('lang', $lang);
         switch ($action) {
             /**
-             * 插件管理
+             * plugins management
              *
              */
-            case 'plugin':
-                //$this->utility->clear_db_cache();
-                $this->load->model('plugins_mdl');
-                $plugins = $this->plugins_mdl->get_all_plugins_info();
-                $activated_plugins = $this->utility->get_active_plugins();
-                $deactivated_plugins = array();
-                //$this->load->model('metas_mdl');
-                $this->load->library('plugin');
-                echo $this->plugin->trigger('Widget::Categories', '<li><a href="{permalink}" title="{description}">{title} [{count}]</a></li>');
-                echo 'fuck';
-                foreach ($plugins as $plugin) {
-                    if (!in_array($plugin, $activated_plugins)) {
-                        $deactivated_plugins[] = $plugin;
-                    }
+            case 'plugins':
+                if(!$id){
+                    $plugins = $this->plugins->get_all_plugins_info();
+                    $active_plugins=$this->plugins->get_active_plugin_info();
+                    $deactivated_plugins =$this->plugins->get_deactive_plugin_info();
+                    $this->s->assign(array(
+                        'plugins'=>$plugins,
+                        'd_plugins' => $deactivated_plugins,
+                        'a_plugins'=>$active_plugins,
+                        'title' => '插件管理'
+                    ));
+                    $this->s->display('admin/admin_plugin.html');
+                }else if($id==='active'){
+                    $name=$this->input->get('name');
+                    $this->plugins->active_plugin($name);
+                }else if($id='deactive'){
+                    $name=$this->input->get('name');
+                    $this->plugins->deactive_plugin($name);
                 }
 
-                //$this->_data['activated_plugins'] = $activated_plugins;
-                //$this->_data['deactivated_plugins'] = $deactivated_plugins;
-                //print_r($this->_data);
-
-                $this->s->assign(array(
-                    'a_plugin' => $activated_plugins,
-                    'd_plugin' => $deactivated_plugins,
-                    'title' => '插件管理'
-                ));
-
-                $this->s->display('admin/admin_plugin.html');
                 break;
 
             case 'settings':
@@ -187,16 +180,16 @@ class Admin extends CI_Controller {
                     ));
                     $this->s->display('admin/admin_pages.html');
                 } else {
-                    $page = $this->input->get('p');
+                    $page = $id.'.html';
                     if (file_exists($directory . $page)) {
                         $this->s->assign(array(
                             'title' => '页面管理',
                             'user' => get_user(),
                             'files' => $files,
                             'count' => count($files),
+                            'name' => $id,
                             'file_content' => file_get_contents($directory . $page)
                         ));
-
                         $this->s->display('admin/admin_pages_edit.html');
                     } else {
                         show_error('文件不存在哦', 404);

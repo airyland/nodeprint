@@ -1,18 +1,19 @@
 {include file="header.html"}
 <div class="content">
     <section class="box">
-        <h2></h2>
-        <span class="title">{$lang.settings}</span>
+        <h2><span class="title">{$lang.settings}</span></h2>
         <form action="/api/user/{$me.user_name}/?do=update" method="post" class="form">
             <ul>
                 <li>
                     <label for="username">{$lang.username}</label>
                     <input type="text" name="username" id="username" value="{$me.user_name}" disabled required/>
                 </li>
+                {if $me.user_email}
                 <li>
                     <label for="user-email">{$lang.email}</label>
-                    <input type="email" id="user-email" name="user-email" value="{$me.user_email}" readonly required/>{if $me.user_email_confirm == 1}已通过验证 {else if $me.user_email_confirm != 1 &&  $me.user_email_confirm_sent ==1 }验证邮件已发送 <a href="/api/user/0/email_confirm?u={$me.user_id}">重新发送</a>{else}邮箱未验证 <a href="/api/user/0/email_confirm?u={$me.user_id}">立即验证</a>{/if}
+                    <input type="email" id="user-email" name="user-email" value="{$me.user_email}" disabled required/>{if $me.user_email_confirm == 1}已通过验证 {else if $me.user_email_confirm != 1 &&  $me.user_email_confirm_sent ==1 }验证邮件已发送 <a href="/api/user/0/email_confirm?u={$me.user_id}">重新发送</a>{else}邮箱未验证 <a href="/api/user/0/email_confirm?u={$me.user_id}">立即验证</a>{/if}
                 </li>
+                {/if}
                 <li>
                     <label for="user-site">{$lang.website}</label>
                     <input type="url" name="user-site" id="user-site" value="{$me.other.site}"/>
@@ -53,12 +54,14 @@
             <img src="/img/avatar/s/{$me.user_id}.png?t={$timestamp}" onerror="this.src='/img/avatar/s/0.png'" width="20" height="20" alt="{$me.user_name}">
         </p>
         <span class="title">上传新头像</span>
-        <form action="api/user/0/avatar" method="post" enctype="multipart/form-data">
+        <form action="api/user/0/avatar" method="post" class="form" enctype="multipart/form-data">
             <input type="file" name="avatar" id="" required>
+            <br/><br/>
             <input type="submit" value="{$lang.upload}" class="vivid-button"> or <input type="button" id="fetch-gravatar" data-url="{$gravatar}"  value="获取Gravatar头像" class="vivid-button">
         </form>
     </section>
 
+    {if !$me.other.from}
     <section class="box" id="change_pwd">
         <h2><span class="title">{$lang.changePwd}</span></h2>
         <form action="/api/user/0/change_pwd" method="post" class="form">
@@ -82,7 +85,7 @@
             </ul>
         </form>
     </section>
-
+    {/if}
     {if $is_admin and !$is_mobile}
     <section class="box" id="change_pwd">
         <h2><span class="title">实验功能</span></h2>

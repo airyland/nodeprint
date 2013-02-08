@@ -2,11 +2,11 @@
 
 /*
  *	Plugin Name: 分类列表Widget
- *	Plugin URI: http://www.cnsaturn.com/
+ *	Plugin URI: http://mao.li/
  *	Description: 显示博客的分类列表
  *	Version: 0.1
- *	Author: Saturn
- *	Author Email: huyanggang@gmail.com
+ *	Author: airyland
+ *	Author Email: i@mao.li
 */
 
 class Categories
@@ -22,7 +22,7 @@ class Categories
 	
 	public function show_categories($format='')
 	{
-		file_put_contents('application/aa.txt','hello');
+		
 		return 'hello world';
 		
 		
@@ -62,10 +62,8 @@ class Categories
 		
 		}	
 		*/
-
-		
 	}
 }
 
 /* End of file Categories.php */
-/* Location: ./application/st_plugins/Categories.php */
+/* Location: ./application/plugins/Categories.php */

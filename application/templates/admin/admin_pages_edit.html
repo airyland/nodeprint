@@ -1,6 +1,6 @@
 {include file="header.html"}
-{include file="admin/admin_nav.html"}
-<div class="content admin-content">
+{include file="admin/admin_nav.html" small=1}
+<div class="content admin-content" style="width:90%;">
   
     <section class="box">
         <table class="table table-striped">
@@ -26,16 +26,12 @@
     </section>
 
     <section class="box">
-        <h2><span class="title">添加页面</span></h2>
-        <form id="page-form" class="form" action="/api/page/add" method="post">
+        <h2><span class="title">编辑页面</span></h2>
+        <form id="page-form" class="form big-form" action="/api/page/add" method="post">
             <ul>
                 <li>
-                    <label for="title">标题</label>
-                    <input type="text" id="title" name="page[page_title]" value="" required />
-                </li>
-                <li>
-                    <label for="slug">Slug(短地址)</label>
-                    <input type="text" id="slug" name="page[page_slug]" value="" required />
+                    <label for="slug">文件名</label>
+                    <input type="text" id="slug" name="page[page_slug]" value="{$name}" required />
                 </li>
                 <li>
                     <label for="content">内容</label>

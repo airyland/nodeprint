@@ -155,6 +155,15 @@ textarea:focus {
  
 }
 
+.big-form{
+  label{
+    display:block;
+  }
+  input {
+    display:block;
+  }
+}
+
 textarea, .form textarea {
   resize: vertical;
   height: 160px;

@@ -21,15 +21,15 @@
             </p>{/if}
     </section>
     <div id="topic-list" class="box">
-        <p class="title">最近创建主题</p>
-        <span class="more"><a href="/member/{$u.user_name}/topic">更多</a></span>
+        <h2><span class="title">最近创建主题</span></h2>
+        {if is_array($post) and count($post)>0}<span class="more"><a href="/member/{$u.user_name}/topic">更多</a></span>{/if}
         {include file="topic_list.html" show_avatar=true}
-        <span class="box-footer"><a href="/member/{$u.user_name}/topic">&nbsp;&nbsp;查看更多主题</a></span>
+        {if is_array($post) and count($post)>0}<span class="box-footer"><a href="/member/{$u.user_name}/topic">&nbsp;&nbsp;查看更多主题</a></span>{/if}
 
     </div>
     <div id="topic-list" class="box">
-        <p class="title">最近回复主题</p>
-        <span class="more"><a href="/member/{$u.user_name}/replies">更多</a></span>
+        <h2><span class="title">最近回复主题</span></h2>
+        {if is_array($hiscomment) and count($hiscomment)>0}<span class="more"><a href="/member/{$u.user_name}/replies">更多</a></span>{/if}
         <ul class="topic-list  user-topic-list">
             {if $hiscomment}
             {foreach from=$hiscomment item=p}
@@ -43,6 +43,6 @@
             <li>没有最近回复的帖子</li>
             {/if}
         </ul>
-        <span class="box-footer"><a href="/member/{$u.user_name}/replies">&nbsp;&nbsp;查看更多回复</a></span>
+        {if is_array($hiscomment) and count($hiscomment)>0}<span class="box-footer"><a href="/member/{$u.user_name}/replies">&nbsp;&nbsp;查看更多回复</a></span>{/if}
     </div>
     {include file="js/message_form.html"}

@@ -135,6 +135,9 @@ $(function() {
 
 	
 	$(document).on('click','#do-fav', function(e) {
+		if(NPINFO.isMobile){
+			return;
+		}
 	var $doFav = $('#do-fav'),
 		$count = $('#JS_fav_topic').find('.count-no').eq(0);
 		e.preventDefault();

@@ -248,7 +248,6 @@ var options = {
     },
     init: function() {
         $('#node-tip').hide();
-
     },
     finish: function(url) {
         $('html, body').animate({
@@ -256,7 +255,7 @@ var options = {
         }, 'fast');
         $('#node-tip').hide();
         track('/view/ajax');
-        $('#home').attr('href', url + '#body');
+        $('.mobile .top, #home').attr('href', url.replace(/#.*?$/,'') + '#body');
     },
     routes: {
         '/#home': 'getHomeTab',
@@ -272,7 +271,7 @@ var options = {
         '/messages(/?type=:type)':'messages'
     },
     exclude: [document.location.host + '/admin'],
-    block: ['/messages/send'],
+    block: ['/messages/send','/signin'],
     getHomeTab: {
         enter: function() {
             //console.log('enter home');
@@ -343,7 +342,7 @@ var options = {
             NPWidget.fetch('node');
             //track('/view/ajax/node');
             //console.log('enter node');
-            NP.use(['/js/plugin/jquery.jeditable.mini.js', 'np_admin.js']);
+            NP.use(['/js/plugin/jquery.jeditable.mini.js', 'js/np_admin.js']);
         },
         cache: false
     }

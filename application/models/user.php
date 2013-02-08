@@ -34,7 +34,7 @@ class User extends CI_Model
     {
         parent::__construct();
         global $config;
-        $this->lang->load('operation',$config['lang']);
+        $this->lang->load('operation', $config['lang']);
     }
 
     /**
@@ -130,7 +130,7 @@ class User extends CI_Model
                 $this->db->set('user_pwd', $newhash)->where('user_id', $user_id)
                     ->update('vx_user');
                 $e = 0;
-                $msg =$this->lang->line('password update success');
+                $msg = $this->lang->line('password update success');
 
             } else {
                 $e = 2;
@@ -168,7 +168,7 @@ class User extends CI_Model
         }
 
         if (!$this->form_validation->min_length($user_name, $this->config->item('user_name_min_length')) || !$this->form_validation->max_length($user_name, $this->config->item('user_name_max_length'))) {
-            return array('error' => 2, 'msg' => '账号字数不符合要求:'.$this->config->item('user_name_min_length'));
+            return array('error' => 2, 'msg' => '账号字数不符合要求:' . $this->config->item('user_name_min_length'));
         }
 
         if (!$this->form_validation->valid_email($user_email)) {
@@ -215,6 +215,19 @@ class User extends CI_Model
         setcookie('NP_auth', authcode($user_id . "\t" . $user_name, 'ENCODE'), time() + 365 * 24 * 3600, '/');
     }
 
+    function signin_by_uid($user_id){
+        $user_name=$this->db->get_where('user',array('user_id'=>$user_id))->row()->user_name;
+        $this->_set_cookie($user_id,$user_name);
+        redirect();
+    }
+
+    function get_reset_pwd_key($email){
+        return authcode($email . "\t" . strval(time()+ 2*24*3600), 'ENCODE');
+    }
+
+    function parse_reset_pwd_key($string){
+        return explode("\t",authcode($string,'DECODE'));
+    }
     /**
      * 用户登录
      *
@@ -224,6 +237,7 @@ class User extends CI_Model
      */
     public function login_user($user_name, $user_pwd)
     {
+        $this->load->library('form_validation');
         $user_id = 0;
         $user_get_name = '';
         $msg = '';
@@ -232,7 +246,7 @@ class User extends CI_Model
             $msg = (!$user_name) ? '登录名为空' : '登录密码为空';
         } else {
             $this->load->helper('common');
-            $is_email = is_email($user_name);
+            $is_email = $this->form_validation->valid_email($user_name);
             $field = $is_email ? 'user_email' : 'user_name';
             $check_user = $this->db->where($field, $user_name)->get('vx_user');
             if ($check_user->num_rows() > 0) {

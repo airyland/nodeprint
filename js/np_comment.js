@@ -159,6 +159,9 @@ var comment = {
         //console.log('trigger');
     },
     update_time_diff:function () {
+        if(NPINFO.isMobile){
+            return;
+        }
         $('.time-ago').each(function () {
             var time = $(this).data('time');
             $(this).text(time_ago(time) + ' ago');

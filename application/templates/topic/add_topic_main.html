@@ -5,7 +5,7 @@
         <a href="/node/{$node.node_slug}/add" title="创建新主题">创建新主题</a>
     </nav>
     <div>
-        <form action="/api/post/add" method="post" class="post-form" id="topic-add-form">
+        <form action="/api/post/add" method="post" class="post-form mobile-form" id="topic-add-form">
             <ul>
                 <li>
                     <input type="hidden" name="post[node_id]" value="{$node.node_id}"/>
@@ -17,7 +17,7 @@
                 </li>
                 <li>
                     <input type="submit" value="创建" class="vivid-button left-button"/>
-                    <button name="preview" value="true" class="vivid-button" id="preview-topic">预览</button>
+                    {if !$is_mobile}<button name="preview" value="true" class="vivid-button" id="preview-topic">预览</button>{/if}
                 </li>
                 <li>
                     <span class="box-footer">返回<a href="/node/{$node.node_slug}">{$node.node_name}</a>

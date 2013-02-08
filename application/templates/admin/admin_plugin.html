@@ -1,48 +1,67 @@
 {include file="header.html"}
 
-<div class="content box">
-    <h2><span class="title">插件管理</span></h2>
+<div class="content">
+    <div class="box">
+    <h2><span class="title">已启用插件</span></h2>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>名称</th>
+                <th width="120">名称</th>
                 <th width="250">描述</th>
-                <th>分类</th>
+                <th>目录</th>
                 <th>版本</th>
                 <th>作者</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
-            {foreach from=$a_plugin item=p}
+            {foreach from=$a_plugins item=p}
             <tr>
                 <td>{$p.name}</td>
                 <td>{$p.description}</td>
                 <td>{$p.directory}</td>
                 <td>{$p.version}</td>
                 <td><a href="{$p.plugin_uri}">{$p.author}</a></td>
-                <td>禁用</td>
+                <td><a href="/admin/plugins/deactive?name={$p.directory}">禁用</a></td>
             </tr>
             {/foreach}
-
-            {foreach from=$d_plugin item=p}
-            <tr>
-                <td>{$p.name}</td>
-                <td>{$p.description}</td>
-                <td>{$p.directory}</td>
-                <td>{$p.version}</td>
-                <td><a href="{$p.plugin_uri}">{$p.author}</a></td>
-                <td>激活</td>
-            </tr>
-            {/foreach}
-
         </tbody>
     </table>
+    </div>
+    <div class="box">
+        <h2><span class="title">未启用插件</span></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th width="120">名称</th>
+            <th width="250">描述</th>
+            <th>目录</th>
+            <th>版本</th>
+            <th>作者</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+    {foreach from=$d_plugins item=p}
+    <tr>
+        <td>{$p.name}</td>
+        <td>{$p.description}</td>
+        <td>{$p.directory}</td>
+        <td>{$p.version}</td>
+        <td><a href="{$p.plugin_uri}">{$p.author}</a></td>
+        <td><a href="/admin/plugins/active?name={$p.directory}">激活</a></td>
+    </tr>
+    {/foreach}
+    </tbody>
+    </table>
+        </div>
 </div>
 
 
 <div class="sidebar">
-
+    <div class="box">
+        <h3 class="title">插件说明</h3>
+    </div>
 
 </div>
 

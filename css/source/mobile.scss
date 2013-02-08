@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+.mobile {
+  .post-info h2 {
+    width:250px;
+  }
+  .top {
+    color:#ccc;
+  }
+  .register-form small{
+    margin-left:5px;
+  }
+  .mobile-avatar {
+    margin-top:5px;
+    img{
+      @include radius(2px);
+    }
+  }
+  .nodes-list .parent-node{
+    width:70px;
+  }
+  .nodes-list li ul{
+    margin-left:80px;
+  }
+  .node-count{
+    position:static;
+    padding-left:10px;
+  }
+  p.node-create-button{
+    position:static;
+  }
+
+  .form,.post-form {
+    padding:5px;
+    .box-footer{
+      border:none;
+    }
+    ul{
+      overflow:hidden;
+      width:100%;
+      li{
+        margin:10px 0;
+        padding:0;
+      }
+    }
+    label{
+      text-align:left;
+      margin-bottom:5px;
+    }
+    input,textarea {
+      width:95%;
+      margin:0 auto;
+      padding:5px;
+    }
+  }
+  .topic-list span.last-reply a{
+    background:none;
+  }
+  #footer  {
+    padding-top:15px;
+    height:auto;
+    li{
+      border:none;
+    }
+    p{
+      padding-bottom:5px;
+      text-align:center;
+    }
+  }
+}
+@media screen and (max-width: 674px) {
+  body {
+    overflow: hidden;
+  }
+  #header h1 {
+    width: 90px;
+  }
+  .site-nav li a {
+    font-size: 12px;
+  }
+  #logo {
+    width: 80px;
+    height:16px;
+    margin-top:12px;
+    background-size:cover;
+    line-height:40px;
+  }
+  .search {
+    display: none;
+  }
+  #footer, .header-wrap, .wrap {
+    width: 440px;
+  }
+  .content {
+    width: 440px;
+    margin: 0 auto;
+    overflow: hidden;
+    float: none;
+  }
+  .cm-list {
+    li {
+      width: 440px;
+    }
+    p {
+      width: 350px;
+      &.comment-info {
+        width: 280px;
+        top: 10px;
+        font-size: 10px;
+      }
+    }
+  }
+  .profile-box {
+    display: none;
+  }
+}
+
+
+
+@media (min-width: 675px) and (max-width: 960px) {
+  .header-wrap, .wrap, .content, #footer {
+    width: 90%;
+  }
+  .content,.sidebar {
+    width: 100%;
+  }
+  .profile-box {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 674px) {
+  body {
+    width: 100%;
+    overflow: hidden;
+  }
+  #header ul > li>a.home,#header ul > li>a.admin{
+    display:none;
+  }
+  #footer, .header-wrap, .wrap {
+    width: 95%;
+  }
+  .content {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    float: none;
+  }
+  .post-info header a.post_author {
+    right:5px;
+    top:-35px;
+  }
+  .post-footer-bar>li:first-child{
+    display:none;
+  }
+
+  .mobile .cm-box form {
+    width:100%;
+    overflow:hidden;
+    padding:0;
+    margin:0;
+  }
+  #cm-box {
+    width:285px;
+    margin:5px; 
+  }
+  #cm-button{
+    width:295px;
+    margin:0 5px;
+  }
+  a.post-title {
+    font-size: 14px;
+    line-height: 25px;
+  }
+  .topic-item-main > p:nth-child(2) {
+      display: inline;
+      margin-left: 0;
+  }
+  .topic-item {
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .topic-list span.last-reply {
+    /*  top:20px;
+     right:2px; */
+    padding: 0;
+    position: static;
+    display: inline;
+    a {
+      background: #fff;
+      color: #bbb;
+      font-weight: normal;
+    }
+  }
+  .topic-list li:hover > span a {
+    background-color: #f5f5f5;
+  }
+  .topic-list span.last-reply:after {
+    content: '条回复';
+    color: #ccc;
+  }
+  a.post-cm-count,a.my-post {
+    padding: 0;
+    background: #fff;
+  }
+  a.my-post:visited {
+    background: #fff;
+    color: #ccc;
+  }
+  .sidebar {
+    width: 100%;
+  }
+  .cm-list {
+    li {
+      width: 100%;
+      &>.floor{
+        -webkit-transition:none;
+        font-size:12px;
+        right:15px;
+        top:10px;
+        color:#666;
+      }
+    }
+    p {
+      width: 280px;
+      margin-left: 0;
+      &.comment-info {
+        width: 280px;
+        top: 10px;
+        font-size: 10px;
+      }
+    }
+    a.reply{
+      display:block;
+      right:25px;
+    }
+  }
+  .mobile .title {
+    padding-left:5px;
+  }
+  #cm-button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+  }
+  .profile-box {
+    display: none;
+  }
+}
+
+

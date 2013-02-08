@@ -57,7 +57,9 @@ h2 .title {
   color: #ED4E8B;
 }
 
-
+.mobile {
+  color:#ccc;
+}
 
 span.more {
   position: absolute;
@@ -103,6 +105,10 @@ span.more {
       }
     }
   }
+}
+
+.bfc {
+  overflow:hidden;
 }
 
 .site-sub-tab {
@@ -201,6 +207,9 @@ small {
   border: 1px solid #ccc;
   @include radius(3px);
   padding: 3px;
+}
+.post-box{
+  padding-bottom:10px;
 }
 
 #post-button {
@@ -707,6 +716,7 @@ p.reply-message {
   padding: 10px 0 10px 30px;
   border-top: 1px solid #ececec;
   list-style: square;
+  margin-top:10px;
   li {
     padding: 2px;
     color: #ed4e8b;
@@ -828,172 +838,7 @@ p.reply-message {
   }
 }
 
-@media screen and (max-width: 674px) {
-  body {
-    overflow: hidden;
-  }
-  #header h1 {
-    width: 90px;
-  }
-  .site-nav li a {
-    font-size: 12px;
-  }
-  #logo {
-    width: 80px;
-    height:16px;
-    margin-top:12px;
-    background-size:cover;
-    line-height:40px;
-  }
-  .search {
-    display: none;
-  }
-  #footer, .header-wrap, .wrap {
-    width: 440px;
-  }
-  .content {
-    width: 440px;
-    margin: 0 auto;
-    overflow: hidden;
-    float: none;
-  }
-  .cm-list {
-    li {
-      width: 440px;
-    }
-    p {
-      width: 350px;
-      &.comment-info {
-        width: 280px;
-        top: 10px;
-        font-size: 10px;
-      }
-    }
-  }
-  #cm-box {
-    width: 420px;
-  }
-  .profile-box {
-    display: none;
-  }
-}
 
-@media screen and (max-width: 674px) {
-  body {
-    width: 100%;
-    overflow: hidden;
-  }
-  #footer, .header-wrap, .wrap {
-    width: 95%;
-  }
-  .content {
-    width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-    float: none;
-  }
-  .post_author img {
-    display:none;
-  }
-  .post-footer-bar>li:first-child{
-    display:none;
-  }
-  #cm-box {
-    width:100%!important;
-    margin:0 15px;
-  }
-  a.post-title {
-    font-size: 14px;
-    line-height: 25px;
-  }
-  .topic-item > p:nth-child(2) {
-    margin-left: 0;
-  }
-  .topic-item > p:nth-child(3) {
-    display: inline;
-    margin-left: 0;
-  }
-  .topic-item {
-    img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-  .topic-item > p:nth-child(3) > span + span {
-    display: none;
-  }
-  .topic-list span.last-reply {
-    /*  top:20px;
-     right:2px; */
-    padding: 0;
-    position: static;
-    display: inline;
-    a {
-      background: #fff;
-      color: #bbb;
-      font-weight: normal;
-    }
-  }
-  .topic-list li:hover > span a {
-    background-color: #f5f5f5;
-  }
-  .topic-list span.last-reply:after {
-    content: '条回复';
-    color: #ccc;
-  }
-  a.post-cm-count,a.my-post {
-    padding: 0;
-    background: #fff;
-  }
-  a.my-post:visited {
-    background: #fff;
-    color: #ccc;
-  }
-  .sidebar {
-    width: 100%;
-  }
-  img.l-avatar, .s-avatar {
-    display: none;
-  }
-  .cm-list {
-    li {
-      width: 280px;
-    }
-    p {
-      width: 280px;
-      margin-left: 0;
-      &.comment-info {
-        width: 280px;
-        top: 10px;
-        font-size: 10px;
-      }
-    }
-  }
-  #cm-box {
-    width: 260px;
-  }
-  #cm-button {
-    display: block;
-    width: 268px;
-    margin: 0 auto;
-    margin-top: 10px;
-  }
-  .profile-box {
-    display: none;
-  }
-}
-
-@media (min-width: 675px) and (max-width: 960px) {
-  .header-wrap, .wrap, .content, #footer {
-    width: 90%;
-  }
-  .content,.sidebar {
-    width: 100%;
-  }
-  .profile-box {
-    display: none;
-  }
-}
 
 .search {
   width: 200px;
@@ -1409,4 +1254,34 @@ td strong {
 
 #desktop-notification {
   display:none;
+}
+
+
+.oauth {
+  min-height:200px;
+  padding:15px;
+  h2 {
+    color:#666;
+    font-weight:normal;
+    font-size:16px;
+    margin-bottom:15px;
+  }
+  .avatar {
+    float:left;
+    margin-right:15px;
+  }
+  .oauth-confirm {
+    width:48%;
+    float:left;
+    border-right:1px solid #ccc;
+    label{
+      display:block;
+      padding-bottom:8px;
+    }
+  }
+
+  .oauth-bind {
+    width:48%;
+    float:right;
+  }
 }

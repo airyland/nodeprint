@@ -118,3 +118,9 @@ NP.config={
 NP.run=function(){
 	
 }
+
+NP.requireDestop=function(){
+    if(NPINFO.isMobile){
+        return;
+    }
+}

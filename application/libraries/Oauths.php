@@ -158,7 +158,13 @@ class Oauths {
                     'code' => $this->authorizeCode,
                     );
         $result = $this->curl($accessUrl, 'POST', $header, $data);
+        //print_r($result);
+
         $this->tokens = json_decode($result);
+        $_SESSION['oauth']=json_decode($result,true);
+        print_r($_SESSION['oauth']);
+        $_SESSION['user_id']=$this->tokens->douban_user_id;
+       // print_r($_SESSION);
         $this->refreshToken = $this->tokens->refresh_token;
         $this->accessToken = $this->tokens->access_token;
     }

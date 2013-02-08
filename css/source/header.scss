@@ -135,13 +135,27 @@ input[type='search'] {
       }
     }
   }
-  .msg-count {
-  	display:none;
-	color:#fff;
-	margin-left:5px;
-	padding:0 5px;
-	line-height:17px;
-	@include radius(2px);
-	background:$vivid;
+  .msg-count,.msg-tip {
+    display:none;
+    color:#fff;
+    margin-left:5px;
+    padding:0 5px;
+    line-height:17px;
+    @include radius(2px);
+    background:$vivid;
+  }
+
+  #mobile-msg a{
+    text-align:center;
+  }
+  .msg-tip {
+    display:inline-block;
+    margin:0;
+    padding:0;
+    min-width:20px;
+    height:20px;
+    line-height:20px;
+    @include radius(10px);
+    text-align:center;
   }
 }

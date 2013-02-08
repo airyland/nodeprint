@@ -8,7 +8,7 @@
                     <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-member'}class="current"{/if}><a href="/?tab=following-member">关注用户</a></li>
                     {/if}
                 </ul>
-                {if $is_login}<a id="add-topic" class="track-home-add-topic" href="/node?for=create_topic">+创建帖子</a>{/if}
+                {if $is_login and !$is_mobile}<a id="add-topic" class="track-home-add-topic" href="/node?for=create_topic">+创建帖子</a>{/if}
                 </nav>
                 {if isset($links)&&is_array($links)}
                     <div class="site-sub-tab">

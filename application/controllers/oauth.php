@@ -55,7 +55,7 @@ class Oauth extends CI_Controller
     /**
      * @var allow types
      */
-    protected $allow_types=array('douban','qq','weibo');
+    protected $allow_types = array('douban', 'qq', 'weibo');
 
 
     function __construct()
@@ -64,6 +64,44 @@ class Oauth extends CI_Controller
         session_start();
         $this->load->model('user');
         $this->config->load('oauth');
+    }
+
+    function create_account_from_douban()
+    {
+        $this->load->model('user');
+        $user_name = $this->input->post('user_name');
+        $user = array(
+            'user_name' => $user_name,
+            'user_flag' => 0,
+            'user_register_time' => current_time(),
+            'user_profile_info' => json_encode($this->user_info_parse())
+        );
+        $this->db->insert('user', $user);
+        $user_id = $this->db->insert_id();
+
+        $oauth = array(
+            'o_type' => 'douban',
+            'user_id' => $user_id,
+            'o_access_token' => $_SESSION['oauth']['access_token'],
+            'o_openid' => $_SESSION['oauth']['douban_user_id'],
+            'o_refresh_token' => $_SESSION['oauth']['refresh_token'],
+            'o_time' => time(),
+            'o_expire' => $_SESSION['oauth']['expires_in'],
+        );
+
+        $this->db->insert('oauth', $oauth);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->load->library('FetchAvatar');
+            $this->fetchavatar->fetch($_SESSION['user_info']['avatar'], 20, $user_id, TRUE);
+            //login
+            $this->user->_set_cookie($user_id, $user_name);
+            redirect();
+        }
+    }
+
+    function bind_account_from_douban(){
+
     }
 
     function get_apikey($type)
@@ -90,7 +128,7 @@ class Oauth extends CI_Controller
     }
 
     /**
-     * douban signin
+     * douban oauth sign in
      */
     function douban()
     {
@@ -114,28 +152,51 @@ class Oauth extends CI_Controller
         if ($this->uri->segment(3) === 'callback') {
             $this->oauths->setAuthorizeCode($_GET['code']);
             $this->oauths->requestAccessToken();
-            $info = JSON_decode($this->oauths->makeRequest('/v2/user/' . $_SESSION['user_id'], 'GET'), TRUE);
+            //get user info now!
+            $_SESSION['user_info'] = $this->user_info = $info = JSON_decode($this->oauths->makeRequest('/v2/user/' . $_SESSION['user_id'], 'GET'), TRUE);
+            print_r($info);
+            print_r($this->user_info_parse());
             //check oauth
             if ($user_id = $this->check_oauth('douban', $info['id'])) {
                 $this->load->model('user');
-                $this->user->login_user();
-                //oauth before
-                //login user
+                $this->user->signin_by_uid($user_id);
             } else { //oauth info not found, then forward
-                $this->location = $info['loc_name'];
-                $this->user_name = $info['name'];
+                $_SESSION['location'] = $this->location = $info['loc_name'];
+                $this->user_name = $info['uid'];
                 $this->avatar = $info['avatar'];
                 $this->desc = $info['desc'];
                 $this->url = $info['alt'];
                 $this->openid = $info['id'];
+                // redirect to the user name confirm page
+                $this->load->library('s');
+                $this->s->assign(array(
+                    'title' => '使用豆瓣账号登录',
+                    'user_name' => $this->user_name,
+                    'avatar' => $this->avatar,
+                    'is_unique' => $this->check_user_name($this->user_name)
+                ));
+                $this->s->display('oauth/oauth_qq.html');
+                //add recored to oauth table
+                //fetch avatar
+                //login user
             }
         } else {
             redirect('https://www.douban.com/service/auth2/auth?client_id=' . $appkey . '&redirect_uri=http://nodeprint.com/oauth/douban/callback&response_type=code&
   scope=shuo_basic_r,shuo_basic_w,douban_basic_common');
         }
-        $this->load->library('s');
-        $this->s->assign('/oauth/oauth_qq.html');
 
+
+    }
+
+    function merge_info()
+    {
+
+    }
+
+    function check_user_name($user_name)
+    {
+        $this->load->library('form_validation');
+        return $this->form_validation->is_unique($user_name, 'user.user_name');
     }
 
     /**
@@ -160,7 +221,7 @@ class Oauth extends CI_Controller
     function fetch_avatar($url, $user_id)
     {
         $this->load->library('FetchAvatar');
-        $this->fetch_avatar($url,$user_id);
+        $this->fetch_avatar($url, $user_id);
     }
 
 
@@ -175,7 +236,7 @@ class Oauth extends CI_Controller
     {
         $rs = $this->db->get_where('oauth', array('o_type' => $type, 'o_openid' => $openid));
         if ($rs->num_rows() > 0) {
-            return $rs->row_array()->user_id;
+            return $rs->row()->user_id;
         } else {
             return 0;
         }
@@ -203,6 +264,34 @@ class Oauth extends CI_Controller
             );
             $this->db->insert('oauth', $data);
         }
+    }
+
+    function user_info_parse()
+    {
+        $info = $_SESSION['user_info'];
+        $data = array(
+            'from' => 'douban'
+        );
+        $map = array(
+            'location' => array('loc_name'),
+            'avatar' => array('avatar'),
+            'sign' => array('signature'),
+            'intro' => array('desc'),
+            'site' => array('alt'),
+            'douban' => array('uid'),
+            'uid' => array('uid')
+        );
+        foreach ($map as $key => $val) {
+            foreach ($info as $item_key => $item_val) {
+                $data[$key] = '';
+                if (in_array($item_key, $val)) {
+                    $data[$key] = $info[$item_key];
+                    break;
+                }
+            }
+        }
+
+        return $data;
     }
 
 }

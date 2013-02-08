@@ -12,7 +12,7 @@ $(function () {
         isTopicPage = /\/t\/\d$/.test(href),
         isNodePage = /\/node\//.test(href),
         isAdminPage =/\/admin\/.*?/.test(href);
-    if (isNodePage) {
+    if (isNodePage&&!NPINFO.isMobile) {
         nodeSlug = href.slice(href.lastIndexOf('/') + 1);
         $nodeEditable.editable("/api/node/" + nodeSlug + '?do=update', {
             indicator:"更新中...",

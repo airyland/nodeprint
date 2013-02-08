@@ -19,11 +19,18 @@ var NPMessage = {
             var allNo = res.count,
                    newNo= res.new_no;
             if (parseInt(allNo) > 0) {
+                if(NPINFO.isMobile){
+                    $('#mobile-msg').find('a>span').text(allNo).end().show();
+                    return; 
+                }
                 $msgCount.text(allNo).fadeIn();
                 if(newNo){
                     _this.notify(newNo);
                 }
             }else{
+                if(NPINFO.isMobile){
+                    $('#mobile-msg').hide();
+                }
                 $msgCount.text(0).hide();
             }
             _this.setLastMsgFetchTime();

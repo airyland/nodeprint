@@ -6,6 +6,9 @@
   right: 15px;
   top: 10px;
 }
+.mobile .cm-order{
+  right:5px;
+}
 
 .cm-list {
   width: 100%;
@@ -60,7 +63,6 @@
     @include radius(3px);
   }
   p {
-    margin-left: 65px;
     overflow: hidden;
     width: 560px;
     font-size: 14px;
