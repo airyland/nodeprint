@@ -51,10 +51,6 @@ class Account extends CI_Controller
              * Sign in page
              */
             case 'signin':
-                $this->s->assign(array(
-                    'title' => $lang['signin'],
-                    'lang' => $lang,
-                ));
                 $this->s->display('account/signin.html');
                 break;
 
@@ -76,8 +72,6 @@ class Account extends CI_Controller
                     'expiration' => 2
                 );
                 $this->s->assign(array(
-                    'title' => $lang['signup'],
-                    'lang' => $lang,
                     'site_name' => $this->configs->get_config_item('name'),
                     'captcha' => create_captcha($config)
                 ));
