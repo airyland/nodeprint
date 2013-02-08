@@ -53,17 +53,16 @@ class Messages extends CI_Controller {
             'is_dialog' => FALSE
         ));
 
+        //set messages of current page read
+        foreach($message as $m){
+            $this->message->set_read($m['m_id'],'message');
+        }
+
         if($this->is_ajax){
              //$this->s->assign('is_dialog',true);
              $this->s->display('message/message_main.html');
              return;
         }else{
-            //if ($type == 'unread' || !$type)
-            //$this->message->set_read(0, 'setallread');
-            //set messages of current page read 
-            foreach($message as $m){
-                $this->message->set_read($m['m_id'],'message');
-            }
             $this->s->display('message/message.html');
         }
 
