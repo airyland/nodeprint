@@ -1,8 +1,8 @@
 {include file="header.html"}
-<div class="content box">
-    <section>
+<div class="content">
+    <section class="box">
         <h2><span class="title">{$lang.signup}</span></h2>
-        <form action="api/user/register" method="post"  class="register-form" id="register-form">
+        <form action="api/user/register" method="post"  class="register-form form" id="register-form">
             <ul>
                 <li>
                     <label for="user-name">{$lang.username}</label>
@@ -20,7 +20,7 @@
                     <input type="password" name="user-pwd" id="user-pwd" required/>
                 </li>
                 <li>
-                    <label for="">&nbsp;</label>
+                    <label>&nbsp;</label>
                     {$captcha.image}
                     <small>{$lang.captchaTip}</small>
                 </li>
@@ -33,11 +33,6 @@
         </form>
     </section>
 </div>
-{literal}
-<script type="text/javascript">
-  
-</script>
-{/literal}
 <div class="sidebar">
     {include file="login_box.html"}
 </div>

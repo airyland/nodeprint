@@ -1,8 +1,8 @@
 {include file="header.html"}
-<div class="content box">
-   <section>
+<div class="content">
+   <section class="box">
         <h2><span class="title">{$lang.signin}</span></h2>
-        <form action="api/user/signin" method="post" class="register-form">
+        <form action="api/user/signin" method="post" class="register-form form">
             <ul>
                 <li>
                     <label for="user-name">{$lang.username}</label>
@@ -23,6 +23,6 @@
 		</section>
 </div>
 <div class="sidebar">
-{include file="login_box.html"}
+    {include file="login_box.html"}
 </div>
 {include file="footer.html"}

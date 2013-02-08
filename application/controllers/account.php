@@ -55,7 +55,7 @@ class Account extends CI_Controller
                     'title' => $lang['signin'],
                     'lang' => $lang,
                 ));
-                $this->s->display('login.html');
+                $this->s->display('account/signin.html');
                 break;
 
             /**
@@ -81,7 +81,7 @@ class Account extends CI_Controller
                     'site_name' => $this->configs->get_config_item('name'),
                     'captcha' => create_captcha($config)
                 ));
-                $this->s->display('signup.html');
+                $this->s->display('account/signup.html');
                 break;
 
             /**
