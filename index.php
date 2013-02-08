@@ -21,6 +21,8 @@ if (ini_get("date.timezone") == "") date_default_timezone_set("Asia/Hong_Kong");
 
 // Start a page load timer
 define("NP_START_TIME", microtime(true));
+// NodePrint Version
+define("NP_VERSION",'0.5.3');
 
 $system_path = 'system';
 $application_folder = 'application';

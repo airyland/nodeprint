@@ -2,6 +2,7 @@
 </div>
 <footer class="footer-wrap">
     <div id="footer">
+        {if !$is_mobile}
         <p>
         <ul>
             <li><a href="/page/about">关于</a></li>
@@ -17,6 +18,9 @@
             </br>
             Based on <a href="https://github.com/livid/v2ex" rel="external"><strong>Project Babel 2</strong></a>, Theme originally made by <a class="user-name" href="http://www.olivida.com/" rel="external"><strong>OLIVIDA</strong></a>, And especially  Grateful to <a href="http://www.v2ex.com" rel="external"><strong>V2EX</strong></a>  and V2EXers.<span id="online"></span>
         </p>
+        {else}
+        {include file="mobile/footer.html"}
+        {/if}
     </div>
 </footer>
 
@@ -50,7 +54,9 @@
     .script("{$site.url}js/np_topic.js")
     .script("{$site.url}js/plugin/jquery.pagination.js")
     .script("{$site.url}js/np_msg.js")
-    .script("{$site.url}js/np_tool.js")
+    //
+
+    //.script("{$site.url}js/np_tool.js")
     .script("{$site.url}js/plugin/mustache.js").wait()
 {if isset($js) && is_array($js)}{foreach $js as $src}.script("{$site.url}js/{$src}")
     {/foreach}{/if}

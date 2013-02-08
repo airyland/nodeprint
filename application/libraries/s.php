@@ -38,5 +38,6 @@ class S extends Smarty {
         $this->assign('_', lang($config['lang']));
         //hook trigger::np_footer
         $this->assign('np_footer',$this->_ci->plugins->trigger('footer::np_footer'));
+        $this->assign('np_version',NP_VERSION);
     }
 }
