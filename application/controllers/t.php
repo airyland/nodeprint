@@ -10,30 +10,35 @@ class T extends CI_Controller {
 
     /**
      * topic author
+     *
      * @var mixed
      */
     private $author;
 
     /**
      * current page
+     *
      * @var int
      */
     private $page;
 
     /**
      * if user has signed in
+     *
      * @var bool
      */
     private $is_login;
 
     /**
      * topics number for each page
+     *
      * @var int
      */
     private $limit;
 
     /**
      * if the request is ajax
+     *
      * @var bool
      */
     private $is_ajax;
@@ -94,13 +99,9 @@ class T extends CI_Controller {
             $this->dpagination->limit($comment_no);
             $this->dpagination->currentPage($this->page);
             $page_bar = $this->dpagination->getOutput();
-
             $user = get_user();
             $this->post->get_post_fav_no($id);
             $fav = $this->is_login ? $this->post->check_post_fav($user['user_id'], $id) : FALSE;
-
-            //@todo for each request add 1 hit is not a proper way
-            $this->post->add_post_hit($id);
 
             $this->s->assign(array(
                 'title' => $topic['post_title'],
@@ -110,7 +111,8 @@ class T extends CI_Controller {
                 'local_upload' => $local_upload,
                 'page_bar' => $page_bar,
                 'js' => array('np_comment.js'),
-                'plugin_topic_toolbar'=>$this->plugins->trigger('topic_toolbar',$id)
+                'plugin_topic_toolbar'=>$this->plugins->trigger('topic_toolbar',$id),
+				'single_page'=>$this->dpagination->single_page
                     )
             );
             if ($this->is_ajax) {
