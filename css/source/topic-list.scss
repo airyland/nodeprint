@@ -18,6 +18,13 @@
         background: $vivid;
       }
     }
+	&:active{
+	  background:$vivid;
+	  a{
+		color:#fff;
+		text-shadow:none;
+	  }
+	}
   }
   img {
     float: left;
