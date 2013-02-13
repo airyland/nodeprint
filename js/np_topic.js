@@ -162,3 +162,13 @@ $(function() {
 		});
 	});
 });
+
+	$(function(){
+		$(document).on('click','.topic-list>li',function(e){
+			if(e.target.nodeName!=='A'){
+				$(this).find('.post-title').trigger('click');
+			}
+		});;
+	});
+	
+	
