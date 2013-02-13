@@ -8,7 +8,7 @@
                 <p><a class="post-title" href="/t/{$p.post_id}" title="{$p.post_title}">{$p.post_title|truncate:32:"...":true}</a></p>
                 <p>
                     <a class="post-node" href="/node/{$p.node_slug}">{$p.node_name}</a><a class="post-author" href="/member/{$p.user_name}">{$p.user_name}</a>
-                    {if !$is_mobile}<span>{$p.post_hit} {$_.hits}</span>{if $p.post_comment_no neq 0}<span>{time_ago time=$p.post_last_comment} {$_.lastReplyFrom} <a class="post-author" href="/member/{$p.post_last_comment_author}">{$p.post_last_comment_author}</a></span>{/if}{/if}
+                    <span>{$p.post_hit} {$_.hits}</span>{if !$is_mobile}{if $p.post_comment_no neq 0}<span>{time_ago time=$p.post_last_comment} {$_.lastReplyFrom} <a class="post-author" href="/member/{$p.post_last_comment_author}">{$p.post_last_comment_author}</a></span>{/if}{/if}
                 </p>
                 <span class="last-reply"><a class="post-cm-count{if $p.user_name eq $me.user_name} my-post{/if}" href="/t/{$p.post_id}">{$p.post_comment_no}</a></span>
                 </div>
