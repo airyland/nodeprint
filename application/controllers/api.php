@@ -859,7 +859,7 @@ class Api extends CI_Controller {
 
             default:
                 $do = $this->input->get('do');
-                if (!in_array($do, array(' ', 'fav', 'unfav', 'up', 'down', 'delete', 'transfer', 'list')))
+                if (!in_array($do, array(' ', 'fav', 'unfav', 'up', 'down', 'delete', 'transfer', 'list', 'hit')))
                     die('wrong params');
                 $user = get_user();
                 switch ($do) {
@@ -925,7 +925,7 @@ class Api extends CI_Controller {
                         break;
 
                     case 'hit':
-                        $this->post->add_hit($post_id);
+                        $this->post->add_post_hit($post_id);
                         output_1px_img();
                     break;
 
