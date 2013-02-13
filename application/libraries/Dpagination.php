@@ -21,6 +21,8 @@ class Dpagination {
 
     /*     * ** */
     var $calculate = false;
+	
+	public $single_page = false;
 
     #Total items
 
@@ -111,6 +113,7 @@ class Dpagination {
     function getOutput() {
         //return ceil($this->total_pages/$this->limit);
         if (ceil($this->total_pages/$this->limit)==1) {
+			$this->single_page=TRUE;
             return "<ul class=\"$this->className\"><li>1/1</li></ul>";
         }else if (!$this->calculate)
             if ($this->calculate())
