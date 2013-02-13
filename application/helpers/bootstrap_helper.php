@@ -29,3 +29,8 @@ s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]
     }
     return $is_mobile;
 }
+$is_mobile = is_mobile();
+//load site config
+include(APPPATH.'cache/site/config_cache.php');
+//load language
+include(APPPATH.'language/'.$config['lang'].'/'.'app_lang.php');

@@ -16,11 +16,9 @@ class S extends Smarty {
         global $config;
         global $is_mobile;
         $current_user = get_user();
-        //模块编译改动检查，开发时请设为TRUE,线上时设为FALSE;
+        //shoud set to FALSE on production env
         $this->compile_check=TRUE;
-        //是否开启缓存
         //$this->caching=FALSE;
-        //缓存过期时间
         $this->setCaching(0);
 
         function time_ago($paras) {
@@ -35,7 +33,7 @@ class S extends Smarty {
         $this->assign('ga',$this->_ci->configs->item('ga'));
         $this->assign('lang', $lang);
         $this->assign('is_mobile',$is_mobile);
-        $this->assign('_', lang($config['lang']));
+        $this->assign('_', $lang);
         //hook trigger::np_footer
         $this->assign('np_footer',$this->_ci->plugins->trigger('footer::np_footer'));
         $this->assign('np_version',NP_VERSION);

@@ -10,7 +10,6 @@ if (defined('ENVIRONMENT')) {
         case 'production':
             error_reporting(0);
             break;
-
         default:
             exit('The application environment is not set correctly.');
     }
@@ -59,11 +58,5 @@ if (is_dir($application_folder)) {
     }
     define('APPPATH', BASEPATH . $application_folder . '/');
 }
-//load site config
-include(APPPATH.'cache/site/config_cache.php');
-//load language
-include(APPPATH.'helpers/lang_helper.php');
-include(APPPATH.'helpers/bootstrap_helper.php');
-$lang = lang($config['lang']);
-$is_mobile = is_mobile();
+require_once(APPPATH.'helpers/bootstrap_helper.php');
 require_once BASEPATH . 'core/CodeIgniter.php';

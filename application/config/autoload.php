@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','dpagination');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','lang','file','common');
+$autoload['helper'] = array('url','file','common');
 
 
 /*

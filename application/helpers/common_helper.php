@@ -244,16 +244,6 @@ function alert($msg, $url)
     exit;
 }
 
-/**
- * 加载语言包
- * @return array
- */
-function load_lang()
-{
-    include(APPPATH . 'cache/site/config_cache.php');
-    include(APPPATH . 'helpers/lang_helper.php');
-    return lang($config['lang']);
-}
 
 function get_lang()
 {
