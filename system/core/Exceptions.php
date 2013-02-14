@@ -102,11 +102,7 @@ class CI_Exceptions {
      * @return	string
      */
     function show_404($page = '', $log_error = TRUE) {
-        include(APPPATH . 'cache/site/config_cache.php');
-        if(!function_exists('lang')){
-            include(APPPATH.'helpers/lang_helper.php');
-        }
-        $lang = lang($config['lang']);
+        global $lang;
         $heading = $lang['404header'];
         $message = $lang['404message'];
         // By default we log this, but allow a dev to skip it
