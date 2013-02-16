@@ -1,9 +1,9 @@
         <ul class="topic-list"> 
             {if is_array($post)&&count($post)>0}{foreach from=$post item=p} 
-            <li class="topic-item t-{$p.post_id}">
-                {if !isset($show_avatar)}
-                <a href="/member/{$p.post_last_comment_author}"><img src="/avatar/{$p.user_id}/48" width="48" height="48" alt="{$p.user_name}" /></a>
-                {/if}
+            <li class="topic-item t-{$p.post_id}"> 
+                {if !isset($show_avatar)} 
+                <a href="/member/{$p.user_name}"><img src="/avatar/{$p.user_id}/48" width="48" height="48" alt="{$p.user_name}" /></a>
+                {/if} 
                 <div class="bfc topic-item-main">
                 <p><a class="post-title" href="/t/{$p.post_id}" title="{$p.post_title}">{$p.post_title|truncate:32:"...":true}</a></p>
                 <p>
