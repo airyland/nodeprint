@@ -21,8 +21,10 @@ class Dpagination {
 
     /*     * ** */
     var $calculate = false;
-	
-	public $single_page = false;
+
+    public $is_single_page = false;
+
+    public $page_bar = '';
 
     #Total items
 
@@ -98,10 +100,19 @@ class Dpagination {
         $this->urlF = $value;
     }
 
-    var $pagination;
-
-    function pagination() {
-        
+    function generate($count,$limit,$current,$target,$adjacents=8){
+        // if $count===0, just return.
+        if($count===0){
+            $this->is_single_page=true;
+            return '';
+        }
+        $this->items($count);
+        $this->limit($limit);
+        $this->currentPage($current);
+        $this->target($target);
+        $this->adjacents($adjacents);
+        $this->is_single_page=ceil($count/$limit)==1;
+        $this->page_bar=$this->getOutput();
     }
 
     function show() {
@@ -113,7 +124,6 @@ class Dpagination {
     function getOutput() {
         //return ceil($this->total_pages/$this->limit);
         if (ceil($this->total_pages/$this->limit)==1) {
-			$this->single_page=TRUE;
             return "<ul class=\"$this->className\"><li>1/1</li></ul>";
         }else if (!$this->calculate)
             if ($this->calculate())

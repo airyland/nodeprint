@@ -1,9 +1,7 @@
 <section class="box">
-	<h2><span class="title">{$u.user_name} {$box_title}</span></h2>
+    <h2><span class="title">{$u.user_name} {$box_title}</span></h2>
     {include file="topic_list.html" show_avatar=false}
 </section>
-<nav class="box">
-    <div class="pagination-wrap">{$page_bar}</div>
-</nav>
+{include file="pagination.html"}
 
 

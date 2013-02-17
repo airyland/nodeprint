@@ -13,10 +13,5 @@
             <li>没有相关消息哦~</li>
             {/if}
 </ul>
-{if $is_dialog}
-{if $has_msg}
-<div>
-        <div class="pagination-wrap">{$pagination}</div>
-</div>
-{/if}
-{/if}
+{include file="pagination.html" with_box=false}
+{include file="js/message_form.html"}

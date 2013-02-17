@@ -15,8 +15,4 @@
         <hr />
         {include file="topic_list.html"}
     </div>
-    {if $showPageBar}
-    <nav class="box">
-    <div class="pagination-wrap">{$page_bar}</div>
-    </nav>
-    {/if}
+    {include file="pagination.html" with_box=false}

@@ -91,12 +91,7 @@ class Node extends CI_Controller {
             show_404();
 
         $this->load->library('dpagination');
-        $this->dpagination->items($node['node_post_count']);
-        $this->dpagination->limit($limit);
-        $this->dpagination->currentPage($this->page);
-        $this->dpagination->target('/node/' . $node['node_slug']);
-        $this->dpagination->adjacents(8);
-        $pagebar = $this->dpagination->getOutput();
+        $this->dpagination->generate($node['node_post_count'],$limit,$this->page,'/node/' . $node['node_slug']);
 
         if ($this->is_login) {
             $fav = $this->follow->check_follow($user['user_id'], $slug, $field = 'f_keyname', 2);
@@ -107,8 +102,8 @@ class Node extends CI_Controller {
             'title' => $node['node_name'] . ' ' . $this->page . '/' . intval($node['node_post_count'] / $limit + 1) . ' ',
             'node' => $node,
             'post' => $this->post->query_post('node_id=' . $node['node_id'] . 'no=' . $limit),
-            'showPageBar' => $node['node_post_count'] > 0 ? true : false,
-            'page_bar' => $pagebar,
+            'single_page' => $this->dpagination->is_single_page,
+            'page_bar' => $this->dpagination->page_bar,
             'admin_js' => array('plugin/jquery.jeditable.mini.js', 'np_admin.js')
         ));
         if ($this->is_ajax) {

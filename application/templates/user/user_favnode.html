@@ -1,24 +1,22 @@
-    <section class="box">
-        <h2><span class="title">收藏的节点</span></h2>	
-        <ul class="node">
-            {if is_array($node)}
-            {foreach from=$node item=n}
-            <li>
-                <a href="/node/{$n.node_slug}">{$n.node_name}</a>
-                <span class="post-count">{$n.node_post_no}</span>
-                <span><a class="unfav-node" href="/api/node/{$n.node_slug}?do=unfav" data-router="false" title="取消收藏">x</a></span>
-            </li>
-            {/foreach}
-            {else}
-            <li class="no-favnode">暂时没有收藏节点哦 <a href="/node">看看有没有感兴趣的</a> </li>
-            {/if}
-        </ul>
-    </section>
+<section class="box">
+    <h2><span class="title">收藏的节点</span></h2>	
+    <ul class="node">
+        {if is_array($node)}
+        {foreach from=$node item=n}
+        <li>
+            <a href="/node/{$n.node_slug}">{$n.node_name}</a>
+            <span class="post-count">{$n.node_post_no}</span>
+            <span><a class="unfav-node" href="/api/node/{$n.node_slug}?do=unfav" data-router="false" title="取消收藏">x</a></span>
+        </li>
+        {/foreach}
+        {else}
+        <li class="no-favnode">暂时没有收藏节点哦 <a href="/node">看看有没有感兴趣的</a> </li>
+        {/if}
+    </ul>
+</section>
 
-    <section class="box">
-        <h2><span class="title">收藏节点最新文章</span></h2>
-        {include file="topic_list.html"}
-    </section>
-    <nav class="box">
-        <div class="pagination-wrap">{$page_bar}</div>
-    </nav>  
+<section class="box">
+    <h2><span class="title">收藏节点最新文章</span></h2>
+    {include file="topic_list.html"}
+</section>
+{include file="pagination.html"}

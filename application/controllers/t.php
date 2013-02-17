@@ -93,12 +93,7 @@ class T extends CI_Controller {
             $count = $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no, TRUE);
 
             $this->load->library('dpagination');
-            $this->dpagination->target("/t/{$id}");
-            $this->dpagination->adjacents(8);
-            $this->dpagination->items($count);
-            $this->dpagination->limit($comment_no);
-            $this->dpagination->currentPage($this->page);
-            $page_bar = $this->dpagination->getOutput();
+            $this->dpagination->generate($count,$comment_no,$this->page,"/t/{$id}",8);
             $user = get_user();
             $this->post->get_post_fav_no($id);
             $fav = $this->is_login ? $this->post->check_post_fav($user['user_id'], $id) : FALSE;
@@ -109,10 +104,10 @@ class T extends CI_Controller {
                 'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
                 'fav' => $fav,
                 'local_upload' => $local_upload,
-                'page_bar' => $page_bar,
+                'page_bar' => $this->dpagination->page_bar,
                 'js' => array('np_comment.js'),
                 'plugin_topic_toolbar'=>$this->plugins->trigger('topic_toolbar',$id),
-				'single_page'=>$this->dpagination->single_page
+				'single_page'=>$this->dpagination->is_single_page
                     )
             );
             if ($this->is_ajax) {
@@ -191,26 +186,19 @@ class T extends CI_Controller {
             case 'search':
                 $key = urldecode($key);
                 $count_post = $this->post->search_post($key, 0, 0, TRUE);
-                $this->dpagination->target('/t/search/' . $key);
                 $post = $this->post->search_post($key, $this->page, $this->limit);
                 $title = $key . '-帖子搜索';
                 $template = $this->is_ajax ? 'topic/search_main.html' : 'topic/search.html';
                 break;
         }
-
-        $this->dpagination->adjacents(8);
-        $this->dpagination->items($count_post);
-        $this->dpagination->limit($this->limit);
-        $this->dpagination->currentPage($this->page);
-        $page_bar = $this->dpagination->getOutput();
-
+        $this->dpagination->generate($count_post,$this->limit,$this->page,'/t/search/' . $key);
         $this->s->assign(array(
             'title' => $title . ' ' . $this->page . '/' . intval($count_post / $this->limit + 1),
             'key' => $key,
             'post' => $post,
-            'page_bar' => $page_bar,
+            'page_bar' => $this->dpagination->page_bar,
             'count' => $count_post,
-            'show_pagebar' => $count_post > 0 ? TRUE : FALSE
+            'single_page' => $this->dpagination->is_single_page,
                 )
         );
         $this->s->display($template);

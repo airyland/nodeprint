@@ -3,11 +3,28 @@
 !defined('BASEPATH') && exit('No direct script access allowed');
 
 class Messages extends CI_Controller {
-    public $page;
-    public $no;
-    private $is_ajax;
     /**
-     * 构造器
+     * current page
+     *
+     * @var ini
+     */
+    public $page;
+
+    /**
+     * pagination limit
+     *
+     * @var int
+     */
+    public $no;
+
+    /**
+     * if is ajax request
+     * @var bool
+     */
+    private $is_ajax;
+
+    /**
+     * constructor
      */
     function __construct() {
         parent::__construct();
@@ -19,10 +36,11 @@ class Messages extends CI_Controller {
     }
 
     /**
-     * 消息页面，默认页为未读消息
+     * Messages page, default messages type is unread.
      * @url /messages/
      */
     function index() {
+        global $lang;
         $type = $this->input->get('type');
         $read = ($type == 'unread' || !$type) ? 1 : -1;
         $reply_type = $type == 'sent' ? 'm_from_username' : 'm_to_username';
@@ -36,19 +54,16 @@ class Messages extends CI_Controller {
         $count_all_message = $this->message->list_message($user['user_name'], 'm_to_username', -1, 1, 20, 1);
         $count_pm_message = $this->message->list_message($user['user_name'], 'm_to_username', -1, 1, 20, 1, 4);
 
-        $this->dpagination->items($count_current_message);
-        $this->dpagination->limit($this->no);
-        $this->dpagination->currentPage($this->page);
-        $this->dpagination->target('/messages/?type=' . $type);
-        $this->dpagination->adjacents(8);
-        
+        $this->dpagination->generate($count_current_message,$this->no,$this->page,'/messages/?type=' . $type);
+
         $this->s->assign(array(
-            'title' => '我的消息',
+            'title' => $lang['my'].$lang['message'],
             'message' => $message,
             'unread_count' => $count_unread_message,
             'all_count' => $count_all_message,
             'pm_count' => $count_pm_message,
-            'pagination' => $this->dpagination->getOutput(),
+            'single_page' => $this->dpagination->is_single_page,
+            'page_bar' =>$this->dpagination->page_bar,
             'has_msg' => $count_current_message>0,
             'is_dialog' => FALSE
         ));
@@ -74,9 +89,10 @@ class Messages extends CI_Controller {
      * @url /messages/send
      */
     function send() {
+        global $lang;
         $to = $this->input->get('to') ? $this->input->get('to') : '';
         $this->load->library('s');
-        $this->s->assign('title', '发送私信');
+        $this->s->assign('title', $lang['send'].$lang['pm']);
         $this->s->assign('to', $to);
         $this->s->display('user/user_send_message.html');
     }
