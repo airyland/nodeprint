@@ -1,0 +1,9 @@
+{if !$single_page} 
+{if !isset($with_box) or (isset($with_box) and $with_box)} 
+<nav class="box">
+    <div class="pagination-wrap">{$page_bar}</div>
+</nav>
+{elseif !$with_box} 
+<div class="pagination-wrap">{$page_bar}</div>
+{/if}	
+{/if}
