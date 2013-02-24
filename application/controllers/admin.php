@@ -18,6 +18,7 @@ class Admin extends CI_Controller {
 
     function index() {
         global $lang;
+        include(APPPATH.'language/'.$lang['lang'].'/admin_lang.php');
         $this->load->library('s');
         $this->load->model('configs');
         $config = $this->configs->get_config();
@@ -27,8 +28,7 @@ class Admin extends CI_Controller {
         $this->s->assign(array(
             's' => $status,
             'admins' => $admins,
-            'lang' => $lang,
-            'title' => 'Dashboard',
+            'title' => $lang['site settings'],
             'config' => $config,
             'last_backup_file' => $this->admins->get_last_backup_file()
         ));
@@ -37,8 +37,8 @@ class Admin extends CI_Controller {
 
     function the_action($action, $id = '') {
         global $lang;
+        include(APPPATH.'language/'.$lang['lang'].'/admin_lang.php');
         $this->load->library('s');
-        $this->s->assign('lang', $lang);
         switch ($action) {
             /**
              * plugins management
@@ -53,7 +53,7 @@ class Admin extends CI_Controller {
                         'plugins'=>$plugins,
                         'd_plugins' => $deactivated_plugins,
                         'a_plugins'=>$active_plugins,
-                        'title' => '插件管理'
+                        'title' => $lang['plugin management']
                     ));
                     $this->s->display('admin/admin_plugin.html');
                 }else if($id==='active'){
@@ -68,7 +68,7 @@ class Admin extends CI_Controller {
 
             case 'settings':
                 $this->s->assign(array(
-                    'title' => '网站设置',
+                    'title' => $lang['site settings'],
                 ));
                 $this->s->display('admin/admin_settings.html');
                 break;
@@ -83,9 +83,8 @@ class Admin extends CI_Controller {
                     $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 0);
                     $nodes = $this->nodes->get_all_nodes();
                     $this->s->assign(array(
-                        'title' => '节点管理-网站设置',
+                        'title' => $lang['node management'].'-'.$lang['site settings'],
                         'p_node' => $parent_node,
-                        'lang' => $lang,
                         'user' => $user,
                         'node' => $node,
                         'nodes' => $nodes
@@ -104,9 +103,8 @@ class Admin extends CI_Controller {
                     $node = $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, 15);
                     $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 15);
                     $this->s->assign(array(
-                        'title' => '网站设置',
+                        'title' => $lang['user management'].'-'.$lang['site settings'],
                         'p_node' => $parent_node,
-                        'lang' => $lang,
                         'title' => 'Dashboard',
                         'user' => $user,
                         'node' => $node
@@ -128,26 +126,20 @@ class Admin extends CI_Controller {
                 $this->load->model('post');
                 $post = $this->post->query_post("page={$page}&no=20");
                 $user = $this->user->user_list();
-
-                $this->dpagination->items($this->post->query_post("count=TRUE"));
-                $this->dpagination->limit(20);
-                $this->dpagination->currentPage($page);
-                $this->dpagination->target('/admin/topics/');
-                $this->dpagination->adjacents(8);
-
+                $this->dpagination->generate($this->post->query_post("count=TRUE"),20,$page,'/admin/topics/');
 
                 if ($id === '') {
                     $node = $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, 15);
                     $parent_node = $this->nodes->list_node(1, 0, 'node_id', 'DESC', 1, 15);
                     $this->s->assign(array(
-                        'title' => '网站设置',
+                        'title' => $lang["topic management"].'-'.$lang['site settings'] ,
                         'p_node' => $parent_node,
-                        'lang' => $lang,
                         'title' => 'Dashboard',
                         'user' => $user,
                         'node' => $node,
                         'post' => $post,
-                        'pagebar' => $this->dpagination->getOutput()
+                        'page_bar' => $this->dpagination->page_bar,
+                        'single_page'=>$this->dpagination->is_single_page
                     ));
                     $this->s->display('admin/topics.html');
                 } else {
@@ -173,7 +165,7 @@ class Admin extends CI_Controller {
                 unset($all_files);
                 if ($id == '') {
                     $this->s->assign(array(
-                        'title' => '页面管理',
+                        'title' => $lang["page management"].'-'.$lang['site settings'],
                         'user' => get_user(),
                         'files' => $files,
                         'count' => count($files)
@@ -183,7 +175,7 @@ class Admin extends CI_Controller {
                     $page = $id.'.html';
                     if (file_exists($directory . $page)) {
                         $this->s->assign(array(
-                            'title' => '页面管理',
+                            'title' =>$lang["page management"],
                             'user' => get_user(),
                             'files' => $files,
                             'count' => count($files),
@@ -192,13 +184,13 @@ class Admin extends CI_Controller {
                         ));
                         $this->s->display('admin/admin_pages_edit.html');
                     } else {
-                        show_error('文件不存在哦', 404);
+                        show_error($lang['file does not exist'], 404);
                     }
                 }
                 break;
 
             /**
-             * 清除Smarty缓存
+             * clear smarty cache
              */
             case 'clearCache':
                 $this->load->library('s');
@@ -208,12 +200,14 @@ class Admin extends CI_Controller {
             case 'backup':
                 $this->admins->backup();
                 break;
+
             case 'tools':
                 $this->s->assign(array(
                     'title' => 'Admin tools'
                 ));
                 $this->s->display('admin/admin_tools.html');
                 break;
+                
             case 'tool':
                 switch ($id) {
                     //clear smarty compiled templates
@@ -235,6 +229,11 @@ class Admin extends CI_Controller {
                         redirect('/admin/tools#manualBackup_success');
                     break;
                 }
+                break;
+
+            case 'ga':
+                $this->load->library('s');
+                $this->s->display('admin/admin_ga.html');
                 break;
         }
     }

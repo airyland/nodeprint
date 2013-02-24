@@ -1,0 +1,35 @@
+{include file="header.html"}
+{include file="admin/admin_nav.html" small=1}
+<div class="content admin-content" style="width:90%;">
+    <section class="box">
+        <h2><span class="title">帖子列表</span></h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="500">标题</th>
+                    <th>作者</th>
+                    <th>节点</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$post item=p}
+                <tr>
+                    <td><a href="/t/{$p.post_id}">{$p.post_title}</a></td>
+                    <td>{$p.user_name}</td>
+                    <td>{$p.node_name}</td>
+                    <td>{$p.post_time}</td>
+                    <td>
+                        <a href="/t/{$p.post_id}/edit" rel="external">编辑</a>
+                        <a href="/api/post/{$p.post_id}/?do=delete" class="do-topic-delete">删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </section>
+    {include file="pagination.html"}
+</div>
+   
+{include file="footer.html"}
