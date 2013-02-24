@@ -141,7 +141,11 @@ class T extends CI_Controller {
             $this->s->assign('title', '编辑帖子');
             $this->s->assign('node', $this->nodes->get_node('test'));
             $this->s->assign('topic', $topic);
-            $this->s->display('topic/edit_post.html');
+            if ($this->is_ajax) {
+                $this->s->display('topic/edit_topic_main.html');
+                exit;
+            }
+            $this->s->display('topic/edit_topic.html');
         }
     }
 

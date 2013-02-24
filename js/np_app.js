@@ -71,6 +71,7 @@ var options = {
         '/#home': 'getHomeTab',
         '/?tab=:tab': 'getHomeTab',
         '/t/:id': 'singleTopic',
+        '/t/:id/edit':'editTopic',
         '/member/:name(/:category)(/?page=:page)': 'singleMember',
         '/page/:id/:page': 'singlePage',
         '/topic/:id': 'singleTopic',
@@ -86,14 +87,12 @@ var options = {
         enter: function() {
             NPWidget.fetch('home');
             $('.post-guide').hide();
-        },
-        leave: function() {
-
+			NP.track('event','Home view ajax');
         }
     },
     messages: {
         enter: function() {
-            NP.track('event', 'Message view');
+            NP.track('event', 'Message view ajax');
         }
     },
 
@@ -113,7 +112,7 @@ var options = {
                 });
             });
             NPWidget.fetch('topic');
-            track('/view/ajax/topic');
+            NP.track('event','Topic view ajax');
         },
         leave: function() {
             if($.trim($('#cm-box').val()) !== '') {
@@ -128,7 +127,7 @@ var options = {
     },
     addTopic: {
         enter: function(url, slug) {
-            NP.track('event', 'Topic enterAddPage');
+            NP.track('event', 'Topic enterAddPage ajax');
             NPWidget.fetch('create_topic', true);
             $('#profile-box').hide();
         },
@@ -137,28 +136,40 @@ var options = {
         },
         cache: true
     },
+    editTopic:{
+        enter:function(){
+            NP.track('event', 'Topic enterEdit ajax');
+            NPWidget.fetch('create_topic', true);
+            $('#profile-box').hide();
+        },
+        leave:function(){
+            $('#profile-box').show();
+        }
+    },
     singleMember: {
         enter: function() {
-            NP.track('event', 'Member view');
+            NP.track('event', 'Member view ajax');
             NPWidget.fetch('member');
         }
 
     },
     singlePage: function(id, page) {
-        NP.track('event', 'Page view');
+        NP.track('event', 'Page view ajax');
         cache: true
     },
     chooseNode: {
-        NP.track('event', 'Node chooseNode');
+		enter:function(){
+		NP.track('event', 'Node chooseNode ajax');
+		},
         cache: true
     },
     singleNode: {
         enter: function() {
-            NP.track('event', 'Node view');
+            NP.track('event', 'Node view ajax');
             NPWidget.fetch('node');
-            NP.use(['/js/plugin/jquery.jeditable.mini.js', 'js/np_admin.js']);
+            NP.chainUse(['/js/plugin/jquery.jeditable.mini.js', 'js/np_admin.js']);
         },
-        cache: false
+        cache: 30000
     }
 
 }
@@ -180,7 +191,7 @@ $(function() {
         var key = encodeURI($('#search').val().replace(/</g, '').replace(/>/g, '').replace(/\//g, '').replace(/\\/g, '')),
             url = '/t/search/' + key;
         app.getPage(url, key + '-search', true);
-        NP.track('event', 'Topic search');
+        NP.track('event', 'Topic search ajax');
     });
 
     //save last login user name 
@@ -455,8 +466,7 @@ $(function() {
     //tips
     //@todo smart position
     if(!NPINFO.isMobile) {
-        var $doc = $(document),
-            temp = '<p class="node-name">{{node_name}}[<b>{{node_post_no}}</b>]</p><p class="node-intro">{{node_intro}}</p>',
+        var temp = '<p class="node-name">{{node_name}}[<b>{{node_post_no}}</b>]</p><p class="node-intro">{{node_intro}}</p>',
             parseTemp = function(data) {
                 return temp.replace('{{node_name}}', data.node_name).replace('{{node_intro}}', (data.node_intro === "0" || data.node_intro === null) ? '该节点暂时没有介绍哦~' : data.node_intro).replace('{{node_post_no}}', data.node_post_no);
             },
@@ -717,31 +727,19 @@ $(function() {
 });
 
 
-function track(track, event) {
-    if(!NPINFO.ga) {
-        return;
-    }
-    _gaq.push(['_setAccount', NPINFO.ga]);
-    if(event && event === true) {
-        track = track.split(' ');
-        _gaq.push(['_trackEvent', track[0], track[1], track[2] ? track[2] : '']);
-        return;
-    }
-    track ? _gaq.push(['_trackPageview', track]) : _gaq.push(['_trackPageview']);
-}
-
 
 var trackMap = {
     '#do-fav': 'topic fav a',
-    '.track-sidebar-add-topic': '创建帖子 点击 侧边栏',
-    '.track-home-add-topic': '创建帖子 点击 首页导航',
-    '#home': '全站功能 返回顶部',
-    '#logo': '全站功能 返回首页 Logo',
-    '.nav-home': '全站功能 返回首页 右侧导航',
-    '.home-ad a': '广告统计 点击 首页',
-    '.node-ad a': '广告统计 点击 节点页',
-    '.topic-ad a': '广告统计 点击 帖子页',
-    '.user-ad a': '广告统计 点击 用户信息页'
+    '.track-sidebar-add-topic': 'Nav createTopic sidebar',
+    '.track-home-add-topic': 'Nav createTopic content',
+    '.home': 'Nav backHome nav',
+    '#logo': 'Nav backHome Logo',
+    '.home-ad a': 'Ad click index',
+    '.node-ad a': 'Ad click node',
+    '.topic-ad a': 'Ad click topic',
+    '.user-ad a': 'Ad click member',
+	'#JS_msg' :'Nav message',
+	'#JS_send_message':'Nav clickPm'
 
 };
 
@@ -752,7 +750,7 @@ $(function() {
             var temp = i;
             $(document).on('click', temp, function(e) {
                 $(this).attr('target', '_blank');
-                track(trackMap[temp], true);
+                NP.track('event',trackMap[temp]);
             })
         })()
     }
