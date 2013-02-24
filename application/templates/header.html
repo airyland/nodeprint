@@ -31,7 +31,7 @@
             <div class="header-wrap">
                 <h1><a id="logo" href="{$site.url}#home" title="{$site.name}-{$_['index']}">{$_['index']}</a></h1>
                 <form action="/api/post/0/search" method="get" class="search">
-                    <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}" required/>
+                    <input type="search" name="search-key" id="search" placeholder="{$lang.placeholder}"  accesskey="s" x-webkit-speech x-webkit-grammar="builtin:translate" required/>
                     <input type="submit" value="search" id="search-button"/>
                 </form>
                 <nav class="site-nav" id="site-nav" role="navigation">
