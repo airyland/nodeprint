@@ -18,12 +18,13 @@ NP.track = function(type, key) {
 	_gaq.push(['_setAccount', NPINFO.ga]);
 	//event track
 	if(type === 'event') {
-		var track = key.split('');
-		track = track.split(' ');
+		var track = key.split(' ');
 		_gaq.push(['_trackEvent', track[0], track[1], track[2] ? track[2] : '']);
+		NP.config.log&&NP.log(track);
 		//page track
-	} else {
+	} else if(type === 'page'){
 		key ? _gaq.push(['_trackPageview', key]) : _gaq.push(['_trackPageview']);
+		NP.config.log&&NP.log('track::page '+key?key:'');
 	}
 }
 
@@ -40,6 +41,8 @@ NP.log = function(msg) {
  * dialog shake effect
  * @note require artdialog
  */
+ /**
+var artDialog = artDialog || {};
 artDialog.fn.shake = function() {
 	var style = this.DOM.wrap[0].style,
 		p = [4, 8, 4, 0, -4, -8, -4, 0],
@@ -54,7 +57,7 @@ artDialog.fn.shake = function() {
 	timerId = setInterval(fx, 13);
 	return this;
 };
-
+**/
 
 
 /**
@@ -115,8 +118,14 @@ var NPWidget = {
         $(selector, '.sidebar').show().siblings().hide();
     },
     fetch: function(page, cache) {
-        cache = cache ? parseInt(cache,10) : false;
-        if(cache) {
+        if(typeof cache==='undefined'){
+			if(NP.config.widgetCache){
+			 cache=NP.config.widgetCache;
+			}else{
+			cache=false;
+			}
+		}
+		if(cache) {
             var data = NPCache.get('widget:' + page,cache);
             if(data) {
                 NPWidget.parseWidgets(data);
@@ -148,8 +157,10 @@ var NPCache={
         store.set(this._getTimeKey(key),+new Date());
     },
     get:function(key,time){
-        var setTime=store.get(this._getTimeKey(key),
-            diff=+new Date()-setTime;
+        var setTime=store.get(this._getTimeKey(key)),
+            diff=(+new Date())-setTime;
+			console.log(setTime);
+			console.log(diff);
             if(diff>time){
                 return false;
             }else{
@@ -164,6 +175,18 @@ var NPCache={
     },
     _getTimeKey:function(key){
         return '_'+key+'time';
+    }
+}
+
+var NPTip = {
+    hashMap:{
+    'topic.deleted.success':'恭喜，帖子删除成功'
+    },
+    run:function(){
+        var hash = document.location.hash.replace('#','');
+        if(hash && hash in this.hashMap){
+            $.dialog({title:false,cancel:false,time:2,content:this.hashMap[hash]});
+        }
     }
 }
 

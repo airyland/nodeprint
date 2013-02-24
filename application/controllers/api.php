@@ -873,7 +873,7 @@ class Api extends CI_Controller {
                         if($this->is_ajax){
                             json_output(0);
                         }
-                        redirect($this->from);
+                        redirect(base_url().'#topic.deleted.success');
                         break;
 
                     /**

@@ -243,6 +243,8 @@ $(function() {
         fade: true
     });
 
+    NPTip.run();
+
 });
 
 

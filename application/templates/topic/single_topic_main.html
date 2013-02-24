@@ -14,7 +14,7 @@
                 <ul class="post-footer-bar">
                     {if $is_admin and !$is_mobile}
                     <li><a href="/t/{$t.post_id}/edit">修改</a></li>
-                    <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete">删除</a></li>
+                    <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete" data-router="false">删除</a></li>
                     <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer"  data-router="false">移动帖子</a></li>
                     {/if}
                     {if $plugin_topic_toolbar}{$plugin_topic_toolbar}{/if}
