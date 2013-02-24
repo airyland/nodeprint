@@ -77,7 +77,7 @@
 				self.editing = true;
 				self.revert = $(self).html();
 				$(self).html('');
-				var form = $('<form />');
+				var form = $('<form method="post" />');
 				if(settings.cssclass) {
 					if('inherit' == settings.cssclass) {
 						form.attr('class', $(self).attr('class'));
@@ -271,6 +271,7 @@
 						}
 						$(this).append(cancel);
 						$(cancel).click(function(event) {
+                            event.preventDefault();
 							if($.isFunction($.editable.types[settings.type].reset)) {
 								var reset = $.editable.types[settings.type].reset;
 							} else {
