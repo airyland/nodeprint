@@ -185,9 +185,8 @@ $(function() {
 
 $(function() {
     jQuery.hotkeys.add('ctrl+return', function(e) {
-        //alert('haha');
-        $doc.data('replyBy', 'hotkeys');
-        NP.track('Reply', 'send');
+        $doc.data('event', 'replyBy', 'hotkeys');
+        NP.track('event', 'Reply', 'send');
         comment.add();
     });
 });
