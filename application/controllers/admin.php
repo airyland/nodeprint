@@ -1,6 +1,19 @@
 <?php
 
 !defined('BASEPATH') && exit('No direct script access allowed');
+/**
+ * NodePrint
+ *
+ * Simple and Elegant Forum Software
+ *
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
+ */
+
 
 /**
  * Admin Controller
@@ -152,40 +165,16 @@ class Admin extends CI_Controller {
              */
             case 'pages':
                 $this->load->helper('directory');
-                $this->config->load('site');
-                $directory = $this->config->item('page_directory');
-                $all_files = array_filter(directory_map($directory, 1), function($item) {
-                            return strpos($item, 'html');
-                        });
-                $files = array();
-                foreach ($all_files as $key => $val) {
-                    $files[$key]['name'] = $val;
-                    $files[$key]['time'] = filemtime($directory . $val);
-                }
-                unset($all_files);
-                if ($id == '') {
+                $pages=$this->db->get_where('post',array('post_type'=>'page'));
+                if($pages->num_rows()>0){
                     $this->s->assign(array(
-                        'title' => $lang["page management"].'-'.$lang['site settings'],
-                        'user' => get_user(),
-                        'files' => $files,
-                        'count' => count($files)
-                    ));
+                         'title'=>$lang['page management'],
+                         'pages'=>$pages->result_array()
+                    )
+                    );
                     $this->s->display('admin/admin_pages.html');
-                } else {
-                    $page = $id.'.html';
-                    if (file_exists($directory . $page)) {
-                        $this->s->assign(array(
-                            'title' =>$lang["page management"],
-                            'user' => get_user(),
-                            'files' => $files,
-                            'count' => count($files),
-                            'name' => $id,
-                            'file_content' => file_get_contents($directory . $page)
-                        ));
-                        $this->s->display('admin/admin_pages_edit.html');
-                    } else {
-                        show_error($lang['file does not exist'], 404);
-                    }
+                }else{
+
                 }
                 break;
 

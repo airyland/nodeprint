@@ -1,20 +1,22 @@
-<?php !defined('BASEPATH') && exit('No direct script access allowed');
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
 /**
  * NodePrint
  *
- * 基于HTML5及CSS3的轻论坛程序
- * 
- * NodePrint is an open source BBS System built on PHP and MySQL.
+ * Simple and Elegant Forum Software
  *
- * @package	NodePrint
- * @author		airyland <i@mao.li>
- * @copyright	Copyright (c) 2012, mao.li.
- * @license		MIT
- * @link		https://github.com/airyland/nodeprint
- * @version	0.0.5
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
  */
+
+
 /**
-* ��Ԫ����
+* Unit test
 * @author airyland <i@mao.li>
 */
 class Unittest extends CI_Controller{
@@ -25,7 +27,7 @@ class Unittest extends CI_Controller{
 	function index(){
 		$test=1+1;
 		$expected_result=2;
-		$test_name="С����";
+		$test_name="test";
 		
 		//$this->unit->run($test,$expected_result,$test_name);
 		echo $this->unit->run($test, $expected_result,$test_name);

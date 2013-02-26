@@ -83,6 +83,7 @@
 .topic-list {
   clear: both; }
   .topic-list li {
+    cursor: pointer;
     padding: 10px 15px;
     border-bottom: 1px solid #ececec;
     overflow: hidden;
@@ -209,6 +210,27 @@ a.post-author {
       right: 10px; }
     .cm-list li:hover a.reply {
       display: inline; }
+  .cm-list .is-author {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-width: 12px;
+    border-style: solid;
+    border-color: #e82a73 #e82a73 white white;
+    opacity: 0.6; }
+    .cm-list .is-author span {
+      display: block;
+      position: relative;
+      top: -18px;
+      right: -2px;
+      color: #fff;
+      font-size: 12px;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      transform: rotate(45deg);
+      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }
   .cm-list .s-avatar {
     position: absolute;
     top: 43px;
@@ -877,7 +899,7 @@ a {
   a:hover {
     color: #385F8A; }
 
-h3, h2 .title {
+h3, h2 .title, h4.title {
   font-weight: normal;
   font-size: 12px;
   color: #999;
@@ -1604,14 +1626,14 @@ input.left-button {
 /* == loading
 ---------------------------------------------------*/
 #loading {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: -2px;
   z-index: 9999;
   margin-left: -50px;
   width: 100px;
   height: 35px;
-  background: #e82a73;
+  #background: #e82a73;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1620,7 +1642,8 @@ input.left-button {
   font-size: 14px;
   display: none; }
   #loading span {
-    line-height: 35px; }
+    line-height: 35px;
+    display: none; }
 
 /* == Blog
 --------------------------------------------------------*/
@@ -1711,7 +1734,7 @@ input.left-button {
 .node-editable {
   cursor: pointer; }
   .node-editable::before {
-    content: '[µã»÷±à¼­]';
+    content: '[±à¼­]';
     margin-right: 10px;
     background: yellow;
     cursor: pointer; }
@@ -1910,6 +1933,20 @@ td strong {
     width: 48%;
     float: right; }
 
+.page_form {
+  padding: 10px; }
+  .page_form label {
+    display: block;
+    float: none;
+    text-align: left;
+    margin: 10px 0; }
+  .page_form li {
+    margin: 0; }
+  .page_form input, .page_form textarea {
+    width: 99%; }
+  .page_form textarea {
+    height: 600px; }
+
 #at-view {
   position: absolute;
   top: 0;
@@ -1964,6 +2001,8 @@ td strong {
   color: #777;
   font-weight: normal; }
 
+.mobile .s-avatar {
+  display: none; }
 .mobile .post-info h2 {
   width: 250px; }
 .mobile .top {
@@ -2002,8 +2041,6 @@ td strong {
     width: 95%;
     margin: 0 auto;
     padding: 5px; }
-.mobile .topic-list span.last-reply a {
-  background: none; }
 .mobile #footer {
   padding-top: 15px;
   height: auto; }
@@ -2093,8 +2130,8 @@ td strong {
     margin: 0; }
 
   #cm-box {
-    width: 285px;
-    margin: 5px; }
+    margin-top: 10px;
+    width: 95%; }
 
   #cm-button {
     width: 295px;
@@ -2113,30 +2150,36 @@ td strong {
     height: 30px; }
 
   .topic-list span.last-reply {
-    /*  top:20px;
-     right:2px; */
+    top: 50%;
+    right: 5px;
+    margin-top: -8px;
     padding: 0;
-    position: static;
-    display: inline; }
+    #position: static;
+    #display: inline; }
     .topic-list span.last-reply a {
-      background: #fff;
-      color: #bbb;
-      font-weight: normal; }
+      border-radius: 2px;
+      -moz-border-radius: 2px;
+      -webkit-border-radius: 2px;
+      padding: 0 3px; }
+      .topic-list span.last-reply a:hover {
+        color: #fff; }
 
   .topic-list li:hover > span a {
     background-color: #f5f5f5; }
 
-  .topic-list span.last-reply:after {
-    content: 'Ìõ»Ø¸´';
-    color: #ccc; }
+  .topic-list li:active {
+    background: #e82a73; }
+    .topic-list li:active a {
+      color: #fff;
+      text-shadow: none; }
 
   a.post-cm-count, a.my-post {
     padding: 0;
-    background: #fff; }
+    #background: #fff; }
 
   a.my-post:visited {
-    background: #fff;
-    color: #ccc; }
+    #background: #fff;
+    #color: #ccc; }
 
   .sidebar {
     width: 100%; }

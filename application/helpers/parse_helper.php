@@ -1,4 +1,20 @@
-<?php 
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
+/**
+ * NodePrint
+ *
+ * Simple and Elegant Forum Software
+ *
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
+ */
+
+
 function parseurl($url, $text, $scheme) {
 	global $_G;
 	if(!$url && preg_match("/((https?|ftp|gopher|news|telnet|rtsp|mms|callto|bctp|thunder|qqdl|synacast){1}:\/\/|www\.)[^\[\"']+/i", trim($text), $matches)) {

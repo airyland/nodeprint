@@ -2,6 +2,7 @@
     font-size: 14px;
     line-height: 1.6;
 	margin:0 15px;
+    padding-bottom:20px;
 }
 .markdown-body ul{
 	list-style:square;

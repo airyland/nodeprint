@@ -4,6 +4,7 @@
 .topic-list {
   clear: both;
   li {
+    cursor:pointer;
     padding: 10px 15px;
     border-bottom: 1px solid #ececec;
     overflow: hidden;
@@ -18,13 +19,7 @@
         background: $vivid;
       }
     }
-	&:active{
-	  background:$vivid;
-	  a{
-		color:#fff;
-		text-shadow:none;
-	  }
-	}
+
   }
   img {
     float: left;

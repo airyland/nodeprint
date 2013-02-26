@@ -1,7 +1,7 @@
 {include file="header.html"}
 <div class="content">
     <section class="box">
-        <h2><span class="title">{$u.user_name} 创建的帖子</span></h2>
+        <h2><span class="title">{$u.user_name} {$_['created topics']}</span></h2>
         {include file="topic_list.html" show_avatar=false}
     </section>
     {include file="pagination.html"}

@@ -44,7 +44,7 @@
                 </div>
                  <span class="floor">{*#*}{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$smarty.section.cm.total-$smarty.section.cm.index}{else}{$smarty.section.cm.index+1}{/if}</span> 
                     <a class="reply" title="{$_.reply}" href="#" data-router="false" data-id="{$cm[cm].cm_id}" data-username="{$cm[cm].user_name}">{$_.reply}</a>
-			{if $t.user_id===$cm[cm].user_id}<div class="is-author"><span>{$_['lz']}</span></div>{/if}
+			{if $t.user_id===$cm[cm].user_id}<div class="is-author"></div>{/if}
             </li>
             {/section}
             {else}

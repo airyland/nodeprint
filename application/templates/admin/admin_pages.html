@@ -1,41 +1,62 @@
 {include file="header.html"}
-{include file="admin/admin_nav.html"}
-<div class="content admin-content">
-  
+{include file="admin/admin_nav.html" small=1}
+<link rel="stylesheet" href="http://static.seedit.com/open/codemirror/lib/codemirror.css">
+<script src="http://static.seedit.com/open/codemirror/lib/codemirror.js"></script>
+<script src="http://static.seedit.com/open/codemirror/lib/util/matchbrackets.js"></script>
+<script src="http://static.seedit.com/open/codemirror/lib/util/formatting.js"></script>
+<script src="http://static.seedit.com/open/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<link rel="stylesheet" href="http://static.seedit.com/open/codemirror/theme/monokai.css">
+<script src="http://static.seedit.com/open/codemirror/mode/xml/xml.js"></script>
+<script src="http://static.seedit.com/open/codemirror/mode/javascript/javascript.js"></script>
+<script src="http://static.seedit.com/open/codemirror/mode/css/css.js"></script>
+<script src="http://static.seedit.com/open/codemirror/mode/clike/clike.js"></script>
+<script src="http://static.seedit.com/open/codemirror/mode/php/php.js"></script>
+<script src="http://static.seedit.com/open/codemirror/lib/util/loadmode.js"></script>
+<div class="content admin-content" style="width:90%;">
     <section class="box">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>标题</th>
-                    <th>最后时间</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>标题</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
-                {foreach from=$files item=file}
-                <tr>
-                    <td><a href="/t/">{$file.name}</a></td>
-                    <td>{time_ago time=$file.time}</td>
-                    <td></td>
-                    <td></td>
-                    <td><a href="/api/post/?do=delete" class="do-topic-delete">删除</a></td>
-                </tr>
-                {/foreach}
+            {foreach from=$pages item=page}
+            <tr>
+                <td><a href="/page/{$page.user_name}" rel="external">{$page.post_title}</a></td>
+                <td>{time_ago time=$page.post_time}</td>
+                <td></td>
+                <td></td>
+                <td><a href="/admin/pages/edit?id={$page.post_id}">编辑</a><a href="/api/post/?do=delete"
+                                                                            class="do-topic-delete">删除</a></td>
+            </tr>
+            {/foreach}
             </tbody>
         </table>
     </section>
 
     <section class="box">
         <h2><span class="title">添加页面</span></h2>
-        <form id="page-form" class="form" action="/api/page/add" method="post">
+
+        <form id="page-form" class="form page_form" action="/api/page/add" method="post">
             <ul>
                 <li>
-                    <label for="slug">文件名</label>
-                    <input type="text" id="slug" name="page[page_slug]" value="" required />
+                    <label for="title">页面标题</label>
+                    <input type="hidden" name="page[post_type]" value="page">
+                    <input type="text" id="title" name="page[post_title]" value="" required/>
+                </li>
+                <li>
+                    <label for="slug">页面地址</label>
+                    <input type="text" id="slug" name="page[user_name]" value="" required/>
                 </li>
                 <li>
                     <label for="content">内容</label>
-                    <textarea id="content" name="page[page_md_content]"></textarea>
+                    <textarea id="content" name="page[post_content]">
+                        <h1 class="title">关于</h1>
+{$pages[0]['post_content']}
+                    </textarea>
                 </li>
                 <li><label>&nbsp;</label>
                     <input type="submit" class="vivid-button" id="add-page-btn" value="{$lang.add}">
@@ -44,4 +65,48 @@
         </form>
     </section>
 </div>
+<script>
+    function isFullScreen(cm) {
+        return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
+    }
+    function winHeight() {
+        return window.innerHeight || (document.documentElement || document.body).clientHeight;
+    }
+    function setFullScreen(cm, full) {
+        var wrap = cm.getWrapperElement();
+        if (full) {
+            wrap.className += " CodeMirror-fullscreen";
+            wrap.style.height = winHeight() + "px";
+            document.documentElement.style.overflow = "hidden";
+        } else {
+            wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+            wrap.style.height = "";
+            document.documentElement.style.overflow = "";
+        }
+        cm.refresh();
+    }
+    CodeMirror.on(window, "resize", function () {
+        var showing = document.body.getElementsByClassName("CodeMirror-fullscreen")[0];
+        if (!showing) return;
+        showing.CodeMirror.getWrapperElement().style.height = winHeight() + "px";
+    });
+    var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
+        lineNumbers:true,
+        theme:"monokai",
+        matchBrackets:true,
+        mode:"application/x-httpd-php",
+        indentUnit:4,
+        indentWithTabs:true,
+        enterMode:"keep",
+        tabMode:"shift",
+        extraKeys:{
+            "F11":function (cm) {
+                setFullScreen(cm, !isFullScreen(cm));
+            },
+            "Esc":function (cm) {
+                if (isFullScreen(cm)) setFullScreen(cm, false);
+            }
+        }
+    });
+</script>
 {include file="footer.html"}

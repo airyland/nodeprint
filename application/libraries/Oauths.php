@@ -1,9 +1,20 @@
-<?php  !defined('BASEPATH') && exit('No direct script access allowed');
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
 /**
- * Oauth library
- * @author airyland <i@mao.li>
- * @version 0.5
+ * NodePrint
+ *
+ * Simple and Elegant Forum Software
+ *
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
  */
+
+
 if (!function_exists('curl_init')) {
     throw new Exception('oauth2 needs the CURL PHP extension.');
 }

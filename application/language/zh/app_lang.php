@@ -34,7 +34,7 @@ $lang["captcha"] = "验证码";
 $lang["usernameTip"] = "数字、中文、英文字符，不能为纯数字或者特殊符号，至少3个字符。";
 $lang["emailTip"] = "请使用真实邮箱注册，忘记密码可通过邮箱找回";
 $lang["captchaTip"] = "请输入5位验证码，不区分大小写";
-$lang["update"] = "更改";
+$lang["update"] = "更新";
 $lang["website"] = "个人网站";
 $lang["location"] = "所在地";
 $lang["sign"] = "签名";
@@ -85,6 +85,12 @@ $lang['ad'] = '广告投放';
 $lang['explore nodes'] = '浏览节点';
 $lang['choose a node'] = '请选择一个节点发贴：';
 $lang['created topics'] = '创建的帖子';
+$lang['preview'] = '预览';
+$lang['content'] = '内容';
+$lang['title'] = '标题';
+$lang['no original topic content'] = '该帖子没有原始内容，因此更新时内容不会重新解析';
+$lang['edit topic'] = '编辑帖子';
+$lang['cancel']= '取消';
 
 
 /* End of file app_lang.php */

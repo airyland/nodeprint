@@ -1,8 +1,23 @@
-<?php !defined('BASEPATH') && exit('No direct script access allowed');
+<?php
+
+!defined('BASEPATH') && exit('No direct script access allowed');
+/**
+ * NodePrint
+ *
+ * Simple and Elegant Forum Software
+ *
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
+ */
+
 
 /**
  * rss generater
- * @todo 添加帖子评论rss 添加用户帖子rss 网站帖子更新rss 网站最新帖子rss
+ * 
  */
 class Rss extends CI_Controller {
 

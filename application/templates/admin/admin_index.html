@@ -1,8 +1,51 @@
 {include file="header.html"}
+  <script src="https://www.google.com/jsapi"></script>
+  <script src="/js/plugin/gadash.js"></script>
+  <script src="https://apis.google.com/js/client.js?onload=gadashInit"></script>
+   {literal}
+  <script>
+    // Configure these parameters before you start.
+    var API_KEY = 'AIzaSyCdZAjcMEHUNDV4AZl0nq_Pabc-ii2PshQ';
+    var CLIENT_ID = '982792199846.apps.googleusercontent.com';
+    var TABLE_ID = 'ga:59154834';
+    // Format of table ID is ga:xxx where xxx is the profile ID.
+
+    gadash.configKeys({
+      'apiKey': API_KEY,
+      'clientId': CLIENT_ID
+    });
+
+    // Create a new Chart that queries visitors for the last 30 days and plots
+    // visualizes in a line chart.
+    var chart1 = new gadash.Chart({
+      'type': 'LineChart',
+      'divContainer': 'visitors',
+      'last-n-days':30,
+      'query': {
+        'ids': TABLE_ID,
+        'metrics': 'ga:visitors',
+        'dimensions': 'ga:date'
+      },
+      'chartOptions': {
+        width:750,
+        height:300,
+        colors:['#e82a73','blue'],
+        title: '一个月内访问量',
+        hAxis: {title:'',baselineColor:'#cccccc'},
+        vAxis: {title:'',baselineColor:'#cccccc'},
+        curveType: 'function'
+      }
+    }).render();
+    </script>
+     {/literal}
 {include file="admin/admin_nav.html"}
 <div class="content admin-content">
     <section class="box">
         <h2><span class="title">概况</span></h2>
+          <!-- Add Google Analytics authorization button -->
+  <button id="authorize-button" style="visibility: hidden">
+        Authorize Analytics</button>
+        <div id='visitors' style="left:-60px;"></div>
         <ul class="status">
             <li><strong>{$s.user_no}</strong>用户数</li>
             <li><strong>{$s.node_no}</strong>节点数</li>

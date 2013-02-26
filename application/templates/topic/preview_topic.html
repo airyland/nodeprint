@@ -1,5 +1,4 @@
 {include file="header.html"}
-
 <div class="content">
     <div class="article-box">
         <nav class="breadcrumb">
@@ -23,76 +22,48 @@
                 </ul>
             </footer>
         </article>
-
-
     </div>
-
     <div class="box">
         <span class="title"><strong id="post-comment-no" class="vivid-notice">{$t.post_comment_no}</strong> {$_.replies} {if $t.post_comment_no neq 0} |  {$_.until} {time_ago time=$t.post_last_comment}{/if}</span>
         <span class="cm-order"><a href="/t/{$t.post_id}?order={if isset($smarty.get.order)&&$smarty.get.order eq desc}asc{else}desc{/if}">{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$_.olderReplyFirst}{else}{$_.newerReplyFirst}{/if}</a></span>
         <ul class="cm-list">
             <li id="no-reply">暂时没有回复。</li>
         </ul>
-        {include file="pagination.html" with_box=false}
     </div>
-
-            <div class="box post-box cm-box">
-                <h4 class="title">{$_.addReply}</h4>
-                <a class="back-to-top" href="/t/{$t.post_id}#body" title="{$_.backToTop}"><span class="up-arrow">&uarr;</span>{$_.backToTop}</a>
-                {if $is_login}
-                 <div class="icon-list">
-                        <ul>
-                            {if $local_upload==='1'}<li><span class="icon" title="上传图片">&#128228;</span></li>{/if}
-                            <li><span class="icon" id="JS-add-pic" title="添加外链图片">&#128247;</span></li> 
-                            <li><span class="icon" id="JS-add-link" title="添加链接">&#128279;</span></li>
-                        </ul>{if $local_upload==='1'}
-                        <input type="file" name="file" id="file-upload" accept="image/*" title="上传图片" disabled>
-                        {/if}
-                </div>
-                <form action="api/comment/add" method="post" id="cm-form">
-                    <input type="hidden" name="post-author" value="{$t.user_name}" disabled>
-                    <input type="hidden" name="post-id" value="{$t.post_id}" disabled/>
-                    <input type="hidden" name="cm-reply-to" id="cm-reply-to" value="0" disabled/>
-                    <input type="hidden" name="cm-reply-name" id="cm-reply-name" value="" disabled/>
-                    <textarea name="cm-content" id="cm-box"></textarea>                                      
-                    <input type="submit" value="{$_.send}" class="button" id="cm-button" disabled/>
-                    <small>Ctrl+Enter</small>
-
-                    <div id="preview">
-                        <ul></ul>
-                    </div>
-
-
-                    <ul class="post-tip">
-                        <li><p>不支持html标签，UBB代码</p></li>
-                        <li><p>链接、图片请直接粘贴地址</p></li>
-                        <li><p>视频请粘贴播放页地址，支持优酷，土豆</p></li>
-                        <li><p>支持@用户，提及管理员请@admin 或者 @airyland</p></li>
-                        <!--<li><p>邮件地址会被自动替换@为#</p></li>-->
-                    </ul>
-
-                    <span class="box-footer">{$_.replyTip}</span>
-                </form>
-                {else}
-                {include file="login_box.html" showtitle=false}
+    <div class="box post-box cm-box">
+        <h4 class="title">{$_.addReply}</h4>
+        <a class="back-to-top" href="/t/{$t.post_id}#body" title="{$_.backToTop}"><span class="up-arrow">&uarr;</span>{$_.backToTop}</a>
+        {if $is_login}
+         <div class="icon-list">
+                <ul>
+                    {if $local_upload==='1'}<li><span class="icon" title="上传图片">&#128228;</span></li>{/if}
+                    <li><span class="icon" id="JS-add-pic" title="添加外链图片">&#128247;</span></li> 
+                    <li><span class="icon" id="JS-add-link" title="添加链接">&#128279;</span></li>
+                </ul>{if $local_upload==='1'}
+                <input type="file" name="file" id="file-upload" accept="image/*" title="上传图片" disabled>
                 {/if}
-            </div>
-</div>
-
-<div class="sidebar">
-        {include file="profile_box.html"}
-        {if $is_admin}
-        <section class="box">
-            <h3>操作</h3>
-            <ul class="list">
-                <li><a href="/t/{$t.post_id}/edit">修改</a></li>
-                <li><a href="api/post/{$t.post_id}/?do=delete" id="do-delete">删除</a></li>
-                <li><a href="api/post/{$t.post_id}/?do=transfer" data-id="{$t.post_id}" data-node="{$t.node_slug}" id="do-transfer">移动帖子</a></li>
-                <li><a href="/api/post/{$t.post_id}/?do=up">up</a></li>
-                <li><a href="/api/post/{$t.post_id}/?do=down">down</a></li>
-                <li>说明：上面up和down主要是为了实现后期可能需要的帖子首页权重排名</li>
+        </div>
+        <form action="api/comment/add" method="post" id="cm-form">
+            <input type="hidden" name="post-author" value="{$t.user_name}" disabled>
+            <input type="hidden" name="post-id" value="{$t.post_id}" disabled/>
+            <input type="hidden" name="cm-reply-to" id="cm-reply-to" value="0" disabled/>
+            <input type="hidden" name="cm-reply-name" id="cm-reply-name" value="" disabled/>
+            <textarea name="cm-content" id="cm-box"></textarea>                  
+            <input type="submit" value="{$_.send}" class="button" id="cm-button" disabled/>
+            <ul class="post-tip">
+                <li><p>不支持html标签，UBB代码</p></li>
+                <li><p>链接、图片请直接粘贴地址</p></li>
+                <li><p>视频请粘贴播放页地址，支持优酷，土豆</p></li>
+                <li><p>支持@用户，提及管理员请@admin 或者 @airyland</p></li>
             </ul>
-        </section>
+            <span class="box-footer">{$_.replyTip}</span>
+        </form>
+        {else}
+        {include file="login_box.html" showtitle=false}
         {/if}
     </div>
-    {include file="footer.html"}
+</div>
+<div class="sidebar">
+    {include file="profile_box.html"}
+</div>
+{include file="footer.html"}

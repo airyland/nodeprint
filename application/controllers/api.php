@@ -1,20 +1,20 @@
-<?php
+<?php 
 
 !defined('BASEPATH') && exit('No direct script access allowed');
 /**
  * NodePrint
  *
- * 基于HTML5及CSS3的轻论坛程序
- * 
- * NodePrint is an open source BBS System built on PHP and MySQL.
+ * Simple and Elegant Forum Software
  *
- * @package	NodePrint
- * @author		airyland <i@mao.li>
- * @copyright	Copyright (c) 2012, mao.li.
- * @license                  MIT
- * @link		https://github.com/airyland/nodeprint
- * @version	0.0.5
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
  */
+
+
 /**
  * Api Controller
  * @author airyland <i@mao.li>
@@ -1138,27 +1138,25 @@ class Api extends CI_Controller {
     }
 
     function page($action = '') {
+        $this->auth->check_admin();
         $this->load->model('pages');
         $this->load->library('form_validation');
         switch ($action) {
+            /**
+            * add one page
+            */
             case 'add':
                 $page = $this->input->post('page');
-                //   if($this->pages->add_page($page)==1){
-                //      echo 'slug重复';
-                //  }
-                $this->form_validation->set_rules('page[page_title]', '标题', 'required|min_length[5]|xss_clean|trim');
-                $this->form_validation->set_rules('page[page_slug]', 'slug', 'required|xss_clean|trim|is_unique[vx_page.page_slug]');
-                $this->form_validation->set_rules('page[page_md_content]', '内容', 'required|xss_clean|trim');
-                if ($this->form_validation->run()) {
+                $this->form_validation->set_rules('page[post_title]', '标题', 'required|min_length[5]|xss_clean|trim');
+                $this->form_validation->set_rules('page[user_name]', 'slug', 'required|xss_clean|trim|is_unique[post.user_name]');
+                $this->form_validation->set_rules('page[post_content]', '内容', 'required|xss_clean|trim');
+               if ($this->form_validation->run()) {
                     $this->pages->add_page($page);
                 } else {
                     echo validation_errors();
                 }
                 break;
-            /**
-             * Markdown 书写预览
-             *
-             */
+
             case 'preview':
                 $this->auth->check_login();
                 $this->load->library('Markdown');
@@ -1168,6 +1166,12 @@ class Api extends CI_Controller {
 
             case 'edit':
                 show_404();
+                break;
+
+            case 'delete':
+                $id=$this->input->post('id');
+                $this->db->delete('post',array('post_id'=>$_id));
+                return true;
                 break;
         }
     }

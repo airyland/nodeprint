@@ -30,5 +30,5 @@ img/captcha/*.jpg
 /oauth
 /application/config/oauth.php
 /application/controllers/test.php
-/img/fm/
-/img/seedit/
+/data
+/phpmyadmin

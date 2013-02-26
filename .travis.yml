@@ -1,10 +1,17 @@
 language: php
+
 php:
   - 5.3
   - 5.4
+
+env:
+  - DB=mysql
+
 notifications:
   email:false
+
 before_script:
   - mysql -e 'create database np;'
+
 script:
   - php ./application/test/test.php

@@ -2,7 +2,7 @@
  * Router core
  */
 
-var doc = doc || document,
+var doc = doc || document, 
     win = win || window,
     $doc = $doc || $(doc),
     host = doc.location.host,
@@ -14,7 +14,7 @@ var doc = doc || document,
         options || (options = {});
         if(options.routes) this.routes = options.routes;
         this.options = options;
-        this.options['bootstrap'] && this.options['bootstrap']();
+        this.options['bootstrap'] && this.options['bootstrap'](); 
         this.loading = $(this.options['loading']);
         this.initialize.apply(this, arguments);
     };

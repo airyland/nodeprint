@@ -1,4 +1,18 @@
 <?php
+/**
+ * NodePrint
+ *
+ * Simple and Elegant Forum Software
+ *
+ * @package         NodePrint
+ * @author          airyland <i@mao.li>
+ * @copyright       Copyright (c) 2013, mao.li
+ * @license         MIT
+ * @link            https://github.com/airyland/nodeprint
+ * @version         0.0.5
+ */
+
+
 define('IN_NODEPRINT',1);
 define('ENVIRONMENT', 'development');
 if (defined('ENVIRONMENT')) {
@@ -60,3 +74,4 @@ if (is_dir($application_folder)) {
 }
 require_once(APPPATH.'helpers/bootstrap_helper.php');
 require_once BASEPATH . 'core/CodeIgniter.php';
+

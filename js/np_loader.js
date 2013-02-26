@@ -111,8 +111,13 @@ NP.use = function(module, callBack) {
 	$.include(module, callBack);
 }
 
-NP.config={
+NP.chainUse = function(module,callBack) {
+	$.chainclude(module, callBack);
+}
 
+NP.config={
+	log:true,
+	widgetCache:60000
 }
 
 NP.run=function(){
