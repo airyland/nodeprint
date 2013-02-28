@@ -1,3 +1,6 @@
 [submodule "application/tests"]
 	path = application/tests
 	url = git://github.com/redvel/PHPUnit-for-CodeIgniter.git
+[submodule "application/libraries/NPauth"]
+	path = application/libraries/NPauth
+	url = git@github.com:airyland/NPauth.git
