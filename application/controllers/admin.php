@@ -154,7 +154,7 @@ class Admin extends CI_Controller {
                         'page_bar' => $this->dpagination->page_bar,
                         'single_page'=>$this->dpagination->is_single_page
                     ));
-                    $this->s->display('admin/topics.html');
+                    $this->s->display('admin/admin_topics.html');
                 } else {
                     echo 'node edit';
                 }

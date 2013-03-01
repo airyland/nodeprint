@@ -18,11 +18,11 @@
 /**
  * Account Controller
  *
- * @package        NodePrint
- * @subpackage     Controller
+ * @package         NodePrint
+ * @subpackage      Controller
  * @category        Account Controller
- * @author            airyland <i@mao.li>
- * @link             http://github.com/airyland/nodeprint
+ * @author          airyland <i@mao.li>
+ * @link            http://github.com/airyland/nodeprint
  */
 class Account extends CI_Controller
 {
