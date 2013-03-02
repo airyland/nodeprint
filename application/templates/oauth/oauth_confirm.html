@@ -1,0 +1,32 @@
+{include file="header.html"}
+        <div class="single-column" id="content">
+            <div class="signle-box-wrap">
+                <div class="box oauth">
+                    <div class="oauth-confirm">
+                    <h2>尚未在本站注册</h2>
+                    <img src="{$avatar}" class="avatar" alt="">
+                        <form action="/oauth/create_account" method="post">
+                            <label for="name">请确定您在本站的用户名</label>
+                            <input type="text" name="user_name" id="name" value="{$user_name}">
+                            {if !$is_unique}<small>抱歉，该用户名已被其他用户使用，请重新填写一个</small>{/if}
+                            <input type="submit" class="vivid-button" value="{$_['signup']}">
+                        </form>
+                        <p>sdkfsdfdsfsdfsdfsdfdsf</p>
+                    </div>
+
+
+                    <div class="oauth-bind">
+                        <h2>已经注册，绑定账号</h2>
+                        <form action="/oauth/do_join" method="post">
+                            <label for="user_name">用户名</label>
+                            <input name="user_name" id="user_name" type="text">
+                            <label for="user_pwd">密码</label>
+                            <input name="user_pwd" id="user_pwd" type="password">
+                            <input type="submit" class="vivid-button" value="绑定">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{include file="footer.html"}
