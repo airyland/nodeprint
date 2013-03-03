@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="/css/reset.css" />
         <link rel="stylesheet" href="/css/style.css" />
         <link rel="stylesheet" href="/js/plugin/dialog/skins/twitter.css" />
-        <script type="text/javascript" src="/js/plugin/jquery-1.7.2.min.js"></script>
     </head>
     <body id="body" {if $is_mobile}class="mobile"{/if}>
         <header id="header">
@@ -41,7 +40,7 @@
                             </ul>
                         </li>
                   {else}<li><a href="/signup" id="signup-btn" title="{$lang.signup}">{$lang.signup}</a></li>
-                        <li><a href="/signin" id="signin-btn" title="{$lang.signin}" data-router="false">{$lang.signin}</a></li>
+                        <li><a href="/signin" id="signin-btn" title="{$lang.signin}"{if !$is_mobile} data-router="false"{/if}>{$lang.signin}</a></li>
                        {/if}
                     {/nocache}
                     {/if}

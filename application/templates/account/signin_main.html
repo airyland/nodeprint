@@ -1,0 +1,21 @@
+ <div class="box">
+    <h2><span class="title">{$lang.signin}</span></h2>
+    <form action="api/user/signin" method="post" class="register-form form">
+        <ul>
+            <li>
+                <label for="user-name">{$lang.username}</label>
+                <input type="text" name="user-name" id="user-name" required/>
+                {if isset($smarty.get.error) && $smarty.get.error eq 1}<span class="error">invalid username or email</span>{/if}
+                <small>{$lang.loginUsernameTip}</small>
+            </li>
+            <li>
+                <label for="user-pwd">{$lang.pwd}</label>
+                <input type="password" name="user-pwd" id="user-pwd" required/>
+                {if isset($smarty.get.error) && $smarty.get.error eq 2}<span class="error">wrong password</span>{/if}
+            </li>
+            <li>
+                <input type="submit" class="button vivid-button" value="{$lang.signin}" />
+            </li>
+        </ul>
+    </form>
+</div>
