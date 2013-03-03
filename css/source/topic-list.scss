@@ -42,7 +42,7 @@
 .topic-list li {
   p span {
     margin: 0 5px;
-    color: #ccc;
+    color: #999;
     &::before {
       content: "\2022";
       margin-right: 5px;
@@ -93,6 +93,7 @@ a {
     }
     &:hover {
       background: $vivid;
+      color:#fff;
     }
   }
   &.my-post {
@@ -106,14 +107,14 @@ a {
   }
   &.post-node {
     font-size: 12px;
-    color: #999;
-    padding: 0 5px 0 0;
+    color: #000;
+    margin: 0 10px 0 0;
     &:hover {
       color: #777;
     }
   }
   &.post-author {
-    color: #ccc;
+    color:  #888;
     &:hover {
       color: #385F8A;
     }

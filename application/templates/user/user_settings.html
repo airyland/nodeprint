@@ -1,5 +1,20 @@
 {include file="header.html"}
+{if $user_from}
 <div class="content">
+        <section class="box oauth-setting">
+        <p class="center-txt ">您使用的是<span class="vivid-txt">{$user_from}</span>账号登录，设定密码或邮箱后可以直接使用账号密码登录网站</p>
+        <form class="center-box normal-form">
+            <label for="password">密码</label>
+            <input class="txt-input" type="text" name="password" id="email">
+            <input class="small-submit" type="submit" value="提交">
+        </form>
+        <form class="center-box normal-form">      
+            <label for="email">邮箱</label>
+            <input class="txt-input" type="text" name="email" id="email">
+            <input class="small-submit" type="submit" value="提交">
+        </form>
+    </section>
+{/if}
     <section class="box">
         <h2><span class="title">{$lang.settings}</span></h2>
         <form action="/api/user/{$me.user_name}/?do=update" method="post" class="form">
@@ -61,7 +76,7 @@
         </form>
     </section>
 
-    {if !$me.other.from}
+    {if !$me.user_from}
     <section class="box" id="change_pwd">
         <h2><span class="title">{$lang.changePwd}</span></h2>
         <form action="/api/user/0/change_pwd" method="post" class="form">

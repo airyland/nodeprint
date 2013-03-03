@@ -52,6 +52,15 @@ class Avatar extends CI_Controller
 
         $headers = apache_request_headers();
         $mtime=filemtime($this->imgsrc);
+
+        if($this->input->get('t')){
+            header('Last-Modified: '.gmdate('D, d M Y H:i:s', $mtime).' GMT', true, 200);
+            header('Content-Length: '.filesize($this->imgsrc));
+            header('Content-Type: image/png');
+            echo $this->img2data();
+            exit;
+        }
+        
         if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) ==$mtime )) {
             // Client's cache IS current, so we just respond '304 Not Modified'.
             header('Last-Modified: '.gmdate('D, d M Y H:i:s', $mtime).' GMT', true, 304);
@@ -60,7 +69,7 @@ class Avatar extends CI_Controller
             header('Last-Modified: '.gmdate('D, d M Y H:i:s', $mtime).' GMT', true, 200);
             header('Content-Length: '.filesize($this->imgsrc));
             header('Content-Type: image/png');
-           echo $this->img2data();
+            echo $this->img2data();
         }
     }
 

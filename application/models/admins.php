@@ -33,7 +33,6 @@ class Admins extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->auth->check_admin();
     }
 
     /**
@@ -87,6 +86,7 @@ class Admins extends CI_Model {
     * manual backup database
     */
     public function manual_backup(){
+        $this->auth->check_admin();
         $filename=$this->get_filename();
         $this->backup($filename);
     }

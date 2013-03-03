@@ -169,9 +169,14 @@
     margin:0 5px;
   }
   a.post-title {
-    font-size: 14px;
-    line-height: 25px;
+    line-height:16px;
+    padding-right:10px;
+    margin-bottom:10px;
   }
+    .topic-item-main > p:nth-child(1) {
+      margin-bottom:8px;
+  }
+
   .topic-item-main > p:nth-child(2) {
       display: inline;
       margin-left: 0;
@@ -182,10 +187,32 @@
       height: 30px;
     }
   }
+  .topic-list {
+    img{
+      @include radius(2px);
+      margin-right:10px; 
+    }
+    li {
+      padding-left:10px;
+      &:hover {
+      border-color:$vivid;
+      background:$vivid;
+      color:#fff;
+        span{
+          color:#fff;
+        }
+        a{
+          color:#fff;
+          text-shadow:none;
+        }
+      }
+    }
+    
+  }
   .topic-list span.last-reply {
     top:50%;
     right:5px; 
-	margin-top:-8px;
+	  margin-top:-8px;
     padding: 0;
     #position: static;
     #display: inline;
@@ -197,16 +224,8 @@
 	}
 	}
   }
-  .topic-list li:hover > span a {
-    background-color: #f5f5f5;
-  }
-.topic-list li:active{
-	  background:$vivid;
-	  a{
-		color:#fff;
-		text-shadow:none;
-	  }
-	}
+
+
   a.post-cm-count,a.my-post {
     padding: 0;
     #background: #fff;

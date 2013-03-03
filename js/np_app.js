@@ -83,7 +83,7 @@ var options = {
         '/signin':'signin'
     },
     exclude: [document.location.host + '/admin'],
-    block: ['/messages/send'],
+    block: [],
     getHomeTab: {
         enter: function() {
             NPWidget.fetch('home');

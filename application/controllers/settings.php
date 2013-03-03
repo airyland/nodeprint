@@ -17,6 +17,14 @@
 
 class Settings extends CI_Controller {
 
+    private $service_map = array(
+        '' => '',
+        'douban' => '豆瓣',
+        'qq' => 'QQ',
+        'github' => 'Github',
+        'weibo' => '微博'
+        );
+
     function index() {
         global $lang;
         $this->auth->check_login();
@@ -29,7 +37,8 @@ class Settings extends CI_Controller {
             'lang' => $lang,
             'avatar' => get_avatar($user['user_id']),
             'gravatar' => 'http://www.gravatar.com/avatar/'.md5(strtolower(trim($user_info['user_email']))),
-            'timestamp' => time()
+            'timestamp' => time(),
+            'user_from' => $this->service_map[strtolower($user_info['user_from'])]
         ));
         $this->s->display('user/user_settings.html');
     }
