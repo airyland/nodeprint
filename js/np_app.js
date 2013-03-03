@@ -79,16 +79,18 @@ var options = {
         '/node/:slug/add': 'addTopic',
         '/node/:slug': 'singleNode',
         '/t/search/:key(?page=:page)': 'search',
-        '/messages(/?type=:type)': 'messages'
+        '/messages(/?type=:type)': 'messages',
+        '/signin':'signin'
     },
     exclude: [document.location.host + '/admin'],
-    block: ['/messages/send', '/signin'],
+    block: ['/messages/send'],
     getHomeTab: {
         enter: function() {
             NPWidget.fetch('home');
             $('.post-guide').hide();
 			NP.track('event','Home view ajax');
-        }
+        },
+        cache:50000
     },
     messages: {
         enter: function() {
@@ -134,7 +136,7 @@ var options = {
         leave: function() {
             $('#profile-box').show();
         },
-        cache: true
+        cache: 30000
     },
     editTopic:{
         enter:function(){
@@ -155,13 +157,13 @@ var options = {
     },
     singlePage: function(id, page) {
         NP.track('event', 'Page view ajax');
-        cache: true
+        cache: 200
     },
     chooseNode: {
 		enter:function(){
 		NP.track('event', 'Node chooseNode ajax');
 		},
-        cache: true
+        cache: 30000000
     },
     singleNode: {
         enter: function() {
@@ -170,6 +172,9 @@ var options = {
             NP.chainUse(['/js/plugin/jquery.jeditable.mini.js', 'js/np_admin.js']);
         },
         cache: 30000
+    },
+    signin: {
+
     }
 
 }
@@ -341,8 +346,8 @@ $(function() {
 $(function() {
 
     var signinDialog;
-
     $('#signin-btn,a[href="/signin"]').click(function(e) {
+        if(NPINFO.isMobile) return;
         var history = new NPHistory();
         e.preventDefault();
         var $content = $('#signin-template'),
@@ -731,7 +736,6 @@ $(function() {
 
 
 var trackMap = {
-    '#do-fav': 'topic fav a',
     '.track-sidebar-add-topic': 'Nav createTopic sidebar',
     '.track-home-add-topic': 'Nav createTopic content',
     '.home': 'Nav backHome nav',
@@ -742,7 +746,6 @@ var trackMap = {
     '.user-ad a': 'Ad click member',
 	'#JS_msg' :'Nav message',
 	'#JS_send_message':'Nav clickPm'
-
 };
 
 

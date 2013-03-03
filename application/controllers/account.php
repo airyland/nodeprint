@@ -118,38 +118,6 @@ class Account extends CI_Controller
                 show_404();
                 break;
 
-            case 'create_oauth_account':
-                sesstion_start();
-                $this->load->model('user');
-                //get user name
-                $user_name = $this->input->post('user_name');
-                //check user name
-                $is_unique_user_name =$this->check_user_name($user_name);
-                if(!$is_unique_user_name){
-                    die('the username has been used by other users');
-                }
-
-                $user_data =$_SESSION['user_data'];
-                $user_data['user_name']=$user_name;
-                $this->db->insert('user', $user_data);
-                $user_id = $this->db->insert_id();
-
-
-                $oauth= $_SESSION['token_data'];
-                $oauth['user_id']=$user_id;
-
-                $this->db->insert('oauth', $oauth);
-
-                if ($this->db->affected_rows() > 0) {
-                    $this->load->library('FetchAvatar');
-                    $this->fetchavatar->fetch($_SESSION['avatar'], 20, $user_id, TRUE);
-                    //login
-                    $this->user->_set_cookie($user_id, $user_name);
-                    redirect();
-            }
-
-                break;
-
             /**
              * account default page
              */
@@ -158,15 +126,6 @@ class Account extends CI_Controller
                 break;
         }
     }
-
-
-    function check_user_name($user_name)
-    {
-        $this->load->library('form_validation');
-        return $this->form_validation->is_unique($user_name, 'user.user_name');
-    }
-
-
 
 }
 

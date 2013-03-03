@@ -1,5 +1,5 @@
 <section class="login-box">
     {if !isset($showtitle)}<h2>{$site.name}</h2>{/if}
     <a href="/signup" class="register-button">{$lang.registerNow}</a>
-    <span>{$lang.beenMember}<a href="/signin" data-router="false" data-title="{$_['signin']}">{$lang.signin}</a></span>
+    <span>{$lang.beenMember}<a href="/signin"{if !$is_mobile} data-router="false"{/if} data-title="{$_['signin']}">{$lang.signin}</a></span>
 </section>
