@@ -139,14 +139,16 @@ $(function() {
 			return;
 		}
 	var $doFav = $('#do-fav'),
-		$count = $('#JS_fav_topic').find('.count-no').eq(0);
+        $count = $('#JS_fav_topic').find('.count-no').eq(0),
+        oCount=$count.text();
 		e.preventDefault();
 		if($(this).attr('class')!=='unfav-link'){
+			$count.text(parseInt(oCount)-1);
 			return;
 		}
-		var position = $doFav.offset();
-		var desPositon = $count.offset();
-		var $fav = $('<a class="fav-link" style="position:absolute;left:' + position.left + 'px;top:' + position.top + 'px;"/>').appendTo($('body'));
+		var position = $doFav.offset(),
+			desPositon = $count.offset(),
+			$fav = $('<a class="fav-link" style="position:absolute;left:' + position.left + 'px;top:' + position.top + 'px;"/>').appendTo($('body'));
 		$fav.show();
 		$fav.animate({
 			crSpline: $.crSpline.buildSequence([
@@ -157,7 +159,6 @@ $(function() {
 			duration: 20000
 		}, 1000, function(){
 			$fav.fadeOut().remove();
-			var oCount=$count.text();
 			$count.text(parseInt(oCount)+1);
 		});
 	});
