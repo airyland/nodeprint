@@ -183,18 +183,10 @@ NPRouter.prototype = {
             callback && callback.call(this);
         });
     },
-    showError: function(error) {
-        track('/view/404');
-        var _this = this,
-            $span = _this.loading.find('span').eq(0),
-            text = $span.text();
-        $span.text(error);
-        setTimeout(function() {
-            _this.hideLoading(function() {
-                $span.text(text);
-            });
-
-        }, 3000);
+    showError: function(url) {
+        if(this.options['fail']){
+            this.options['fail'].call(this, url);
+        }
     },
     fetch: function(url, callback, matchCallback) {
         var _this = this,
@@ -222,7 +214,7 @@ NPRouter.prototype = {
                 callback && callback.call(this, data);
             },
             error: function() {
-                _this.showError('页面不存在哦');
+                _this.showError(url);
             }
         });
     }

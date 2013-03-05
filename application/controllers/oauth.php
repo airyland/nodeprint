@@ -117,6 +117,9 @@ class Oauth extends CI_Controller
         show_404();
     }
 
+    function _remap(){
+        
+    }
 
 
 function create_account()
@@ -213,79 +216,7 @@ function create_account()
     function fail()
     {
 
-    }
-
-    function weibo(){
-        
-    }
-
-    function qq(){
-   /*     $this->load->library('QQ');
-        if(!$this->input->get('code')){
-            $this->qq->requestAuthorizeCode();
-        }
-        if($this->uri->segment(3)==='callback'){
-            $this->qq->setAuthorizeCode($this->input->get('code'));
-            $this->qq->requestAccessToken();
-        }*/
-    }
-
-
-
-    /**
-     * douban oauth sign in
-     */
-    function douban()
-    {
-        
-        /*$apikey = $this->get_apikey('douban');
-        $secret = $this->get_secret('douban');
-
-        // no authorizeCode，redirect to authorize
-        if (!isset($_GET['code'])) {
-            $this->oauth->requestAuthorizeCode();
-            exit;
-        }
-        //callback
-        if ($this->uri->segment(3) === 'callback') {
-            $this->oauth->setAuthorizeCode($_GET['code']);
-            $this->oauth->requestAccessToken();
-            //get user info now!
-            $_SESSION['user_info'] = $this->user_info = $info = JSON_decode($this->oauth->makeRequest('/v2/user/' . $_SESSION['user_id'], 'GET'), TRUE);
-            print_r($info);
-            print_r($this->user_info_parse());
-            //check oauth
-            if ($user_id = $this->check_oauth('douban', $info['id'])) {
-                $this->load->model('user');
-                $this->user->signin_by_uid($user_id);
-            } else { //oauth info not found, then forward
-                $_SESSION['location'] = $this->location = $info['loc_name'];
-                $this->user_name = $info['uid'];
-                $this->avatar = $info['avatar'];
-                $this->desc = $info['desc'];
-                $this->url = $info['alt'];
-                $this->openid = $info['id'];
-                // redirect to the user name confirm page
-                $this->load->library('s');
-                $this->s->assign(array(
-                    'title' => '使用豆瓣账号登录',
-                    'user_name' => $this->user_name,
-                    'avatar' => $this->avatar,
-                    'is_unique' => $this->check_user_name($this->user_name)
-                ));
-                $this->s->display('oauth/oauth_qq.html');
-            }
-        } else {
-            redirect('https://www.douban.com/service/auth2/auth?client_id=' . $appkey . '&redirect_uri=http://nodeprint.com/oauth/douban/callback&response_type=code&
-  scope=shuo_basic_r,shuo_basic_w,douban_basic_common');
-        }
-*/
-
-    }
-
-    function github(){
-
-    }
+    }  
 
     function twitter()
     {

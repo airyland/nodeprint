@@ -67,6 +67,11 @@ var options = {
         NP.track('event', 'View ajax');
         NP.track('page', url);
     },
+    fail: function(url){
+        NP.track('event','View 404 ' + url);
+        $('#loading').hide();
+        $.dialog({title:false,content:'页面不存在哦~'});
+    },
     routes: {
         '/#home': 'getHomeTab',
         '/?tab=:tab': 'getHomeTab',
