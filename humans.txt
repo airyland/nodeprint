@@ -12,11 +12,11 @@ Twitter:@livid
 website:http://v2ex.com
 
 /* SITE */
-Last update:2012/12/21
+Last update:Spring of 2013
 Language:English/Chinese
 Doctype:HTML5
 Tools:sublimetext2, FileZilla, Netbeans, Git, Bitbucket, Github, Chrome, IETester, Zencoding and Google
-Compatibility:Chrome, Firefox, IE9+
+Compatibility:Chrome, Firefox, IE9+, PhpStorm
 
 /* Liscence*/
 NodePrint is Licensed under MIT.
