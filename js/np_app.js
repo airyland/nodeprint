@@ -201,7 +201,7 @@ $(function() {
         var key = encodeURI($('#search').val().replace(/</g, '').replace(/>/g, '').replace(/\//g, '').replace(/\\/g, '')),
             url = '/t/search/' + key;
         app.getPage(url, key + '-search', true);
-        NP.track('event', 'Topic search ajax');
+        NP.track('event', 'Topic search ajax/'+key);
     });
 
     //save last login user name 
