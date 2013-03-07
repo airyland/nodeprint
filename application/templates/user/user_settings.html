@@ -1,7 +1,8 @@
 {include file="header.html"}
-{if $user_from}
 <div class="content">
-        <section class="box oauth-setting">
+    
+{if $user_from}
+    <section class="box oauth-setting">
         <p class="center-txt ">您使用的是<span class="vivid-txt">{$user_from}</span>账号登录，设定密码或邮箱后可以直接使用账号密码登录网站</p>
         <form class="center-box normal-form">
             <label for="password">密码</label>
@@ -15,6 +16,7 @@
         </form>
     </section>
 {/if}
+
     <section class="box">
         <h2><span class="title">{$lang.settings}</span></h2>
         <form action="/api/user/{$me.user_name}/?do=update" method="post" class="form">
