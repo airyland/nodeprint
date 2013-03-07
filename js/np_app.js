@@ -123,6 +123,7 @@ var options = {
         },
         leave: function() {
             $(window).unbind('scroll').unbind('resize');
+            $doc.off('click','#cm-button');
             if($.trim($('#cm-box').val()) !== '') {
                 if(!confirm('您确认要放弃已经输入的回复吗？')) {
                     NP.track('event', 'Reply keep');
