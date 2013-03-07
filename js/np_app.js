@@ -105,7 +105,7 @@ var options = {
 
     singleTopic: {
         enter: function() {
-            NP.use(['js/np_comment.js', 'js/plugin/at.js'], function() {
+            NP.use(['js/np_comment.js', 'js/np_topic.js', 'js/plugin/at.js'], function() {
                 var data = ['admin'],
                     $userNameNode = $('.cm-list>li>p>a.user-name');
                 authorName = $('.post-info .post_author>img').attr('alt');
@@ -122,6 +122,7 @@ var options = {
             NP.track('event','Topic view ajax');
         },
         leave: function() {
+            $(window).unbind('scroll').unbind('resize');
             if($.trim($('#cm-box').val()) !== '') {
                 if(!confirm('您确认要放弃已经输入的回复吗？')) {
                     NP.track('event', 'Reply keep');
@@ -154,8 +155,8 @@ var options = {
         }
     },
     singleMember: {
-        enter: function() {
-            NP.track('event', 'Member view ajax');
+        enter: function(url, name) {
+            NP.track('event', 'Member view ajax/' + name);
             NPWidget.fetch('member');
         }
 
@@ -202,6 +203,13 @@ $(function() {
             url = '/t/search/' + key;
         app.getPage(url, key + '-search', true);
         NP.track('event', 'Topic search ajax/'+key);
+    });
+
+    // click topic list item
+    $(document).on('click', '.topic-list>li', function (e) {
+        if (e.target.nodeName !== 'A') {
+            $(this).find('.post-title').trigger('click');
+        }
     });
 
     //save last login user name 

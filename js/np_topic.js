@@ -133,12 +133,7 @@ $(function () {
 });
 
 $(function () {
-    $(document).on('click', '.topic-list>li', function (e) {
-        if (e.target.nodeName !== 'A') {
-            $(this).find('.post-title').trigger('click');
-        }
-    });
-
+    
     // handle resize event
     $(window).resize($.throttle(1000, function() {
         if (document.location.hash === '#reply-area') {

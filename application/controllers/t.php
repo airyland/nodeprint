@@ -118,7 +118,7 @@ class T extends CI_Controller {
                 'fav' => $fav,
                 'local_upload' => $local_upload,
                 'page_bar' => $this->dpagination->page_bar,
-                'js' => array('np_comment.js'),
+                'js' => array('np_comment.js', 'np_topic.js'),
                 'plugin_topic_toolbar'=>$this->plugins->trigger('topic_toolbar',$id),
 				'single_page'=>$this->dpagination->is_single_page
                     )
