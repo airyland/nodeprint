@@ -76,6 +76,18 @@ var $commentBox = $('#cm-box'),
             this.t = setTimeout("comment.stillWorking()", 3000);
         },
 
+        tooFastCheck: function(){
+            var npCommentLastReply = store.get('np_comment_last_reply'),
+                now = +new Date();
+            if(npCommentLastReply){
+                if(now - npCommentLastReply<20000){
+                    this.showTip('您回复太快啦,请过会再试咯~');
+                    return true;
+                }
+                return false;
+            }
+        },
+
         // working tip after 3s of request
         stillWorking: function() {
             $('#processing-tip').slideDown();
@@ -95,10 +107,27 @@ var $commentBox = $('#cm-box'),
             if($('.floor:' + el).length > 0) return parseInt($('.floor:' + el).text()) + 1;
             return 1;
         },
+        showTip: function(msg){
+            var _this = this;
+            $('#reply-tip').text(msg);
+            setTimeout(function(){
+                _this.clearTip();
+            },3000);
+        },
+        clearTip: function(){
+            $('#reply-tip').text('');
+        },
         // make request 
         add: function() {
-            NP.track('event', 'Reply send' + $doc.data('replyBy') === 'hotkeys' ? ' ctrlEnter':'');
-            if(!this.filter()) return;
+            var _this = this;
+            NP.track('event', 'Reply send ' + ($doc.data('replyBy') === 'hotkeys' ? 'ctrlEnter':'button'));
+            $doc.data('replyBy','');
+            if(!this.filter()) {
+                return;
+            }
+            if(this.tooFastCheck()) {
+                return;
+            }
             var data = $('#cm-form').serialize();
             this.processing();
             var that = this;
@@ -109,13 +138,21 @@ var $commentBox = $('#cm-box'),
         //check if content is empty
         filter: function() {
             var content = $commentBox.val();
-            var that = this;
-            if(content === '' || $.trim(content) === '') {
-                $commentBox.css('borderColor', 'red');
-                $commentBox.focus();
+            if(content === '') {
+                this.showTip('亲，内容不能为空哦~');
+                this.showErrorStyle();
+                return false;
+            }
+            if($.trim(content) === ''){
+                this.showTip('亲，纯空格也不行哦~');
+                this.showErrorStyle();
                 return false;
             }
             return true;
+        },
+        showErrorStyle: function(){
+            $commentBox.css('borderColor', 'red');
+            $commentBox.focus();
         },
         // ajax retrieve 
         retrieve: function() {
@@ -151,7 +188,7 @@ var $commentBox = $('#cm-box'),
             $('#cm-reply-to').val('0');
             $('#cm-reply-name').val('');
             $('#preview').hide().find('ul').empty();
-
+            store.set('np_comment_last_reply',+new Date());
         },
         removeSuccessNotice: function() {
             $(this.button).val('send');
@@ -185,8 +222,7 @@ $(function() {
 
 $(function() {
     jQuery.hotkeys.add('ctrl+return', function(e) {
-        $doc.data('event', 'replyBy', 'hotkeys');
-        NP.track('event', 'Reply', 'send');
+        $doc.data('replyBy', 'hotkeys');
         comment.add();
     });
 });
