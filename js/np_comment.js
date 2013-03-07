@@ -109,8 +109,9 @@ var $commentBox = $('#cm-box'),
         },
         showTip: function(msg){
             var _this = this;
+            clearTimeout(this.tipTimeout);
             $('#reply-tip').text(msg);
-            setTimeout(function(){
+            this.tipTimeout = setTimeout(function(){
                 _this.clearTip();
             },3000);
         },
