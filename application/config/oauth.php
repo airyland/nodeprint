@@ -22,3 +22,7 @@ $config['np.oauth.facebook.secret']='a069e9ba45bebb25211a249ebf117445';
 
 $config['np.oauth.weibo.apikey']='1605330496';
 $config['np.oauth.weibo.secret']='899fadd78687700f72c3ca4e1b83deea';
+
+$config['np.oauth.readability.apikey'] = 'airyland';
+$config['np.oauth.readability.secret'] = 'J3gDvWkGceNEKrx7QKfsUrxFqd4GSCc6';
+$config['np.parser.readability.token'] = '15a6ca955601c00ab58f64786215a5249df9a8d4';

@@ -248,11 +248,10 @@ class Api extends CI_Controller {
             case 'signin':
                 $useremail = $this->input->post('user-name');
                 $userpwd = $this->input->post('user-pwd');
-                $is_ajax = $this->input->is_ajax_request();
                 list($error, $msg, $user_id, $user_name) = $this->user->login_user($useremail, $userpwd);
                 if ($error == 0) {
                     setcookie('NP_auth', authcode($user_id . "\t" . $user_name, 'ENCODE'), time() + 365 * 24 * 3600, '/');
-                    if (!$is_ajax) {
+                    if (!$this->is_ajax) {
                        if(strpos($this->from,'signin')){
                            redirect(base_url());
                        }else{
@@ -260,11 +259,10 @@ class Api extends CI_Controller {
                        }
                     }
                 } else {
-                    if (!$is_ajax) {
+                    if (!$thsi->is_ajax) {
                         redirect('/signin?error=' . $error);
                     }
                 }
-
                 json_output($error, 'data', array('message' => $msg));
 
                 break;
