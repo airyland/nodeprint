@@ -123,10 +123,9 @@ function get_random_string($length = 5)
  * generate a friendly date
  * @param date $sTime
  * @param string $type
- * @param string $alt
  * @return string
  */
-function friendlyDate($sTime, $type = 'normal', $alt = 'false')
+function friendlyDate($sTime, $type = 'normal')
 {
     $cTime = time();
     $dTime = $cTime - $sTime;
@@ -261,30 +260,12 @@ function get_lang()
     return $config['lang'];
 }
 
-if (!function_exists('mb_strlen')) {
-    function mb_strlen($str, $enc = '')
-    {
-        $counts = count_chars($str);
-        $total = 0;
-        // Count ASCII bytes
-        for ($i = 0; $i < 0x80; $i++) {
-            $total += $counts[$i];
-        }
-        // Count multibyte sequence heads
-        for ($i = 0xc0; $i < 0xff; $i++) {
-            $total += $counts[$i];
-        }
-        return $total;
-    }
-
-}
 
 /**
- * Shortcut function for ET::translate().
+ * shortcut translate function
  *
- * @see ET::translate()
  */
-function T($string, $default = false)
+function T($string)
 {
     $_ci = & get_instance();
     $_ci->lang->load('time', get_lang());
@@ -298,6 +279,7 @@ function T($string, $default = false)
  * @param string $string The string to translate (singular).
  * @param string $pluralString The string to translate (plurular).
  * @param int $amount The amount.
+ * @return string
  */
 function Ts($string, $pluralString, $amount)
 {
