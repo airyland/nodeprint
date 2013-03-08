@@ -1,3 +1,4 @@
 RewriteEngine on
 RewriteCond $1 !^(index\.php|humans.txt|data|wiki|np-content|phpmyadmin|robots.txt|favicon|css|js|img|application|favicon.ico)
 RewriteRule ^(.*)$ /index.php/$1 [L]
+ErrorDocument 403 /application/errors/error_403.php
