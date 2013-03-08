@@ -128,7 +128,7 @@ a.post-title {
   a.post-title:hover {
     color: #4D5256;
     text-decoration: underline;
-    text-shadow: 0 1px 0 white; }
+    text-shadow: 0 1px 0 #fff; }
 
 a.small-title {
   font-size: 12px; }
@@ -318,7 +318,7 @@ a.reply {
   width: 0;
   height: 0;
   line-height: 0;
-  border: 5px dashed black; }
+  border: 5px dashed #000; }
 
 .tipsy-arrow-n {
   border-bottom-color: #000; }
@@ -522,7 +522,7 @@ a.message-notice {
   position: fixed;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 10px #666666; }
+  box-shadow: 0 1px 10px #666; }
   #header h1 {
     text-indent: -9999px;
     width: 112px;
@@ -599,7 +599,7 @@ input[type='search'] {
   margin-top: 4px;
   padding-left: 10px;
   padding-right: 10px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   background: #ccc; }
   input[type='search']:hover {
     background: #ececec; }
@@ -659,7 +659,7 @@ input[type='search'] {
   margin: 0 auto;
   height: 100px;
   clear: both;
-  text-shadow: 0 1px 0 white; }
+  text-shadow: 0 1px 0 #fff; }
   #footer p {
     display: block;
     clear: both; }
@@ -678,7 +678,7 @@ input[type='search'] {
       color: gray;
       font-weight: bold;
       padding: 0 10px;
-      text-shadow: 0 1px 0 white; }
+      text-shadow: 0 1px 0 #fff; }
       #footer li a:hover {
         text-decoration: underline; }
 
@@ -754,7 +754,7 @@ input {
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  border: 1px solid #cccccc; }
+  border: 1px solid #ccc; }
   input:focus {
     border: 1px solid rgba(128, 128, 160, 0.6);
     -moz-box-shadow: 0px 0px 5px rgba(128, 128, 160, 0.5);
@@ -802,7 +802,7 @@ textarea:focus {
 .form input, .form textarea {
   padding: 3px;
   font-size: 14px;
-  border: 1px solid #cccccc;
+  border: 1px solid #CCC;
   width: 320px;
   border-radius: 3px;
   -moz-border-radius: 3px;
@@ -878,7 +878,7 @@ input:focus:-ms-input-placeholder {
   display: none; }
 
 /**
-* style.css
+* main.css
 * @author airyland <i@mao.li>
 */
 /* == global
@@ -1032,7 +1032,7 @@ span.more {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   /* Opera 10.5, IE9 */
   background-color: white;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   overflow: hidden;
   margin-bottom: 20px; }
 
@@ -1082,7 +1082,7 @@ small {
   height: 52px;
   display: block;
   margin: 0 auto;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1126,7 +1126,7 @@ small {
       -webkit-border-radius: 3px;
       padding: 4px 10px;
       font-size: 13px;
-      text-shadow: 0 1px 0 white; }
+      text-shadow: 0 1px 0 #fff; }
       .node-list li a:hover {
         background: #e4e4e4;
         color: #666; }
@@ -1206,7 +1206,7 @@ p.node-create-button {
     width: 550px;
     word-wrap: break-word;
     word-break: normal;
-    font-size: 20px;
+    font-size: 24px;
     line-height: 150%;
     font-weight: normal;
     color: #000;
@@ -1233,7 +1233,7 @@ p.node-create-button {
 
 .topic-footer {
   width: 100%;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eee;
   overflow: hidden; }
 
 .post-footer-bar {
@@ -1278,7 +1278,7 @@ p.node-create-button {
   color: #000; }
 
 span.email {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1310,7 +1310,7 @@ a.unfav-link {
   height: 120px;
   margin: 0 auto;
   display: block;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1323,7 +1323,7 @@ a.unfav-link {
   height: 120px;
   margin: 0 auto;
   display: block;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1585,7 +1585,7 @@ p.reply-message {
 input[type="search"] {
   width: 200px;
   background: #4b494a;
-  border: 1px solid #333333; }
+  border: 1px solid #333; }
 
 input.vivid-button, .vivid-button {
   background: #ed4e8b;
@@ -1714,7 +1714,7 @@ input.left-button {
 
 /* tab导航 */
 .ui-tab-trigger {
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #CCC;
   padding: 5px 10px 0;
   font-size: 0; }
 
@@ -1731,7 +1731,7 @@ input.left-button {
   box-shadow: 2px 0 3px rgba(0, 0, 0, 0.2), -1px 0 1px rgba(0, 0, 0, 0.1);
   outline-offset: -3px;
   /* firefox 阴影导致焦点框扩大 */
-  border-top: 3px solid whitesmoke;
+  border-top: 3px solid #F5F5F5;
   _position: relative;
   word-wrap: normal;
   white-space: nowrap; }
@@ -1789,7 +1789,7 @@ input.left-button {
   -webkit-transition: all 300ms ease-in;
   transition: all 300ms ease-in;
   color: #000;
-  border-bottom: 1px solid #dddddd; }
+  border-bottom: 1px solid #ddd; }
 
 .node-tip {
   min-height: 60px;
@@ -1799,7 +1799,7 @@ input.left-button {
   background: rgba(255, 255, 255, 0.9);
   z-index: 999;
   width: 200px;
-  border: 2px solid #cccccc;
+  border: 2px solid #ccc;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px; }
@@ -1842,7 +1842,7 @@ input.left-button {
   padding: 10px;
   border-top: 1px solid #ececec; }
   #preview img {
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     display: block;
     width: 50px;
     height: 50px; }
@@ -1958,7 +1958,7 @@ td strong {
   .oauth .oauth-confirm {
     width: 48%;
     float: left;
-    border-right: 1px solid #cccccc; }
+    border-right: 1px solid #ccc; }
     .oauth .oauth-confirm label {
       display: block;
       padding-bottom: 8px; }
@@ -1993,7 +1993,7 @@ td strong {
   display: none;
   margin-top: 18px;
   background: white;
-  border: 1px solid #dddddd;
+  border: 1px solid #DDD;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -2023,14 +2023,14 @@ td strong {
 #at-view ul li {
   display: block;
   padding: 5px 10px;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #DDD;
   cursor: pointer;
   color: #000;
   /* border-top: 1px solid #C8C8C8; */ }
   #at-view ul li img {
     vertical-align: middle;
     margin-right: 5px;
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px; }
