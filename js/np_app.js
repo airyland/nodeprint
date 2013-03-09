@@ -62,7 +62,7 @@ var options = {
             scrollTop: 0
         }, 'fast');
         $('#node-tip').hide();
-        $('.mobile .top, #home').attr('href', url.replace(/#.*?$/, '') + '#body');
+        $('.mobile .top, #back-to-top').attr('href', url.replace(/#.*?$/, '') + '#body');
         //track
         NP.track('event', 'View ajax');
         NP.track('page', url);
@@ -254,7 +254,7 @@ $(function() {
     $("a[rel='external']").attr('target', '_blank');
 
     //fix back to top link address when use <base> tag
-    $('.mobile .top, #home').attr('href', href + '#body');
+    $('.mobile .top, #back-to-top').attr('href', href + '#body');
 
     //tipsy
     $('.unfav-node').tipsy({
