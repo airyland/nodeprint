@@ -211,6 +211,7 @@ NPRouter.prototype = {
                 var data = NPCache.get('page::' + url, useCache);
                 if(data) {
                     callback.call(this, data);
+                    _this.onloading = false;
                     return;
                 }
             }
