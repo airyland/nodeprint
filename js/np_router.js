@@ -229,6 +229,7 @@ NPRouter.prototype = {
                 _this.onloading = false;
             },
             error: function() {
+                _this.onloading = false;
                 _this.showError(url);
             }
         });
