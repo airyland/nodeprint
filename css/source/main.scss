@@ -1105,6 +1105,14 @@ input.left-button{
   margin-left: 500px;
 }
 
+.short-topic-link, .short-node-link {
+  color:$vivid;
+  margin:0 5px;
+  &:hover{
+    color:darken($vivid,10%);
+  }
+}
+
 .long-ago-topic-tip {
   //background: #ffffc0;
   background:#FFF1B4;

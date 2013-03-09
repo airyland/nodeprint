@@ -1778,6 +1778,12 @@ input.left-button {
   left: 50%;
   margin-left: 500px; }
 
+.short-topic-link, .short-node-link {
+  color: #e82a73;
+  margin: 0 5px; }
+  .short-topic-link:hover, .short-node-link:hover {
+    color: #c9165b; }
+
 .long-ago-topic-tip {
   background: #FFF1B4;
   padding: 10px 15px;
