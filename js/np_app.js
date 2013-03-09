@@ -70,7 +70,7 @@ var options = {
     fail: function(url){
         NP.track('event','View 404 ' + url);
         $('#loading').hide();
-        $.dialog({title:false,content:'页面不存在哦~'});
+        $.dialog({title:false, cancel: false, content: '页面不存在哦~'});
     },
     routes: {
         '/#home': 'getHomeTab',
