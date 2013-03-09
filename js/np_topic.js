@@ -106,6 +106,14 @@ $(function () {
         if (NPINFO.isMobile) {
             return;
         }
+        var $this = $(this),
+            clickCount = $this.data('clickCount');
+        if(clickCount===undefined) clickCount = 0;
+        $this.data('clickCount',++clickCount);
+        if(++clickCount>6){
+            $.dialog({id: 'clickTip', title: false, content: '不要玩啦', cancel: false, time: 1});
+            return;
+        }
         var $doFav = $('#do-fav'),
             $count = $('#JS_fav_topic').find('.count-no').eq(0),
             oCount = $count.text();
