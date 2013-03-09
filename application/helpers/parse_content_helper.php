@@ -157,7 +157,6 @@ function _smart_link($match)
         if (!strpos($url, 'jpg')) {
             $e = '<a href="' . $url . '">' . $url . '</a>';
         }
-
         if (strpos($url, 'xiami')) {
             $id = substr($url, strrpos($url, '/') + 1);
             $e = '<p class="music-info">歌曲地址：<a href="' . $url . '" rel="external">' . $url . '</a><p><embed src="http://www.xiami.com/widget/0_' . $id . '/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"></embed>';
@@ -215,15 +214,15 @@ function auto_user_link($string)
 {
     $string = str_replace('@', ' @', $string) . ' ' . ' ';
     $url = base_url() . 'member/';
-    $string = preg_replace("/@(.*?)\s/", " @" . '<a class="at-member" href="' . $url . '\\1">\\1</a> ', $string);
+    $string = preg_replace("/@(.*?)\s/", " <span class=\"at-sign\">@</span>" . '<a class="at-member" href="' . $url . '\\1">\\1</a> ', $string);
     return $string;
 }
 
 function parse_short_site_link($string)
 {
     $string = ' ' . $string . ' ';
+    $string = preg_replace("/[\r\n]?\s?(\/node\/(.*?))([\r\n]|\s)+/", "<a class=\"short-node-link\" data-nid=\"\\2\" title=\"\\2\" href=\"" . "\\1\">" . "\\1" . "</a>", $string);
     $string = preg_replace("/[\r\n]?\s?(\/t\/(\d+))/", "<a class=\"short-topic-link\" data-tid=\"\\2\" href=\"" . "\\1\">" . "\\1" . "</a>", $string);
-    $string = preg_replace("/[\r\n]?\s?(\/node\/(.*?))\s+/", "<a class=\"short-node-link\" data-nid=\"\\2\" title=\"\\2\" href=\"" . "\\1\">" . "\\1" . "</a>", $string);
     return $string;
 }
 
@@ -240,3 +239,5 @@ function parse_content($text)
     return trim($text);
 }
 
+/* End of file parse_content_helper.php */
+/* Location: ./application/helpers/parse_content_helper.php */
