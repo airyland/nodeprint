@@ -60,7 +60,7 @@ class Site extends CI_Model {
     function get_site_status() {
         if (!$status = $this->cache->get('status')) {
             $status = $this->site_status();
-            $this->cache->save('status', json_encode($status, 600));
+            $this->cache->save('status', json_encode($status), 3600);
         } else {
             $status = json_decode($status, TRUE);
         }
