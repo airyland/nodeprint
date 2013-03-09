@@ -21,13 +21,25 @@ var doc = doc || document,
 
 
 NPRouter.prototype = {
+    onloading: false,
     initialize: function(options) {
         var _this = this;
         this.history = new NPHistory();
         $doc.on('click', 'a[data-router!=false]', function(e) {
+            if(_this.onloading){
+                e.preventDefault();
+                $.dialog({title: false, cancel: false, content: '您操作太快啦,等一会咯',time:2});
+                _this.onloading = false;
+                return;
+            }
             var href = this.href,
                 $this = $(this),
                 use_router = !$this.data('router') || $this.data('router') !== 'false';
+
+            if(doc.location.href === href){
+                e.preventDefault();
+                return;
+            }
 
             if(host !== this.host) {
                 this.target = '_blank';
@@ -58,12 +70,13 @@ NPRouter.prototype = {
                 }
             }
 
+            _this.onloading = true;
             // ini action 
             _this.options['init'] && _this.options['init']();
 
             //match
             if(use_router) {
-                var href = $(this).attr('href'),
+                var href = $this.attr('href'),
                     title = $this.data('title') ? $this.data('title') : $this.attr('title') ? $this.attr('title') : $this.text();
                 _this.match(href, title);
             }
@@ -212,6 +225,7 @@ NPRouter.prototype = {
             success: function(data) {
                 useCache && NPCache.set('page::' + url, data);
                 callback && callback.call(this, data);
+                _this.onloading = false;
             },
             error: function() {
                 _this.showError(url);
