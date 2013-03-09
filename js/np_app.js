@@ -77,7 +77,6 @@ var options = {
         '/?tab=:tab': 'getHomeTab',
         '/t/:id': 'singleTopic',
         '/t/:id/edit':'editTopic',
-        '/member/:name(/:category)(/?page=:page)': 'singleMember',
         '/page/:id/:page': 'singlePage',
         '/topic/:id': 'singleTopic',
         '/node(?for=:dofor)': 'chooseNode',
@@ -92,7 +91,6 @@ var options = {
     getHomeTab: {
         enter: function() {
             NPWidget.fetch('home');
-            $('.post-guide').hide();
 			NP.track('event','Home view ajax');
         },
         cache:50000
@@ -114,9 +112,9 @@ var options = {
                     return $(val).text();
                 }))));
                 $('#cm-box').atWho('@', {
-                    'data': data,
-                    'tpl': "<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
-                });
+                'data': data,
+                'tpl': "<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
+            });
             });
             NPWidget.fetch('topic');
             NP.track('event','Topic view ajax');
@@ -154,13 +152,6 @@ var options = {
         leave:function(){
             $('#profile-box').show();
         }
-    },
-    singleMember: {
-        enter: function(url, name) {
-            NP.track('event', 'Member view ajax/' + name);
-            NPWidget.fetch('member');
-        }
-
     },
     singlePage: function(id, page) {
         NP.track('event', 'Page view ajax');

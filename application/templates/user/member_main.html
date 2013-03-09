@@ -7,7 +7,7 @@
             <small>{#siteName#} 第  {$u.user_id}  号会员，加入于 {time_ago time=$u.user_register_time}</small>
         </p>
         <ul>
-            {if isset($u.other.douban) && $u.other.douban}<li>豆瓣:<a href="{$u.other.douban}/">{$u.other.douban}</a></li>{/if}
+            {if isset($u.other.douban) && $u.other.douban}<li>豆瓣:<a href="http://www.douban.com/people/{$u.other.douban}/" id="JS_douban" rel="external">{$u.other.douban}</a></li>{/if}
             {if $u.other.site}<li>blog:<a href="{{$u.other.site}}" rel="external">{{$u.other.site}}</a></li>{/if}
             {if $u.other.location}<li>location:{$u.other.location}</li>{/if}
             {if isset($u.other.weibo)&& $u.other.weibo}<li>微博:<a href="{$u.other.weibo}" rel="external">{$u.other.weibo}</a></li>{/if}

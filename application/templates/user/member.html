@@ -3,6 +3,21 @@
    {include file="user/member_main.html"}
 </div>
 <div class="sidebar">
-   {include file="widget/ad/member.html"}
+	{if isset($u.other.douban) and $u.other.douban}
+	<section class="box">
+		<h3>TA正在读的书</h3>
+		<div class="douban-book-list">
+			<script type="text/javascript" src="http://www.douban.com/service/badge/{$u.other.douban}/?show=dolist&amp;n=6&amp;columns=3&amp;picsize=small&amp;hidelogo=yes&amp;hideself=yes&amp;cat=book" ></script>
+		</div>
+	</section>
+
+	<section class="box">
+		<h3>TA读过的书</h3>
+		<div class="douban-book-list">
+			<script type="text/javascript" src="http://www.douban.com/service/badge/{$u.other.douban}/?show=collection&amp;n=6&amp;columns=3&amp;picsize=small&amp;hidelogo=yes&amp;hideself=yes&amp;cat=book" ></script>
+		</div>
+	</section>
+	{/if}
+    {include file="widget/member.html"}
 </div>
 {include file="footer.html"}
