@@ -32,7 +32,7 @@ class S extends Smarty {
         global $is_mobile;
         $current_user = get_user();
         //shoud set to FALSE on production env
-        $this->compile_check=TRUE;
+        $this->compile_check = SMARTY_COMPILE_CHECK;
         //$this->caching=FALSE;
         $this->setCaching(0);
 

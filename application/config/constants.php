@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-define('STATIC_DOMAIN','');
+
 /*
   |--------------------------------------------------------------------------
   | File and Directory Modes
@@ -45,18 +45,20 @@ define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
   | NodePrint setting
   |--------------------------------------------------------------------------
   |
-  |
+  | Site prefs. Do not change these settings if you don't know what they mean~
   |
  */
 
 
-define('NP_PREFIX', APPPATH);
-define('SMARTY_TEMPLATE_DIR', NP_PREFIX . '/templates');
-define('SMARTY_COMPILE_DIR', NP_PREFIX . '/cache/smarty/compile');
-define('SMARTY_CACHE_DIR', NP_PREFIX . '/cache/smarty/cache');
-define('SMARTY_CONFIG_DIR', NP_PREFIX . '/config');
+
+define('SMARTY_TEMPLATE_DIR', APPPATH . '/templates');
+define('SMARTY_COMPILE_DIR', APPPATH . '/cache/smarty/compile');
+define('SMARTY_CACHE_DIR', APPPATH . '/cache/smarty/cache');
+define('SMARTY_CONFIG_DIR', APPPATH . '/config');
+define('SMARTY_COMPILE_CHECK', ENVIRONMENT === 'development' ? TRUE : FALSE);
 
 define('NP_PLUGINS_DIR', 'application/plugins');
+define('NP_STATIC_DOMAIN','');
 
 
 /* End of file constants.php */
