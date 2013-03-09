@@ -466,6 +466,8 @@ a.reply {
       overflow: hidden;
       padding-bottom: 10px; }
       .profile-box li ul a {
+        width: 100%;
+        display: block;
         color: #999;
         font-size: 12px; }
       .profile-box li ul li {
