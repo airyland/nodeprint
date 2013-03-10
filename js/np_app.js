@@ -114,6 +114,9 @@ var options = {
                 $('#cm-box').atWho('@', {
                 'data': data,
                 'tpl': "<li data-value='${name}'><img src='/avatar/${name}/20'/> ${name}</li>"
+            }).atWho('node/',{
+                'data': store.get('node_slugs'),
+                'tpl': "<li data-value='${slug}'><span>${slug}</span> ${name}</li>"
             });
             });
             NPWidget.fetch('topic');

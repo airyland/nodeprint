@@ -20,13 +20,16 @@ $(function () {
     if (today !== lastNodeCacheSync) {
         $.log('sync begin');
         $.get('/api/nodes/list', function (data) {
+            var nodeSlugs = [];
             for (var i = 0, len = data['nodes'].length; i < len; i++) {
                 for (var j = 0, childLen = data['nodes'][i]['child_node'].length; j < childLen; j++) {
                     var node = data['nodes'][i]['child_node'][j];
                     store.set('/node/' + node['node_slug'], node);
+                    nodeSlugs.push({name: node['node_name'], slug: node['node_slug'] });
                 }
             }
             store.set('lastNodeCacheSync', today);
+            store.set('node_slugs', $.unique(nodeSlugs));
             $.log('sync end');
         }, 'json');
     } else {

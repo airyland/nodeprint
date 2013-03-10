@@ -44,6 +44,9 @@
 		border:1px solid #ccc;
 		@include radius(3px);
 	} 
+    span {
+        color:#ccc;
+    }
 }
 #at-view small {
     font-size: smaller;
