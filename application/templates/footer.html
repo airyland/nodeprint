@@ -34,9 +34,10 @@
         userName:"{$me.user_name}"
     },
     NPINFO={
-        name:"{$site.name}",
-        ga:"{$ga}",
-        isMobile:{if $is_mobile}true{else}false{/if} 
+        name: "{$site.name}",
+        ga: "{$ga}",
+        isMobile: {if $is_mobile}true{else}false{/if},
+        msgCheckInterval: {$msg_check_interval}
     }
 </script>
 <script type="text/javascript" src="/js/plugin/jquery-1.7.2.min.js"></script>
