@@ -22,7 +22,8 @@ class Settings extends CI_Controller {
         'douban' => '豆瓣',
         'qq' => 'QQ',
         'github' => 'Github',
-        'weibo' => '微博'
+        'weibo' => '微博',
+        'google' => 'Google'
         );
 
     function index() {

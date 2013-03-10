@@ -1,19 +1,23 @@
 {include file="header.html"}
 <div class="content">
     
-{if $user_from}
+{if $user_from and (!$me.user_email or !$me.user_pwd)}
     <section class="box oauth-setting">
-        <p class="center-txt ">您使用的是<span class="vivid-txt">{$user_from}</span>账号登录，设定密码或邮箱后可以直接使用账号密码登录网站</p>
+        <p class="center-txt ">您使用的是<span class="vivid-txt">{$user_from}</span>账号登录，设定{if !$me.user_pwd}密码{/if}{if !$me.user_email}邮箱{/if}后可以直接使用账号密码登录网站</p>
+        {if !$me.user_pwd}
         <form class="center-box normal-form">
             <label for="password">密码</label>
             <input class="txt-input" type="text" name="password" id="email">
             <input class="small-submit" type="submit" value="提交">
         </form>
+        {/if}
+        {if !$me.user_email}
         <form class="center-box normal-form">      
             <label for="email">邮箱</label>
             <input class="txt-input" type="text" name="email" id="email">
             <input class="small-submit" type="submit" value="提交">
         </form>
+        {/if}
     </section>
 {/if}
 

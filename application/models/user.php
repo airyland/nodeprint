@@ -62,7 +62,7 @@ class User extends CI_Model
     public function get_user_profile($user_name, $type = 'user_name')
     {
         $field = ($type == 'user_name') ? 'user_name' : 'user_id';
-        $rs = $this->db->select('user_id,user_from,user_email,user_name,user_register_time,user_email_confirm,user_email_confirm_sent,user_profile_info,user_site_info')
+        $rs = $this->db->select('user_id,user_pwd,user_from,user_email,user_name,user_register_time,user_email_confirm,user_email_confirm_sent,user_profile_info,user_site_info')
             ->where($field, $user_name)
             ->get('vx_user');
         if ($rs->num_rows() > 0) {

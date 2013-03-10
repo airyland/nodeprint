@@ -27,7 +27,7 @@ class Oauth extends CI_Controller
      * allow service
      * @var array
      */
-    protected $allow_service = array('douban', 'qq', 'weibo', 'github', 'twitter', 'create_account', 'bind_account', 'readability');
+    protected $allow_service = array('douban', 'qq', 'weibo', 'github', 'twitter', 'google', 'create_account', 'bind_account', 'readability');
 
     /**
      * service map
@@ -37,7 +37,8 @@ class Oauth extends CI_Controller
         'qq' => 'QQ',
         'douban' => '豆瓣',
         'weibo' => '微博',
-        'github' => 'Github'
+        'github' => 'Github',
+        'google' => 'Google'
     );
 
     function __construct()
@@ -129,6 +130,8 @@ class Oauth extends CI_Controller
         // insert into user table
         $user_data = $_SESSION['user_data'];
         $user_data['user_name'] = $user_name;
+        // create email confrim code
+        $user_data['user_email_confirm'] = get_random_string(16);
         $this->db->insert('user', $user_data);
         $user_id = $this->db->insert_id();
 
