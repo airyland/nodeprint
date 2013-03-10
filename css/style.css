@@ -443,6 +443,13 @@ a.reply {
   .follow-user a {
     margin-right: 5px; }
 
+.douban-book-list {
+  padding: 10px; }
+  .douban-book-list table {
+    margin: 0 auto; }
+  .douban-book-list img {
+    margin: 5px; }
+
 /* ==profile box 
 -----------------------------------------------------------------------------------*/
 .profile-box {

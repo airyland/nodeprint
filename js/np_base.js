@@ -117,7 +117,7 @@ var NPWidget = {
         var selector = widgets.join(',');
         $(selector, '.sidebar').show().siblings().hide();
     },
-    fetch: function(page, cache) {
+    fetch: function(page, cache, callback) {
         if(typeof cache==='undefined'){
 			if(NP.config.widgetCache){
 			 cache=NP.config.widgetCache;
@@ -135,14 +135,16 @@ var NPWidget = {
         $.get('/api/site/widgets/' + page, function(data) {
             NPWidget.parseWidgets(data);
             cache && NPCache.set('widget:' + page, data);
+            callback && callback.call(this, data);
         });
     },
     parseWidgets: function(data) {
         if($('#profile-box').length > 0) {
             $('.sidebar').find('#profile-box').siblings().remove();
-        }
-        if($('.login-box').length > 0) {
+        }else if($('.login-box').length > 0) {
             $('.sidebar').find('.login-box').siblings().remove();
+        }else{
+            $('.sidebar').empty();
         }
         $('.sidebar').append(data);
     }

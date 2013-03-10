@@ -199,7 +199,8 @@ $(function() {
 
     // click topic list item
     $(document).on('click', '.topic-list>li', function (e) {
-        if (e.target.nodeName !== 'A') {
+        var nodeName = e.target.nodeName;
+        if ( nodeName === 'LI' || nodeName === 'P') {
             $(this).find('.post-title').trigger('click');
         }
     });

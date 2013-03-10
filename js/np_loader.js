@@ -117,7 +117,7 @@ NP.chainUse = function(module,callBack) {
 
 NP.config={
 	log:true,
-	widgetCache:60000
+	widgetCache:false
 }
 
 NP.run=function(){

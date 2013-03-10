@@ -16,12 +16,12 @@ var doc = doc || document,
         this.options = options;
         this.options['bootstrap'] && this.options['bootstrap'](); 
         this.loading = $(this.options['loading']);
+        this.onloading = false;
         this.initialize.apply(this, arguments);
     };
 
 
 NPRouter.prototype = {
-    onloading: false,
     initialize: function(options) {
         var _this = this;
         this.history = new NPHistory();
