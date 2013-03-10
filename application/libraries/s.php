@@ -46,6 +46,7 @@ class S extends Smarty {
         $this->assign('site', $config);
         $this->assign('me', $this->_ci->user->get_user_profile($current_user['user_id'], 'user_id'));
         $this->assign('ga',$this->_ci->configs->item('ga'));
+        $this->assign('msg_check_interval',$this->_ci->configs->item('msg_check_interval'));
         $this->assign('lang', $lang);
         $this->assign('is_mobile',$is_mobile);
         $this->assign('_', $lang);

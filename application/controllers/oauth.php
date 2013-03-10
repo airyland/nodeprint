@@ -27,7 +27,7 @@ class Oauth extends CI_Controller
      * allow service
      * @var array
      */
-    protected $allow_service = array('douban', 'qq', 'weibo', 'github', 'twitter', 'create_account', 'readability');
+    protected $allow_service = array('douban', 'qq', 'weibo', 'github', 'twitter', 'create_account', 'bind_account', 'readability');
 
     /**
      * service map

@@ -12,4 +12,5 @@
   'topic_edit_expire' => '20',
   'plugin' => '[]',
   'ga' => 'UA-31226733-1',
+  'msg_check_interval' => '20000',
 ); ?>

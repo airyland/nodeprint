@@ -96,10 +96,26 @@ class Api extends CI_Controller {
      * @param string $action
      * @API 
      */
-    function user($username = '', $action = '') {
+    public function user($username = '', $action = '') {
         $this->load->model('user');
         $user = $this->auth->get_user();
         switch ($action) {
+            /**
+             * search user by name, login required
+             * @url /api/user/0/search_user
+             */
+            case 'search_user':
+                $this->auth->check_login();
+                $search_key = trim($this->input->post('key'));
+                if(!$search_key) json_output(1);
+                $rs = $this->db->select('user_name')
+                               ->from('user')
+                               ->like('user_name', $search_key)
+                               ->limit(10)
+                               ->get();
+                $result = $rs->result_array();
+                json_output(0, 'users', $result);
+                break;
             /**
              * send private message
              * @url /api/user/send_pm_message
@@ -1087,12 +1103,17 @@ class Api extends CI_Controller {
                         case 'home':
                             $this->load->library('s');
                             $this->config->load('site');
+                            $this->load->model('site');
+                            $show_status=$this->configs->get_config_item('show_status');
+                            $status=$this->site->get_site_status();
                             $hot_nodes_item_no=$this->config->item('np.node.hot_nodes_no');
                             $new_nodes_item_no=$this->config->item('np.node.new_nodes_no');
                             $this->load->model(array('nodes'));
                             $this->s->assign(array(
-                                         'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $hot_nodes_item_no),
-                                         'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
+                                        'show_status' => $show_status,
+                                        'status' => $status,
+                                        'hot_nodes' => $this->nodes->list_node(2, 0, 'node_post_no', 'DESC', 1, $hot_nodes_item_no),
+                                        'lates_nodes' => $this->nodes->list_node(2, 0, 'node_id', 'DESC', 1, $new_nodes_item_no)
                                         ));
                             $this->s->display('widget/home.html');
                         break;
@@ -1101,7 +1122,10 @@ class Api extends CI_Controller {
                         break;
 
                         case 'member':
-                             echo file_get_contents(APPPATH.'templates/widget/ad/node.html');
+                            $this->load->library('s');
+                            $u = $this->user->get_user_profile($this->input->get('name'), 'user_name');
+                            $this->s->assign('u', $u);
+                            $this->s->display('widget/member.html');
                         break;
 
                         case 'topic':
