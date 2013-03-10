@@ -1274,6 +1274,9 @@ p.node-create-button {
   .post-content img {
     max-width: 600px; }
 
+.post-content-box {
+  overflow: auto; }
+
 .title {
   text-align: left;
   font-weight: normal;
@@ -2046,6 +2049,8 @@ td strong {
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px; }
+  #at-view ul li span {
+    color: #ccc; }
 
 #at-view small {
   font-size: smaller;
