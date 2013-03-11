@@ -26,13 +26,18 @@
                 </ul>
             </footer>
         </article>
-
-
     </div>
+
+    {* get replies order *}
+    {if isset($smarty.get.order)&&$smarty.get.order eq desc} 
+        {append var = "order" value=$_.olderReplyFirst}
+    {else}
+        {append var = "order" value=$_.newerReplyFirst}
+    {/if}
 
     <div class="box">
         <span class="title"><strong id="post-comment-no" class="vivid-notice">{$t.post_comment_no}</strong> {$_.replies} {if $t.post_comment_no neq 0} |  {$_.until} {time_ago time=$t.post_last_comment}{/if}</span>
-        <span class="cm-order"><a href="/t/{$t.post_id}?order={if isset($smarty.get.order)&&$smarty.get.order eq desc}asc{else}desc{/if}">{if isset($smarty.get.order)&&$smarty.get.order eq desc}{$_.olderReplyFirst}{else}{$_.newerReplyFirst}{/if}</a></span>
+        <span class="cm-order"><a title="{$t.post_title}-{$order[0]}" href="/t/{$t.post_id}?order={if isset($smarty.get.order)&&$smarty.get.order eq desc}asc{else}desc{/if}">{$order[0]}</a></span>
         <ul class="cm-list">
             {if $cm}
             {section name=cm loop=$cm start=0}<li id="comment-{{$cm[cm].cm_id}}" data-id="{$cm[cm].cm_id}" data-replyTo="{$cm[cm].cm_reply_to}">
