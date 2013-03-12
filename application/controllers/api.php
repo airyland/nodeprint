@@ -28,51 +28,57 @@ class Api extends CI_Controller {
      * @var array
      */
 
-    private $allow_user_action = array('send_pm_message', 'change_pwd');
+    protected $allow_user_action = array('send_pm_message', 'change_pwd');
 
     /**
      * topic api allow actions
      * @var array
      */
-    private $allow_topic_action = array();
+    protected $allow_topic_action = array();
 
     /**
      * comment api allow actions
      * @var array
      */
-    private $allow_comment_action = array();
+    protected $allow_comment_action = array();
 
     /**
      * mmeber api allow actions
      * @var array
      */
-    private $allow_member_action = array();
+    protected $allow_member_action = array();
 
     /**
      * node api allow actions
      * @var array
      */
-    private $allow_node_action = array();
+    protected $allow_node_action = array();
 
     /**
      * if the request is ajax
      */
-    private $is_ajax = FALSE;
+    protected $is_ajax = FALSE;
 
     /**
      * request referrer
      */
-    public $from;
+    protected $from;
 	
 	/**
 	* current user
 	*/
-	private $current_user;
+	protected $current_user;
 	
 	/**
 	* if user has signined
 	*/
-	private $is_login;
+	protected $is_login;
+
+    /**
+    * status code map
+    * @var array
+    */
+    protected $status_code_map = array();
 
     /**
      * API constructor
@@ -1262,11 +1268,14 @@ class Api extends CI_Controller {
         }
     }
 
-/**
-* track views
-*/
-    function track($category,$id){
+    /**
+    * send http status code
+    */
+    protected send_http_status_code($code){
+        switch($code){
 
+        }
     }
+
 
 }
