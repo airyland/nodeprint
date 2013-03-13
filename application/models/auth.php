@@ -46,7 +46,7 @@ class Auth extends CI_Model {
     }
     
     function is_login(){
-         if($_SESSION['np_auth']){
+         if(isset($_SESSION['np_auth'])){
             return TRUE;
          }
          $user_status=$this->get_user();
@@ -60,8 +60,8 @@ class Auth extends CI_Model {
      * @return array
      */
     public function get_user() {
-        if($_SESSION['np_auth']){
-            return array('error' => 1, 'user_id' => $_SESSION['user_id'], 'user_name' => $_SESSION['user_name']);
+        if(isset($_SESSION['np_auth'])){
+            return array('error' => 1, 'user_id' => $_SESSION['np_auth']['user_id'], 'user_name' => $_SESSION['np_auth']['user_name']);
         }
         $e = 2;
         if (empty($_COOKIE['NP_auth'])) {

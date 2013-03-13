@@ -72,6 +72,7 @@ if (is_dir($application_folder)) {
     }
     define('APPPATH', BASEPATH . $application_folder . '/');
 }
+session_start();
 require_once(APPPATH.'helpers/bootstrap_helper.php');
 require_once BASEPATH . 'core/CodeIgniter.php';
 
