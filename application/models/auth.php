@@ -16,7 +16,7 @@
 
 
 /**
- * 用户验证 Model
+ * User Auth
  * 
  * @subpackage Model
  */
@@ -28,7 +28,7 @@ class Auth extends CI_Model {
     }
 
     /**
-     * 检查是否已经登录
+     * check if user has signed in, otherwise redirect to signin page
      * 
      * @access public
      */
@@ -46,31 +46,37 @@ class Auth extends CI_Model {
     }
     
     function is_login(){
+         if($_SESSION['np_auth']){
+            return TRUE;
+         }
          $user_status=$this->get_user();
          return $user_status['error']===1;
     }
 
     /**
-     * 从cookie获取用户资料
+     * get user info
      * 
      * @access public
      * @return array
      */
     public function get_user() {
+        if($_SESSION['np_auth']){
+            return array('error' => 1, 'user_id' => $_SESSION['user_id'], 'user_name' => $_SESSION['user_name']);
+        }
         $e = 2;
         if (empty($_COOKIE['NP_auth'])) {
             $user_id = '';
             $user_name = '';
         } else {
             list($user_id, $user_name) = explode("\t", authcode($_COOKIE['NP_auth'], 'DECODE'));
-            if ($user_id && $user_name)
-                $e = 1;
+            if ($user_id && $user_name) $e = 1;
+            $_SESSION['np_auth'] = array('user_id' => $user_id, 'user_name' => $user_name);
         }
         return array('error' => $e, 'user_id' => $user_id, 'user_name' => $user_name);
     }
 
     /**
-     * 检查是否有管理员权限
+     * check if user has administrator access
      * 
      * @access public
      * @return boolean
@@ -87,7 +93,7 @@ class Auth extends CI_Model {
     }
 
     /**
-     * 进入需要管理员权限的页面时，如果没有登录则跳转到登录页面
+     * check if user has administrator access, otherwise redirect ot signin page
      * 
      * @access public
      */
