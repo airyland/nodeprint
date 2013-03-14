@@ -20,7 +20,7 @@
  * @author airyland <i@mao.li>
  * @version 0.5
  */
-header("Content-type:text/html;charset=utf-8");
+
 
 class Api extends CI_Controller {
     /*
@@ -81,11 +81,18 @@ class Api extends CI_Controller {
     protected $status_code_map = array();
 
     /**
+    * response type
+    */
+    private $type;
+
+    /**
      * API constructor
      *
      */
     function __construct() {
         parent::__construct();
+        $this->type=$this->input->get('type');
+        $this->response_header();
         $this->load->model('auth');
         $this->config->load('validation');
 		$this->current_user=$this->auth->get_user();
@@ -95,12 +102,34 @@ class Api extends CI_Controller {
     }
 
     /**
+    * response proper Content-type according to the 'type' param
+    * @return void
+    */
+    private function response_header(){
+        switch($this->type) {
+            case 'jsonp':
+            case 'json' :
+                $MIME_type = 'application/json';
+                break;
+            case 'xml' :
+                $MIME_type = 'application/xml';
+                break;
+            case 'html' :
+                $MIME_type = 'text/html';
+                break;
+            default :
+                $MIME_type = 'text/html';
+                break;
+        }
+        header("Content-Type:'.$MIME_type.';charset=UTF-8");
+    }
+
+    /**
      * user API
      *
-     * 1.
      * @param string $username
      * @param string $action
-     * @API 
+     * 
      */
     public function user($username = '', $action = '') {
         $this->load->model('user');
@@ -1271,7 +1300,7 @@ class Api extends CI_Controller {
     /**
     * send http status code
     */
-    protected send_http_status_code($code){
+    protected function send_http_status_code($code){
         switch($code){
 
         }
