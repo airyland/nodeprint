@@ -56,7 +56,7 @@ class T extends CI_Controller {
      */
     private $is_ajax;
 
-    function __construct() {
+    public function __construct() {
         parent::__construct();
         $this->load->model('configs');
         $this->load->library('s');
@@ -69,11 +69,11 @@ class T extends CI_Controller {
     /**
      * redirect /t to /t/recent
      */
-    function index() {
+    public function index() {
         redirect('/t/recent');
     }
 
-    function the_post($id, $action = '') {
+    public function the_post($id, $action = '') {
         $this->load->model(array('post', 'comment'));
 
         // get mobile 
@@ -98,23 +98,14 @@ class T extends CI_Controller {
 
             //if enable local server images upload
             $local_upload = $this->configs->item('local_upload');
-            //comments number for each page
-            $comment_no = $this->configs->item('comment_no');
-            //get comments' order
-            $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
-            //get comments' number
-            $count = $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no, TRUE);
-
-            $this->load->library('dpagination');
-            $this->dpagination->generate($count,$comment_no,$this->page,"/t/{$id}",8);
             $user = get_user();
             $this->post->get_post_fav_no($id);
             $fav = $this->is_login ? $this->post->check_post_fav($user['user_id'], $id) : FALSE;
-
+            $comments = $this->get_comment($id);
             $this->s->assign(array(
                 'title' => $topic['post_title'],
                 't' => $topic,
-                'cm' => $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no),
+                'cm' => $comments,
                 'fav' => $fav,
                 'local_upload' => $local_upload,
                 'page_bar' => $this->dpagination->page_bar,
@@ -162,7 +153,19 @@ class T extends CI_Controller {
         }
     }
 
-    function the_list($cat, $key = '') {
+    private function get_comment($id){
+        //comments number for each page
+        $comment_no = $this->configs->item('comment_no');
+        //get comments' order
+        $order = $this->input->get('order') ? $this->input->get('order') : 'ASC';
+        //get comments' number
+        $count = $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no, TRUE);
+        $this->load->library('dpagination');
+        $this->dpagination->generate($count,$comment_no,$this->page,"/t/{$id}",8);
+        return  $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no);
+    }
+
+    private function the_list($cat, $key = '') {
         //get topic no
         $this->limit = $this->configs->item('topic_no');
 
