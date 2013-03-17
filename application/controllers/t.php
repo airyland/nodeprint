@@ -165,7 +165,7 @@ class T extends CI_Controller {
         return  $this->comment->list_comment($id, 0, 'cm_id', $order, $this->page, $comment_no);
     }
 
-    private function the_list($cat, $key = '') {
+    public function the_list($cat, $key = '') {
         //get topic no
         $this->limit = $this->configs->item('topic_no');
 

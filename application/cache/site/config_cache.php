@@ -5,7 +5,7 @@
   'url' => 'http://nodeprint.com/',
   'lang' => 'zh',
   'topic_no' => '10',
-  'local_upload' => '0',
+  'local_upload' => '1',
   'comment_no' => '100',
   'auto_backup' => '1',
   'show_status' => '1',
