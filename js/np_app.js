@@ -204,7 +204,10 @@ $(function() {
     $(document).on('click', '.topic-list>li', function (e) {
         var nodeName = e.target.nodeName;
         if (nodeName === 'LI' || nodeName === 'P') {
-            $(this).find('.post-title')[0].click();
+            var target = $(this).find('.post-title');
+            if(target.length === 1){
+                target[0].click();
+            }
         }
     });
 
