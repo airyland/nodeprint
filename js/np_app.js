@@ -212,16 +212,10 @@ $(function() {
     });
 
     // search shortcut
-    var searchShortKey = function(){
-         if(!$('input, textarea').is(':focus')){
-            $('#search').focus();
-            $.hotkeys.remove('s');
-       }
-    }
-    $.hotkeys.add('s', searchShortKey);
-    $('#search').blur(function(){
-         $.hotkeys.add('s', searchShortKey);
+    $.hotkeys.add('s', function(){
+        $('#search').focus();
     });
+
 
     //save last login user name 
     if(NPUSER.userName) {

@@ -173,7 +173,6 @@ var $commentBox = $('#cm-box'),
             this.update_time_diff();
             $(html).appendTo('.cm-list').find('.floor').text('' + floor).end().css("backgroundColor", '#FFFF00').slideDown('slow').css("-moz-transition", "background-color 2.0s ease-in").css("-o-transition", "background-color 2.0s ease-in").css("-ms-transition", "background-color 2.0s ease-in").css("-webkit-transition", "background-color 2.0s ease-in").css("backgroundColor", "white");
             $commentBox.val('');
-            $commentBox.val('');
             $('body,#cm-box').css('cursor', 'auto');
             $('#cm-button').css('cursor', 'pointer');
             $commentBox.css('borderColor', '#ccc');
@@ -222,9 +221,14 @@ $(function() {
 })
 
 $(function() {
-    jQuery.hotkeys.add('ctrl+return', function(e) {
+    $.hotkeys.add('ctrl+return', function(e) {
         $doc.data('replyBy', 'hotkeys');
         comment.add();
+    });
+
+    // reply shortcut
+    $.hotkeys.add('r', function(){
+        $('#cm-box').focus();
     });
 });
 
