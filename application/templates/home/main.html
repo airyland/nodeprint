@@ -1,24 +1,24 @@
  <div class="box">
-                <nav class="site-tab">
-                <ul>
-                    <li {if !isset($smarty.get.tab) or $smarty.get.tab==='all'}class="current"{/if}><a href="/?tab=all" title="全部帖子">全部</a></li>
-                    <li {if isset($smarty.get.tab) and $smarty.get.tab==='hot'}class="current"{/if}><a href="/?tab=hot" title="最热帖子">最热帖子</a></li>
-                    {if $is_login}
-                    <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-node'}class="current"{/if}><a href="/?tab=following-node">关注节点</a></li>
-                    <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-member'}class="current"{/if}><a href="/?tab=following-member">关注用户</a></li>
-                    {/if}
-                </ul>
-                {if $is_login and !$is_mobile}<a id="add-topic" class="track-home-add-topic" href="/node?for=create_topic">+创建帖子</a>{/if}
-                </nav>
-                {if isset($links)&&is_array($links)}
-                    <div class="site-sub-tab">
-                        <span class="triangle">&diams;</span>
-                    {foreach from=$links item=link}
-                        <a href="/node/{$link.node_slug}">{$link.node_name}</a>
-                    {/foreach}
-                    </div>
-                {/if}
-                {include file="topic_list.html"}
-                <span class="box-footer"><a href="/t/recent" class="more" title="更多主题" data-title="最新主题">»更多新主题</a></span>
+    <nav class="site-tab">
+    <ul>
+        <li {if !isset($smarty.get.tab) or $smarty.get.tab==='all'}class="current"{/if}><a href="/?tab=all" title="全部帖子">全部</a></li>
+        <li {if isset($smarty.get.tab) and $smarty.get.tab==='hot'}class="current"{/if}><a href="/?tab=hot" title="最热帖子">最热帖子</a></li>
+        {if $is_login}
+        <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-node'}class="current"{/if}><a href="/?tab=following-node">关注节点</a></li>
+        <li {if isset($smarty.get.tab) and $smarty.get.tab==='following-member'}class="current"{/if}><a href="/?tab=following-member">关注用户</a></li>
+        {/if}
+    </ul>
+    {if $is_login and !$is_mobile}<a id="add-topic" class="track-home-add-topic" href="/node?for=create_topic">+创建帖子</a>{/if}
+    </nav>
+    {if isset($links)&&is_array($links)}
+        <div class="site-sub-tab">
+            <span class="triangle">&diams;</span>
+        {foreach from=$links item=link}
+            <a href="/node/{$link.node_slug}">{$link.node_name}</a>
+        {/foreach}
+        </div>
+    {/if}
+    {include file="topic_list.html"}
+    <span class="box-footer"><a href="/t/recent" class="more" title="更多主题" data-title="最新主题">»更多新主题</a></span>
 </div>
- {include file="node_list.html"}
+{include file="node_list.html"}
