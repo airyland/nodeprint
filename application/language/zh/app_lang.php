@@ -90,7 +90,13 @@ $lang['content'] = '内容';
 $lang['title'] = '标题';
 $lang['no original topic content'] = '该帖子没有原始内容，因此更新时内容不会重新解析';
 $lang['edit topic'] = '编辑帖子';
-$lang['cancel']= '取消';
+$lang['cancel'] = '取消';
+$lang['topics'] = '帖子';
+$lang['all topics'] = '全部';
+$lang['hot topics'] = '最热帖子';
+$lang['following users'] = '关注用户';
+$lang['following nodes'] = '收藏节点';
+$lang['more new topics'] = '更多新主题';
 
 
 /* End of file app_lang.php */
