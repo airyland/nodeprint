@@ -8,6 +8,7 @@ var $commentBox = $('#cm-box'),
     $commentBtn = $('#cm-button'),
     href = href || document.location.href,
     comment = {
+        onSending: false,
         button: $('#cm-button'),
         storeId: '',
         // listening 
@@ -25,10 +26,6 @@ var $commentBox = $('#cm-box'),
 
             $doc.on('click', '#cm-button', function(e) {
                 e.preventDefault();
-                that.add();
-            });
-
-            jQuery.hotkeys.add('ctrl+return', function(e) {
                 that.add();
             });
 
@@ -121,6 +118,13 @@ var $commentBox = $('#cm-box'),
         // make request 
         add: function() {
             var _this = this;
+
+            // check if the reply is on sending 
+            if(_this.onSending === true){
+                return;
+            }
+            _this.onSending === true;
+
             NP.track('event', 'Reply send ' + ($doc.data('replyBy') === 'hotkeys' ? 'ctrlEnter' : 'button'));
             $doc.data('replyBy', '');
             if (!this.filter()) {
@@ -162,6 +166,7 @@ var $commentBox = $('#cm-box'),
         },
         // do sth, when successfully adding comment
         success: function(e) {
+            this.onSending === false;
             NP.track('event', 'Reply create');
             //提交成功删除本地保存回复
             store.remove(this.storeId);
@@ -218,16 +223,24 @@ var $commentBox = $('#cm-box'),
 
 $(function() {
     comment.init();
-})
+});
 
 $(function() {
-    $.hotkeys.add('ctrl+return', function(e) {
+    var sendingReply = function(e) {
+        e.preventDefault();
         $doc.data('replyBy', 'hotkeys');
         comment.add();
-    });
+        return false;
+    };
+    // sending reply shortcut
+    $doc.bind('keyup', 'ctrl+return', sendingReply);
 
     // reply shortcut
-    $.hotkeys.add('r', function(){
+    $doc.bind('keydown', {
+        combi: 'r',
+        disableInInput: true
+    }, function(e) {
+        e.preventDefault();
         $('#cm-box').focus();
     });
 });

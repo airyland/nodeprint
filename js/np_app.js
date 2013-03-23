@@ -105,8 +105,8 @@ var options = {
         enter: function() {
             NP.use(['js/np_comment.js', 'js/np_topic.js', 'js/plugin/at.js'], function() {
                 var data = ['admin'],
-                    $userNameNode = $('.cm-list>li>p>a.user-name');
-                authorName = $('.post-info .post_author>img').attr('alt');
+                    $userNameNode = $('.cm-list>li>p>a.user-name'),
+                    authorName = $('.post-info .post_author>img').attr('alt');
                 data.push(authorName);
                 $.unique($.merge(data, $.unique($.map($userNameNode, function(val, key) {
                     return $(val).text();
@@ -124,7 +124,7 @@ var options = {
         },
         leave: function() {
             $(window).unbind('scroll').unbind('resize');
-            $doc.off('click','#cm-button');
+            $doc.off('click','#cm-button').unbind('keyup', 'ctrl+return');
             if($.trim($('#cm-box').val()) !== '') {
                 if(!confirm('您确认要放弃已经输入的回复吗？')) {
                     NP.track('event', 'Reply keep');
@@ -212,9 +212,11 @@ $(function() {
     });
 
     // search shortcut
-    $.hotkeys.add('s', function(){
+    $doc.bind('keydown',{combi:'s', disableInInput: true},function(e){
+        e.preventDefault();
         $('#search').focus();
-    });
+    })
+
 
 
     //save last login user name 

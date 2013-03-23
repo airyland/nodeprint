@@ -140,8 +140,8 @@ $(function () {
     });
 });
 
-$(function () {
-    
+$(function() {
+
     // handle resize event
     $(window).resize($.throttle(1000, function() {
         if (document.location.hash === '#reply-area') {
@@ -152,18 +152,19 @@ $(function () {
     }));
 
     // handle scroll event
-    $(window).scroll($.throttle(500, function() {
-        var isInView = isScrolledIntoView('#reply-area'),
-            oriHref = document.location.href;
-        href = oriHref.indexOf('#') > 0 ? oriHref.slice(0, oriHref.indexOf('#')) : oriHref;
-        if (isInView) {
-            history.pushState(null, null, href + '#reply-area');
-        } else {
-            if (document.location.hash === '#reply-area') {
-                history.pushState(null, null, href);
+    if (/\/t\/\d/.test(document.location.href)) {
+        $(window).scroll($.throttle(500, function() {
+            var isInView = isScrolledIntoView('#reply-area'),
+                oriHref = document.location.href;
+            href = oriHref.indexOf('#') > 0 ? oriHref.slice(0, oriHref.indexOf('#')) : oriHref;
+            if (isInView) {
+                history.pushState(null, null, href + '#reply-area');
+            } else {
+                if (document.location.hash === '#reply-area') {
+                    history.pushState(null, null, href);
+                }
             }
-        }
-    }));
+        }));
+    }
 });
-	
 	
