@@ -47,14 +47,14 @@
   }
   .is-author {
   	position:absolute;
-	top:0;
-	right:10px;
-	width:0; 
-	height:0; 
-	border-width:12px; 
-	border-style:solid; 
-	border-color:$vivid $vivid #ffffff #ffffff;
-	opacity:0.6;
+  	top:0;
+  	right:10px;
+  	width:0; 
+  	height:0; 
+  	border-width:12px; 
+  	border-style:solid; 
+  	border-color:$vivid $vivid #ffffff #ffffff;
+  	opacity:0.6;
 	span{
 		display:block;
 		position:relative;
@@ -97,6 +97,7 @@
       line-height: 20px;
     }
     .user-name {
+      font-size:12px;
       color: #808080;
       font-weight: bold;
       &:hover {
