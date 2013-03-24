@@ -91,12 +91,11 @@ class Api extends CI_Controller {
      */
     function __construct() {
         parent::__construct();
-        $this->type=$this->input->get('type');
-        $this->response_header();
-        $this->load->model('auth');
         $this->config->load('validation');
-		$this->current_user=$this->auth->get_user();
-		$this->is_login=is_login();
+        $this->type = $this->input->get('type');
+        $this->response_header();
+	$this->current_user = $this->auth->get_user();
+	$this->is_login = $this->auth->is_login();
         $this->is_ajax = $this->input->is_ajax_request();
         $this->from = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
     }
@@ -121,7 +120,7 @@ class Api extends CI_Controller {
                 $MIME_type = 'text/html';
                 break;
         }
-        header("Content-Type:'.$MIME_type.';charset=UTF-8");
+        header("Content-Type:' . $MIME_type . ';charset=UTF-8");
     }
 
     /**
@@ -190,7 +189,7 @@ class Api extends CI_Controller {
                 break;
 
             /**
-             * 确认邮箱
+             * send confirming email
              */
             case 'email_confirm':
                 $user_id = $this->input->get('u');
@@ -210,7 +209,7 @@ class Api extends CI_Controller {
 
                 break;
             /**
-             * 根据 auth code 确认邮箱地址
+             * do confirm the email
              */
             case 'email_auth_confirm':
                 $auth = $this->input->get('auth');
