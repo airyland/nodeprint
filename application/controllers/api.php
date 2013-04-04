@@ -525,24 +525,24 @@ class Api extends CI_Controller {
                         redirect('settings');
                         break;
 						
-						/**
-						*用户活动心跳包
-						*/
-						case '_get_online':
-						if($this->is_login&&$this->is_ajax){
-						$this->db->update('vx_user',array('user_last_login'=>current_time()),array('user_id'=>$this->current_user['user_id']));
-						}
-						break;
-						
-						/**
-						*取得在线用户数量
-						*/
-						case 'get_online_user':
-						if($this->is_ajax){
-							$time=date('Y-m-d H:i:s',time()-10*60);
-							json_output(0,'no',$this->db->where('user_last_login >=',$time)->from('vx_user')->count_all_results());
-						}
-						break;
+										/**
+										* online heart beat
+										*/
+										case '_get_online':
+												if($this->is_login&&$this->is_ajax) {
+														$this->db->update('vx_user', array('user_last_login' => current_time()), array('user_id' => $this->current_user['user_id']));
+												}
+												break;
+												
+										/**
+										* get online user number
+										*/
+										case 'get_online_user':
+												if($this->is_ajax) {
+													$time = date('Y-m-d H:i:s',time()-10*60);
+													json_output(0, 'no', $this->db->where('user_last_login >=', $time)->from('vx_user')->count_all_results());
+												}
+												break;
 						
 
                     default:
