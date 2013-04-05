@@ -94,8 +94,8 @@ class Api extends CI_Controller {
         $this->config->load('validation');
         $this->type = $this->input->get('type');
         $this->response_header();
-	$this->current_user = $this->auth->get_user();
-	$this->is_login = $this->auth->is_login();
+	    $this->current_user = $this->auth->get_user();
+	    $this->is_login = $this->auth->is_login();
         $this->is_ajax = $this->input->is_ajax_request();
         $this->from = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
     }
@@ -208,6 +208,7 @@ class Api extends CI_Controller {
                 }
 
                 break;
+
             /**
              * do confirm the email
              */
@@ -290,8 +291,9 @@ class Api extends CI_Controller {
                     redirect('/signup?error='.$register['error']+'&msg='+$register['msg']);
                 }
                 break;
+
             /**
-             * 用户登录
+             * user signin handler
              * @url /api/user/signin
              * @redirct /signin
              */
@@ -316,6 +318,7 @@ class Api extends CI_Controller {
                 json_output($error, 'data', array('message' => $msg));
 
                 break;
+
             /**
              * 退出登录
              * @url /api/user/logout
@@ -328,8 +331,9 @@ class Api extends CI_Controller {
                     die('{"code":0}');
                 redirect();
                 break;
+
             /**
-             * 获得关注者
+             * get followers
              * @url api/user/username/follower
              * @return json
              */
@@ -338,8 +342,9 @@ class Api extends CI_Controller {
                 $follower = $this->follow->list_follow($username, 'user_name', 1, $page = 1, $no = 20);
                 echo json_encode(array('code' => 0, 'follower' => $follower));
                 break;
+
             /**
-             * 获得被关注用户
+             * get followings
              * @url api/user/username/following
              * @return json
              */
@@ -348,8 +353,9 @@ class Api extends CI_Controller {
                 $following = $this->follow->list_follow($username, 'user_name', 2, $page = 1, $no = 20);
                 echo json_encode(array('code' => 0, 'following' => $following));
                 break;
+
             /**
-             * 获得用户关注节点
+             * get fav nodes
              * @url api/user/username/favnode
              * @return json
              */
@@ -358,8 +364,9 @@ class Api extends CI_Controller {
                 $favnode = $this->follow->list_follow($username, 'user_name', 3, $page = 1, $no = 20);
                 echo json_encode(array('code' => 0, 'favnode' => $favnode));
                 break;
+
             /**
-             * 获得用户收藏帖子
+             * get fav topics
              * @url /api/user/username/favtopic
              * @return json
              */
@@ -368,6 +375,7 @@ class Api extends CI_Controller {
                 $favtopic = $this->follow->list_follow($username, 'user_name', 4, $page = 1, $no = 20);
                 echo json_encode(array('code' => 0, 'favnode' => $favtopic));
                 break;
+
             /**
              * get messages
              * @url api/user/0/message
@@ -388,6 +396,7 @@ class Api extends CI_Controller {
                 }
 
                 break;
+
             /**
              * get user topics
              * @return json
@@ -396,6 +405,7 @@ class Api extends CI_Controller {
                 $topic = $this->post->query_post("user_name={$username}&user_type=user_name");
                 echo json_encode(array('error' => 0, 'topic' => $topic));
                 break;
+                
             /**
              * 用户头像上传
              * 
@@ -525,24 +535,24 @@ class Api extends CI_Controller {
                         redirect('settings');
                         break;
 						
-										/**
-										* online heart beat
-										*/
-										case '_get_online':
-												if($this->is_login&&$this->is_ajax) {
-														$this->db->update('vx_user', array('user_last_login' => current_time()), array('user_id' => $this->current_user['user_id']));
-												}
-												break;
-												
-										/**
-										* get online user number
-										*/
-										case 'get_online_user':
-												if($this->is_ajax) {
-													$time = date('Y-m-d H:i:s',time()-10*60);
-													json_output(0, 'no', $this->db->where('user_last_login >=', $time)->from('vx_user')->count_all_results());
-												}
-												break;
+					/**
+					* online heart beat
+					*/
+					case '_get_online':
+						if($this->is_login&&$this->is_ajax) {
+							$this->db->update('vx_user', array('user_last_login' => current_time()), array('user_id' => $this->current_user['user_id']));
+						}
+						break;
+							
+					/**
+					* get online user number
+					*/
+					case 'get_online_user':
+						if($this->is_ajax) {
+							$time = date('Y-m-d H:i:s',time()-10*60);
+							json_output(0, 'no', $this->db->where('user_last_login >=', $time)->from('vx_user')->count_all_results());
+						}
+					    break;
 						
 
                     default:
