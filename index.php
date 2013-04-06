@@ -13,7 +13,7 @@
  */
 
 
-define('IN_NODEPRINT',1);
+define('IN_NODEPRINT', 1);
 define('ENVIRONMENT', 'development');
 if (defined('ENVIRONMENT')) {
     switch (ENVIRONMENT) {
