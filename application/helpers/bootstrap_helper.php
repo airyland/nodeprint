@@ -20,8 +20,7 @@
  *
  * @return bool
  */
-function is_mobile()
-{
+function is_mobile(){
     static $is_mobile = null;
     if (is_null($is_mobile)) {
         // from http://detectmobilebrowser.com/ by Chad Smith. Thanks Chad!
@@ -45,7 +44,18 @@ s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]
     }
     return $is_mobile;
 }
+
+/**
+ * check if it is an ajax request
+ * @return bool
+ */
+function is_ajax(){
+    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') return true;
+    return false;
+}
+
 $is_mobile = is_mobile();
+$is_ajax = is_ajax();
 //load site config
 include(APPPATH.'cache/site/config_cache.php');
 //load language
