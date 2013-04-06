@@ -1,6 +1,6 @@
 <?php 
 
-!defined('BASEPATH') && exit('No direct script access allowed');
+!defined('IN_NODEPRINT') && exit('No direct script access allowed');
 /**
  * NodePrint
  *
@@ -1089,7 +1089,7 @@ class Api extends CI_Controller {
         $this->load->model('message');
         switch ($action) {
             /**
-             * 发送私信
+             * send private message
              * @method post
              * @return json|html if is ajaxed, return json
              */
@@ -1097,14 +1097,14 @@ class Api extends CI_Controller {
                 $this->message->send_message(3, $toname, $fromname, $content, 0);
                 break;
             /**
-             * 删除消息
+             * delete a private message
              */
             case 'delete':
                 $this->message->del_message($m_id);
                 redirect('/messages');
                 break;
             /**
-             * 将消息设为已读
+             * set a message read
              */
             case 'set_read':
                 $id = $this->input->post('id');
@@ -1112,7 +1112,7 @@ class Api extends CI_Controller {
                 $this->message->set_read($id, $type);
                 break;
             /**
-             * 消息列表
+             * get message list
              */
             case 'list':
                 $user_id = $this->input->get('user_id');
