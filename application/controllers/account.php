@@ -24,9 +24,14 @@
  * @author          airyland <i@mao.li>
  * @link            http://github.com/airyland/nodeprint
  */
+ 
+ 
 class Account extends CI_Controller
 {
-
+        
+    /**
+     * if user has signed in 
+     **/
     protected $is_login;
 
     /**
@@ -91,7 +96,7 @@ class Account extends CI_Controller
                 if ($check){
                     redirect('/settings');
                 }
-                    break;
+                break;
 
             /**
              * reset password
