@@ -20,7 +20,11 @@
  * @subpackage Controller
  */
 class Node extends CI_Controller {
-
+    
+    /**
+     * node slug
+     * @var string
+     */
     public $slug;
 
     /**
@@ -42,11 +46,12 @@ class Node extends CI_Controller {
     private $is_ajax;
 
     function __construct() {
+        global $is_ajax;
         parent::__construct();
         $this->load->library('s');
         $this->load->model('nodes');
         $this->is_login = $this->auth->is_login();
-        $this->is_ajax = $this->input->is_ajax_request();
+        $this->is_ajax = $is_ajax;
         $this->page = $this->input->get_page();
     }
 
