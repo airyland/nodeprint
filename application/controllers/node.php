@@ -1,6 +1,6 @@
 <?php
 
-!defined('BASEPATH') && exit('No direct script access allowed');
+!defined('IN_NODEPRINT') && exit('No direct script access allowed');
 /**
  * NodePrint
  *
