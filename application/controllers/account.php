@@ -24,19 +24,19 @@
  * @author          airyland <i@mao.li>
  * @link            http://github.com/airyland/nodeprint
  */
- 
- 
+
+
 class Account extends CI_Controller
 {
-        
+
     /**
-     * if user has signed in 
+     * if user has signed in
      **/
     protected $is_login;
 
     /**
-    * if it is an ajax request
-    */
+     * if it is an ajax request
+     */
     private $is_ajax = false;
 
     function __construct()
@@ -51,8 +51,8 @@ class Account extends CI_Controller
     function index($action = '')
     {
         global $lang;
-        if(in_array($action,array('signin','signup','reset_password','forget_password','email_auth_confirm'))){
-            if ($this->is_login)  redirect(base_url());
+        if (in_array($action, array('signin', 'signup', 'reset_password', 'forget_password', 'email_auth_confirm'))) {
+            if ($this->is_login) redirect(base_url());
         }
         switch ($action) {
 
@@ -60,7 +60,7 @@ class Account extends CI_Controller
              * Sign in page
              */
             case 'signin':
-                $this->s->display($this->is_ajax?'account/signin_main.html':'account/signin.html');
+                $this->s->display($this->is_ajax ? 'account/signin_main.html' : 'account/signin.html');
                 break;
 
             /**
@@ -93,7 +93,7 @@ class Account extends CI_Controller
             case 'email_auth_confirm':
                 $auth = $this->input->get('auth');
                 $check = $this->user->email_confirm($auth);
-                if ($check){
+                if ($check) {
                     redirect('/settings');
                 }
                 break;
