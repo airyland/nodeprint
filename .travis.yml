@@ -8,7 +8,7 @@ env:
   - DB=mysql
 
 notifications:
-  email:false
+  email: false
 
 before_script:
   - mysql -e 'create database np;'
