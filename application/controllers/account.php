@@ -67,7 +67,6 @@ class Account extends CI_Controller
              * Sign up page
              */
             case 'signup':
-                session_start();
                 $this->load->helper('captcha');
                 $random = get_random_strings(5);
                 $_SESSION['captcha'] = strtolower($random);
