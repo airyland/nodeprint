@@ -1,4 +1,4 @@
-## Nodeprint
+## Nodeprint [![Build Status](https://travis-ci.org/airyland/nodeprint.png?branch=master)](https://travis-ci.org/airyland/nodeprint)
 
 网站重构中，beta版暂未发布，因此目前代码不能进行本地安装。
 
