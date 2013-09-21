@@ -32,3 +32,5 @@ img/captcha/*.jpg
 /application/controllers/test.php
 /data
 /phpmyadmin
+/node_modules
+/.sass-cache
