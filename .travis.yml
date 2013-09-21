@@ -24,3 +24,4 @@ before_script:
 script: 
     - php ./application/test/test.php
     - sudo cat /var/log/apache2/access.log
+    - sudo cat /var/log/apache2/error.log
