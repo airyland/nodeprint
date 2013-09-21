@@ -40,6 +40,19 @@
 ## 更新
 
 
+
+## 安装
+
+### 数据库设置
+
++ 重命名 /application/config/database_default.php => /application/config/database.php 并填写数据库用户名及密码
+
+
+      $db['default']['hostname'] = 'hostname';
+      $db['default']['username'] = 'username';
+      $db['default']['password'] = 'password';
+
+
 ## License
 NodePrint is licensed under MIT license.
 
