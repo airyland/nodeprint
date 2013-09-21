@@ -6,7 +6,7 @@ img/captcha/*.png
 img/captcha/*.jpg
 /application/cache/db/*
 /application/cache/smarty/cache/*.php
-/application/cache/smarty/compile/*.php
+/application/cache/smarty/compile/*
 /application/cache/plugin/*.php
 /application/cache/widget/*.php
 /application/cache/*.php
