@@ -154,8 +154,11 @@ class Nodes extends CI_Model {
 
     function get_all_nodes($recommend=FALSE,$parent=0,$child=0){
         $nodes = $this->list_node($node_type = 1, $node_parent = 0, $order_by = 'node_id', $order = 'DESC', $page = 1, $parent,FALSE,$recommend);
-        foreach ($nodes as $k => $v) {
-            $nodes[$k]['child_node'] = $this->list_node($node_type = 2, $node_parent = $nodes[$k]['node_id'], $order_by = 'node_id', $order = 'DESC', $page = 1, $child,FALSE,$recommend);
+        // no nodes exists when just finish install
+        if(is_array($nodes) && count($nodes)){
+            foreach ($nodes as $k => $v) {
+                $nodes[$k]['child_node'] = $this->list_node($node_type = 2, $node_parent = $nodes[$k]['node_id'], $order_by = 'node_id', $order = 'DESC', $page = 1, $child,FALSE,$recommend);
+            }
         }
         return $nodes;
     }
