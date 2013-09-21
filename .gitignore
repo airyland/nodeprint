@@ -34,3 +34,4 @@ img/captcha/*.jpg
 /phpmyadmin
 /node_modules
 /.sass-cache
+/application/config/database.php
