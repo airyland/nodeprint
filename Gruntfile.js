@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         cssmin: {
             dist: {
                 files: {
-                    'css/style.min.css': ['css/style.css']
+                    'css/style.min.css': ['css/reset.css', 'css/style.css']
                 }
             }
         },
@@ -24,6 +24,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    // 执行默认任务
+    // default task
     grunt.registerTask('default', ['sass:dist', 'cssmin:dist']);
 }

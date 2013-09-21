@@ -44,7 +44,6 @@ class Oauth extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        session_start();
         $segment = $this->uri->segment(2);
         $this->config->load('oauth');
         if (!$segment) show_404();
