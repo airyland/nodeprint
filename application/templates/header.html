@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="/css/style.min.css" />
         <link rel="stylesheet" href="/js/plugin/dialog/skins/twitter.css" />
     </head>
-    <body id="body" {if $is_mobile}class="mobile"{/if}>
+    <body id="body {$is_admin}" {if $is_mobile}class="mobile"{/if}>
         <header id="header">
             <div class="header-wrap">
                 <h1><a id="logo" href="{$site.url}#home" title="{$site.name}-{$_['index']}">{$_['index']}</a></h1>
@@ -27,7 +27,7 @@
                     {if $is_mobile}
                         {include file="mobile/header.html"}
                     {else}
-                        {nocache}
+                      
                         <li><a href="{$site.url}#home" class="home">{$lang.index}</a></li>{if $is_login} 
                         <li><a href="/member/{$me.user_name}">{$me.user_name}</a></li>
                         <li><a href="/messages" id="JS_msg">{$lang.message}<span class="msg-count">0</span></a></li>
@@ -41,7 +41,7 @@
                   {else}<li><a href="/signup" id="signup-btn" title="{$lang.signup}">{$lang.signup}</a></li>
                         <li><a href="/signin" id="signin-btn" title="{$lang.signin}"{if !$is_mobile} data-router="false"{/if}>{$lang.signin}</a></li>
                        {/if}
-                    {/nocache}
+                   
                     {/if}
                     </ul>
                 </nav>
