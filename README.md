@@ -52,6 +52,13 @@
       $db['default']['username'] = 'username';
       $db['default']['password'] = 'password';
 
+## 捐赠
+
+支持 `NodePrint`, 捐赠地址： `airyland@qq.com`
+
+### 捐赠列表
+
++ syq***@yeah.net ￥200
 
 ## License
 NodePrint is licensed under MIT license.
