@@ -15,25 +15,8 @@ before_script:
     - CGIROOT=`dirname "$(which php-cgi)"`
     - sudo a2enmod actions
     - sudo a2enmod rewrite
-    - sudo echo "<VirtualHost *:80>
-        DocumentRoot $WEBROOT
-        <Directory />
-                Options FollowSymLinks
-                AllowOverride All
-        </Directory>
-        <Directory $WEBROOT >
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride All
-                Order allow,deny
-                allow from all
-        </Directory>
-                ScriptAlias /local-bin $CGIROOT
-                DirectoryIndex index.php index.html
-                AddType application/x-httpd-php5 .php
-                Action application/x-httpd-php5 '/local-bin/php-cgi'
-
-      </VirtualHost>" | sudo tee /etc/apache2/sites-available/default > /dev/null
-
+    - echo "$(curl -fsSL https://gist.github.com/airyland/2b66dba908e004ff4754/raw/74f4fec92c064c4f683fef28a6098caf0f038de7/gistfile1.txt)" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
+    - echo "$(curl -fsSL https://gist.github.com/airyland/93d2c15fcf5551181e9b/raw/8066fda124b6c86f69ad32a010b8c22bbaf868e8/gistfile1.txt)" | sed -e "s,PATH,`pwd`,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - cat /etc/apache2/sites-available/default
     - mysql -e 'CREATE DATABASE `vx`;'
     - pwd
