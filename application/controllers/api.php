@@ -326,6 +326,7 @@ class Api extends CI_Controller {
              * @rediect 原来地址
              */
             case 'logout':
+                session_destroy();
                 setcookie('NP_auth', '', time() - 365 * 24 * 3600, '/');
                 if ($this->is_ajax)
                     die('{"code":0}');
