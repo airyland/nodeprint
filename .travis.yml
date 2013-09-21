@@ -12,7 +12,6 @@ before_script:
     - sudo apt-get update
     - sudo apt-get install apache2
     - WEBROOT="$(pwd)"
-    - CGIROOT=`dirname "$(which php-cgi)"`
     - sudo a2enmod actions
     - sudo a2enmod rewrite
     - echo "$(curl -fsSL https://gist.github.com/airyland/2b66dba908e004ff4754/raw/74f4fec92c064c4f683fef28a6098caf0f038de7/gistfile1.txt)" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
