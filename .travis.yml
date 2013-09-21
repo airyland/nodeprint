@@ -13,8 +13,6 @@ before_script:
     - sudo apt-get install apache2
     - WEBROOT="$(pwd)"
     - CGIROOT=`dirname "$(which php-cgi)"`
-    - echo "WEBROOT: $WEBROOT"
-    - echo "CGIROOT: $CGIROOT"
     - sudo a2enmod actions
     - sudo a2enmod rewrite
     - sudo echo "<VirtualHost *:80>
