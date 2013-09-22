@@ -24,7 +24,7 @@ function is_mobile(){
     static $is_mobile = null;
     if (is_null($is_mobile)) {
         // from http://detectmobilebrowser.com/ by Chad Smith. Thanks Chad!
-        $userAgent = $_SERVER["HTTP_USER_AGENT"];
+        $userAgent = $_SERVER["HTTP_USER_AGENT"] || '';
         $is_mobile = (preg_match("/android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)
 |iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)
 |vodafone|wap|windows (ce|phone)|xda|xiino/i", $userAgent) || preg_match("/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a
