@@ -25,7 +25,6 @@ before_script:
     - mysql -e 'CREATE DATABASE vx;'
     - mysql -e 'USE vx;'
     - mysql -e 'source application/db/np_data.sql;'
-    - mysql -e 'SHOW TABLES;'
     - pwd
     - sudo service apache2 restart
 script: 
