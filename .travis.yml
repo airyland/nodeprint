@@ -24,10 +24,10 @@ before_script:
     - mysql -e 'SHOW DATABASES;'
     - mysql -e 'CREATE DATABASE vx;'
     - mysql -e 'SHOW DATABASES;'
-    - mysql -e USE vx;
-    - mysql -e SHOW TABLES;
-    - mysql -e source application/db/np_data.sql;
-    - mysql -e SHOW TABLES;
+    - mysql -e 'USE vx;'
+    - mysql -e 'SHOW TABLES;'
+    - mysql -e 'source application/db/np_data.sql;'
+    - mysql -e 'SHOW TABLES;'
     - pwd
     - sudo service apache2 restart
 script: 
