@@ -20,10 +20,11 @@ before_script:
     - cat application/db/np_data.sql
     - mysql -e 'show databases;'
     - mysql -e 'CREATE DATABASE `vx`;'
-    - mysql -e 'show databases;'
-    - mysql -e 'use vx;'
+    - mysql -e 'USE databases;'
+    - mysql -e 'USE `vx`;'
+    - mysql -e 'SHOW TABLES;'
     - mysql -e 'source application/db/np_data.sql;'
-    - mysql -e 'show tables;'
+    - mysql -e 'SHOW TABLES;'
     - pwd
     - sudo service apache2 restart
 script: 
