@@ -8,6 +8,7 @@ img/captcha/*.jpg
 !/application/cache/db/index.html
 /application/cache/smarty/cache/*.php
 /application/cache/smarty/compile/*
+!/application/cache/smarty/compile/index.html
 /application/cache/plugin/*.php
 /application/cache/widget/*.php
 /application/cache/*.php
