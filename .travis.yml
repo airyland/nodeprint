@@ -22,6 +22,8 @@ before_script:
     - cat /etc/apache2/sites-available/default
     - cat application/db/np_data.sql
     - mysql -e 'SHOW DATABASES;'
+    - mysql -e 'USE mysql;';
+    - mysql -e 'SHOW TABLES'
     - mysql -e 'CREATE DATABASE vx;'
     - mysql -e 'SHOW DATABASES;'
     - mysql -e 'USE vx;'
