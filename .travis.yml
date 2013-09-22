@@ -19,7 +19,7 @@ before_script:
     - cat /etc/apache2/sites-available/default
     - mysql -e 'CREATE DATABASE `vx`;'
     - mysql -e use vx
-    - mysql -e source /home/travis/build/airyland/nodeprint/application/db/np_data.sql
+    - mysql -e source airyland/nodeprint/application/db/np_data.sql
     - mysql -e show tables
     - pwd
     - sudo service apache2 restart
