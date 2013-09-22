@@ -20,7 +20,8 @@ before_script:
     - cat application/db/np_data.sql
     - mysql -e 'show databases;'
     - mysql -e 'CREATE DATABASE `vx`;'
-    - mysql -e 'use `vx`;'
+    - mysql -e 'show databases;'
+    - mysql -e 'use vx;'
     - mysql -e 'source application/db/np_data.sql;'
     - mysql -e 'show tables;'
     - pwd
