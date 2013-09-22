@@ -18,6 +18,9 @@ before_script:
     - echo "$(curl -fsSL https://gist.github.com/airyland/93d2c15fcf5551181e9b/raw/8066fda124b6c86f69ad32a010b8c22bbaf868e8/gistfile1.txt)" | sed -e "s,PATH,`pwd`,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - cat /etc/apache2/sites-available/default
     - mysql -e 'CREATE DATABASE `vx`;'
+    - mysql -e use vx
+    - mysql -e source /home/travis/build/airyland/nodeprint/application/db/np_data.sql
+    - mysql -e show tables
     - pwd
     - sudo service apache2 restart
 script: 
