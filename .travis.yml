@@ -27,6 +27,7 @@ before_script:
     - mysql -e 'source application/db/np_data.sql;'
     - pwd
     - sudo mv application/config/database_default.php application/config/database.php
+    - sudo sed -i 's/root/travis/g' application/config/database.php
     - sudo service apache2 restart
 script: 
     - php ./application/test/test.php
