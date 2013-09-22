@@ -8,6 +8,9 @@ addons:
     - nodeprint.com
     - nodeprint.dev
 
+notifications:
+  email: false
+  
 before_script:
     - sudo apt-get update
     - sudo apt-get install apache2
@@ -18,12 +21,13 @@ before_script:
     - echo "$(curl -fsSL https://gist.github.com/airyland/93d2c15fcf5551181e9b/raw/8066fda124b6c86f69ad32a010b8c22bbaf868e8/gistfile1.txt)" | sed -e "s,PATH,`pwd`,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - cat /etc/apache2/sites-available/default
     - cat application/db/np_data.sql
-    - mysql -e 'show databases;'
+    - mysql -e 'SHOW DATABASES;'
     - mysql -e 'CREATE DATABASE vx;'
-    - mysql -e 'USE vx;'
-    - mysql -e 'SHOW TABLES;'
-    - mysql -e 'source application/db/np_data.sql;'
-    - mysql -e 'SHOW TABLES;'
+    - mysql -e 'SHOW DATABASES;'
+    - mysql USE vx;
+    - mysql SHOW TABLES;
+    - mysql source application/db/np_data.sql;
+    - mysql SHOW TABLES;
     - pwd
     - sudo service apache2 restart
 script: 
