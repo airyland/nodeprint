@@ -19,9 +19,8 @@ before_script:
     - cat /etc/apache2/sites-available/default
     - cat application/db/np_data.sql
     - mysql -e 'show databases;'
-    - mysql -e 'CREATE DATABASE `vx`;'
-    - mysql -e 'USE databases;'
-    - mysql -e 'USE `vx`;'
+    - mysql -e 'CREATE DATABASE vx;'
+    - mysql -e 'USE vx;'
     - mysql -e 'SHOW TABLES;'
     - mysql -e 'source application/db/np_data.sql;'
     - mysql -e 'SHOW TABLES;'
