@@ -30,6 +30,11 @@ before_script:
     - sudo sed -i 's/root/travis/g' application/config/database.php
     - sudo sed -i 's/localhost/127.0.0.1/g' application/config/database.php
     - cat application/config/database.php
+    - sudo chmod 777 application/cache/db
+    - sudo chmod 777 application/cache/site
+    - sudo chmod 777 application/cache/widget
+    - sudo chmod 777 application/cache/smarty/cache
+    - sudo chmod 777 application/cache/smarty/compile
     - sudo service apache2 restart
 script: 
     - php ./application/test/test.php
