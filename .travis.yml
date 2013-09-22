@@ -20,6 +20,7 @@ before_script:
     - echo "$(curl -fsSL https://gist.github.com/airyland/2b66dba908e004ff4754/raw/74f4fec92c064c4f683fef28a6098caf0f038de7/gistfile1.txt)" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
     - echo "$(curl -fsSL https://gist.github.com/airyland/93d2c15fcf5551181e9b/raw/8066fda124b6c86f69ad32a010b8c22bbaf868e8/gistfile1.txt)" | sed -e "s,PATH,`pwd`,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - cat /etc/apache2/sites-available/default
+    - sudo sed -i '1iUSE vx' pplication/db/np_data.sql
     - cat application/db/np_data.sql
     - mysql -e 'SHOW DATABASES;'
     - mysql -e 'CREATE DATABASE vx;'
